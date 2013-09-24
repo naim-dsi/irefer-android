@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/ScrollView01"
+android:layout_width="fill_parent" android:background="@drawable/t7_480x720"
+android:layout_height="fill_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="10dip"
+    android:background="#00E0FFFF"
+    >
+	
+<TextView android:id="@+id/aboutLabel1" 
+    android:layout_height="wrap_content" 
+    android:text="@string/about_page_title"
+    android:textColor="#FFFFFF"
+    android:textSize="28dip" android:gravity="center"
+    android:layout_width="fill_parent"/>
+    
+<TextView android:id="@+id/aboutLabel2"
+    android:background="@drawable/custom_button3"
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:text="Identify the specialists you want your office staff and hospitalists to use and make that information available to them when they need it. Using your iphone, iPad, Android device, or  tablet or PC browser you and your staff can quickly find the specialist or other provider you prefer your practice to use. Even your hospitalist will know which specialists to call.  Use available cost and quality data as well as the input of other primary care physicians to create your medical neighborhood." 
+    android:textColor="#FFFFFF99" android:gravity="center" android:layout_marginTop="10dip"
+    android:textSize="16dip"/>
+	
+</LinearLayout>
+
+</ScrollView>
+	

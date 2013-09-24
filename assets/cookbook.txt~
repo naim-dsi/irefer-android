@@ -1,0 +1,11 @@
+get into DB :
+
+adb shell
+cd /data/data/com.dsinv/databases
+sqlite3 irefer_db
+SELECT sql FROM sqlite_master WHERE name = 't_doctor';
+select * from t_doctor where doc_id = 8056;
+Alter table t_doctor rename to t_doctor1;
+select * from t_doctor1 where doc_id = 8056;
+
+select count(*) from t_doctor

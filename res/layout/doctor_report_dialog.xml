@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+ <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+<!-- 	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" -->
+	<LinearLayout 
+    	android:orientation="horizontal" android:id="@+id/doc_report_layout0"  
+    	android:layout_width="fill_parent" android:layout_height="wrap_content"
+    	android:background="#AA000000" >
+
+		<Button android:id="@+id/doc_report_dialog_close" 
+			android:layout_height="wrap_content" android:layout_width="60dp" 
+			android:text="Close" android:textColor="#FFF8C6"	
+			android:textSize="14dip" android:singleLine="true"
+			android:background="@drawable/custom_action_bar_button"
+			android:layout_margin="5dp">
+		</Button>
+		
+		<TextView  android:id="@+id/doc_report_headline"  android:layout_weight="1" 
+			android:layout_width="0dip" android:layout_height="wrap_content" 
+    		android:layout_marginLeft="5dip"  android:layout_marginTop="3dip"
+    		android:text="Report an Error"  android:textStyle="bold" android:gravity="left"
+    		android:textColor="#FFFFFF" android:textSize="15dip"/>
+    
+    	<Button android:id="@+id/doc_report_dialog_save" 
+			android:layout_height="wrap_content" android:layout_width="60dp" 
+			android:text="Save" android:textColor="#FFF8C6"	
+			android:textSize="14dip" android:singleLine="true"
+			android:background="@drawable/custom_action_bar_button"
+			android:layout_margin="5dp" >
+		</Button>
+		
+	</LinearLayout>
+
+
+<!--  <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" -->
+ <LinearLayout 
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dip">
+     
+     <EditText android:id="@+id/doc_report_text" android:inputType="textMultiLine"  
+     android:layout_height="120dp" android:layout_width="250dp">
+         <requestFocus></requestFocus>
+     </EditText>  
+     
+<!--      <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" -->
+     <LinearLayout 
+    	android:orientation="horizontal" android:id="@+id/doc_report_layout1"  
+    	android:layout_width="fill_parent" android:layout_height="wrap_content"
+    	android:background="@drawable/rounded_top_bottom_shape" 
+    	android:paddingTop="0dip" android:paddingBottom="0dip"  
+    	android:gravity="right" android:clickable="true"
+    	android:layout_marginTop="1dip" android:paddingLeft="3dip">
+
+		<TextView  android:id="@+id/doc_report_label1"  android:layout_weight="1" 
+			android:layout_width="0dip" android:layout_height="wrap_content" 
+    		android:layout_marginTop="-3dip" android:layout_marginLeft="5dip" android:layout_marginBottom="0dip" 
+    		android:text="Provider not in Plan"   android:gravity="left"
+    		android:textColor="#FFFFFF" android:textSize="14dip"/>
+    
+    	<CheckBox android:text="" android:id="@+id/doc_report_checkbox1" 
+    		android:layout_marginRight="3dip"
+     		android:layout_width="wrap_content" android:layout_height="wrap_content"></CheckBox>
+	</LinearLayout>
+	
+<!-- 	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" -->
+	<LinearLayout 
+    	android:orientation="horizontal" android:id="@+id/doc_report_layout2"  
+    	android:layout_width="fill_parent" android:layout_height="wrap_content"
+    	android:background="@drawable/rounded_top_bottom_shape" 
+    	android:paddingTop="0dip" android:paddingBottom="0dip"  
+    	android:gravity="right" android:clickable="true"
+    	android:layout_marginTop="1dip" android:paddingLeft="3dip">
+
+		<TextView  android:id="@+id/doc_report_label2"  android:layout_weight="1" 
+			android:layout_width="0dip" android:layout_height="wrap_content" 
+    		android:layout_marginTop="-6dip" android:layout_marginLeft="5dip" android:layout_marginBottom="0dip" 
+    		android:text="Address or phone number incorrect"   android:gravity="left"
+    		android:textColor="#FFFFFF" android:textSize="14dip"/>
+    
+    	<CheckBox android:text="" android:id="@+id/doc_report_checkbox2" 
+    		android:layout_marginRight="3dip"
+     		android:layout_width="wrap_content" android:layout_height="wrap_content"></CheckBox>
+	</LinearLayout>
+	
+<!-- 	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" -->
+	<LinearLayout 
+    	android:orientation="horizontal" android:id="@+id/doc_report_layout3"  
+    	android:layout_width="fill_parent" android:layout_height="wrap_content"
+    	android:background="@drawable/rounded_top_bottom_shape" 
+    	android:paddingTop="0dip" android:paddingBottom="0dip"  
+    	android:gravity="right" android:clickable="true"
+    	android:layout_marginTop="1dip" android:paddingLeft="3dip">
+
+		<TextView  android:id="@+id/doc_report_label3"  android:layout_weight="1" 
+			android:layout_width="0dip" android:layout_height="wrap_content" 
+    		android:layout_marginTop="-3dip" android:layout_marginLeft="5dip" android:layout_marginBottom="0dip" 
+    		android:text="Incorrect speciality"   android:gravity="left"
+    		android:textColor="#FFFFFF" android:textSize="14dip"/>
+    
+    	<CheckBox android:text="" android:id="@+id/doc_report_checkbox3" 
+    		android:layout_marginRight="3dip"
+     		android:layout_width="wrap_content" android:layout_height="wrap_content"></CheckBox>
+	</LinearLayout>
+	
+<!-- 	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" -->
+	<LinearLayout 
+    	android:orientation="horizontal" android:id="@+id/doc_report_layout4"  
+    	android:layout_width="fill_parent" android:layout_height="wrap_content"
+    	android:background="@drawable/rounded_top_bottom_shape" 
+    	android:paddingTop="0dip" android:paddingBottom="0dip"  
+    	android:gravity="right" android:clickable="true"
+    	android:layout_marginTop="1dip" android:paddingLeft="3dip">
+
+		<TextView  android:id="@+id/doc_report_label4"  android:layout_weight="1" 
+			android:layout_width="0dip" android:layout_height="wrap_content" 
+    		android:layout_marginTop="-3dip" android:layout_marginLeft="5dip" android:layout_marginBottom="0dip" 
+    		android:text="Hospital list incorrect"   android:gravity="left"
+    		android:textColor="#FFFFFF" android:textSize="14dip"/>
+    
+    	<CheckBox android:text="" android:id="@+id/doc_report_checkbox4" 
+    		android:layout_marginRight="3dip"
+     		android:layout_width="wrap_content" android:layout_height="wrap_content"></CheckBox>
+	</LinearLayout>
+ </LinearLayout>
+</LinearLayout>
+ 

@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/ScrollView01"
+android:layout_width="fill_parent" android:background="@drawable/t7_480x720"
+android:layout_height="fill_parent">
+
+<!-- <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" -->
+<LinearLayout 
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingLeft="5dip"
+    android:paddingRight="5dip"
+    android:paddingBottom="10dip"
+    android:background="#00E0FFFF"
+    android:weightSum="1">
+    
+<!--     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" -->
+    <LinearLayout 
+    android:orientation="horizontal"
+    android:layout_width="fill_parent" android:layout_height="fill_parent"
+    android:layout_marginTop="5dip"
+    android:background="#00E0FFFF">
+<!--        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" -->
+       <LinearLayout 
+    	android:orientation="vertical"
+    	android:layout_width="wrap_content" android:layout_height="wrap_content"
+    	android:layout_marginTop="0dip"
+    	android:background="#00E0FFFF" >	           
+		<TextView  android:id="@+id/doctor_detail_rank_label"
+		    android:layout_height="wrap_content" android:gravity="center_horizontal"
+		    android:text="My Rank" android:textStyle="bold" android:layout_marginLeft="0dp"
+		    android:textColor="#FFA500"
+		    android:textSize="16dip" android:layout_width="fill_parent" />
+		<TextView  android:id="@+id/doctor_detail_rank_value"
+		    android:layout_width="wrap_content" android:layout_height="wrap_content" 
+		    android:background="@drawable/rounded_top_bottom_shape"
+		    android:text="0" android:textStyle="bold"
+		    android:textColor="#82CAFF" android:paddingTop="5dp" android:paddingBottom="5dp" 
+		    android:paddingLeft="22dp" android:paddingRight="22dp"
+		    android:layout_marginLeft="0dp" 
+		    android:textSize="42dip"/>
+		<Button android:id="@+id/doc_detail_rank_button" 
+			android:layout_width="wrap_content" android:layout_height="wrap_content" 
+			android:text="Change"
+			android:layout_marginTop="5dip" 
+			android:textColor="#000000"
+			android:background="@drawable/orange_button"/>
+		        
+       <ImageView android:id="@+id/doc_detail_pic"	        
+	        android:background="@drawable/rounded_top_bottom_shape"
+	        android:paddingTop="5dip" android:visibility="gone"
+	        android:layout_marginTop="5dip"
+	        android:src="@drawable/doc_icon" 
+	        android:layout_gravity="left" 
+	        android:layout_width="100dp" android:layout_height="100dp"/>
+        <ProgressBar android:id="@+id/imageProgressBar"
+        	android:visibility="gone" style="?android:attr/progressBarStyleLarge" 
+        	android:layout_width="100dp" android:layout_height="100dp">
+        	</ProgressBar>
+       	</LinearLayout>
+        	
+<!--         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" -->
+        <LinearLayout 
+    	android:orientation="vertical"
+    	android:layout_width="fill_parent" android:layout_height="wrap_content"
+    	android:layout_marginTop="0dip"
+    	android:background="#00E0FFFF" >	           
+		<TextView  android:id="@+id/doctor_full_name"
+		    android:layout_height="wrap_content" 
+		    android:text="Doctor's Name"
+		    android:layout_marginLeft="10dip"
+		    android:textColor="#82CAFF"
+		    android:textSize="18dip" 
+		    android:layout_width="wrap_content"/>
+		<TextView  android:id="@+id/doctor_full_name1"
+		    android:layout_height="wrap_content" 
+		    android:text="Specialty"
+		    android:layout_marginLeft="10dip"
+		    android:textColor="#FFFFFF99"
+		    android:textSize="13dip" 
+		    android:layout_width="wrap_content"/>
+		 <TextView  android:id="@+id/doctor_full_name2"
+		    android:layout_height="wrap_content" 
+		    android:text="Insurance"
+		    android:layout_marginLeft="10dip"
+		    android:textColor="#FFFFFF99"
+		    android:textSize="13dip" 
+		    android:layout_width="wrap_content"/>
+		
+<!-- 	 	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" -->
+	 	<LinearLayout 
+    		android:orientation="horizontal"
+    		android:layout_width="wrap_content" android:layout_height="wrap_content">   
+			<TextView  android:id="@+id/doctor_value"
+		    	android:layout_width="wrap_content" android:layout_height="wrap_content" 
+		    	android:text="Value: " android:layout_marginTop="2dp"
+		    	android:layout_marginLeft="10dip"
+		    	android:textColor="#FFFFFF"
+		    	android:textSize="15dip"/>
+		    
+			<ImageView android:id="@+id/grade_icon_1"	        
+	        	android:src="@drawable/star_icon_off"  
+	        	android:layout_width="20dp" android:layout_height="20dp"/>
+	       	<ImageView android:id="@+id/grade_icon_2"	        
+	        	android:src="@drawable/star_icon_off" android:layout_marginLeft="2dip"
+	        	android:layout_width="20dp" android:layout_height="20dp"/>
+	       	<ImageView android:id="@+id/grade_icon_3"	        
+	        	android:src="@drawable/star_icon_off" android:layout_marginLeft="2dip"
+	        	android:layout_width="20dp" android:layout_height="20dp"/>
+	        <ImageView android:id="@+id/grade_icon_4"	        
+	        	android:src="@drawable/star_icon_off" android:layout_marginLeft="2dip"
+	        	android:layout_width="20dp" android:layout_height="20dp"/>
+	       	<ImageView android:id="@+id/grade_icon_5"	        
+	        	android:src="@drawable/star_icon_off" android:layout_marginLeft="2dip"
+	        	android:layout_width="20dp" android:layout_height="20dp"/>
+		</LinearLayout>
+		    
+<!-- 		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" -->
+		<LinearLayout 
+    		android:orientation="horizontal" android:layout_marginTop="2dp"
+    		android:layout_width="wrap_content" android:layout_height="wrap_content">   
+			<TextView  android:id="@+id/doctor_quality"
+		    	android:layout_width="wrap_content" android:layout_height="wrap_content" 
+		    	android:text="Quality: " android:layout_marginTop="-3dp"
+		    	android:layout_marginLeft="10dip"
+		    	android:textColor="#FFFFFF"
+		    	android:textSize="15dip"/>
+		    
+			<ImageView android:id="@+id/quality_icon_1"	        
+	        	android:src="@drawable/star_icon_off"  android:layout_marginTop="2dp"
+	        	android:layout_width="12dp" android:layout_height="12dp"/>
+	       	<ImageView android:id="@+id/quality_icon_2"	        
+	        	android:src="@drawable/star_icon_off" android:layout_marginTop="2dp" android:layout_marginLeft="2dp"
+	        	android:layout_width="12dp" android:layout_height="12dp"/>
+	        <ImageView android:id="@+id/quality_icon_3"	        
+	        	android:src="@drawable/star_icon_off" android:layout_marginTop="2dp" android:layout_marginLeft="2dp"
+	        	android:layout_width="12dp" android:layout_height="12dp"/>
+	        <ImageView android:id="@+id/quality_icon_4"	        
+	        	android:src="@drawable/star_icon_off" android:layout_marginTop="2dp" android:layout_marginLeft="2dp"
+	        	android:layout_width="12dp" android:layout_height="12dp"/>
+	       	<ImageView android:id="@+id/quality_icon_5"	        
+	        	android:src="@drawable/star_icon_off" android:layout_marginTop="2dp" android:layout_marginLeft="2dp"
+	        	android:layout_width="12dp" android:layout_height="12dp"/>
+		
+		</LinearLayout>
+	    
+<!-- 		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" -->
+		<LinearLayout 
+    		android:orientation="horizontal" android:layout_marginTop="2dp"
+    		android:layout_width="wrap_content" android:layout_height="wrap_content">   
+			<TextView  android:id="@+id/doctor_quality"
+		    	android:layout_width="wrap_content" android:layout_height="wrap_content" 
+		    	android:text="Cost: " android:layout_marginTop="-3dp"
+		    	android:layout_marginLeft="10dip"
+		    	android:textColor="#FFFFFF"
+		    	android:textSize="15dip"/>
+		    
+			<TextView android:id="@+id/cost_icon_1"	 android:layout_marginTop="-3dp"       
+	        	android:text="$"  android:textSize="18dip" android:textColor="#FFFFFF"
+	        	android:layout_width="wrap_content" android:layout_height="wrap_content" />
+	        <TextView android:id="@+id/cost_icon_2"	 android:layout_marginTop="-3dp" android:layout_marginLeft="2dip"      
+	        	android:text="$"  android:textSize="18dip" android:textColor="#FFFFFF"
+	        	android:layout_width="wrap_content" android:layout_height="wrap_content" />
+	        <TextView android:id="@+id/cost_icon_3"	 android:layout_marginTop="-3dp" android:layout_marginLeft="2dip"      
+	        	android:text="$"  android:textSize="18dip" android:textColor="#FFFFFF"
+	        	android:layout_width="wrap_content" android:layout_height="wrap_content" />
+	        <TextView android:id="@+id/cost_icon_4"	 android:layout_marginTop="-3dp" android:layout_marginLeft="2dip"      
+	        	android:text="$"  android:textSize="18dip" android:textColor="#FFFFFF"
+	        	android:layout_width="wrap_content" android:layout_height="wrap_content" />
+	        <TextView android:id="@+id/cost_icon_5"	 android:layout_marginTop="-3dp" android:layout_marginLeft="2dip"      
+	        	android:text="$"  android:textSize="18dip" android:textColor="#FFFFFF"
+	        	android:layout_width="wrap_content" android:layout_height="wrap_content" />
+	        	
+		</LinearLayout>
+		
+<!-- 		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" -->
+		<LinearLayout 
+    		android:orientation="horizontal" android:layout_marginTop="2dp"
+    		android:layout_width="wrap_content" android:layout_height="wrap_content">   
+			<TextView  android:id="@+id/doctor_pexp"
+		    	android:layout_width="wrap_content" android:layout_height="wrap_content" 
+		    	android:text="Patient Experience: " android:layout_marginTop="-3dp"
+		    	android:layout_marginLeft="10dip"
+		    	android:textColor="#FFFFFF"
+		    	android:textSize="15dip"/>
+		    
+			<ImageView android:id="@+id/pexp_icon_1"	        
+	        	android:src="@drawable/star_icon_off"  android:layout_marginTop="2dp"
+	        	android:layout_width="12dp" android:layout_height="12dp"/>
+	       	<ImageView android:id="@+id/pexp_icon_2"	        
+	        	android:src="@drawable/star_icon_off" android:layout_marginTop="2dp" android:layout_marginLeft="2dp"
+	        	android:layout_width="12dp" android:layout_height="12dp"/>
+	        <ImageView android:id="@+id/pexp_icon_3"	        
+	        	android:src="@drawable/star_icon_off" android:layout_marginTop="2dp" android:layout_marginLeft="2dp"
+	        	android:layout_width="12dp" android:layout_height="12dp"/>
+	        <ImageView android:id="@+id/pexp_icon_4"	        
+	        	android:src="@drawable/star_icon_off" android:layout_marginTop="2dp" android:layout_marginLeft="2dp"
+	        	android:layout_width="12dp" android:layout_height="12dp"/>
+	       	<ImageView android:id="@+id/pexp_icon_5"	        
+	        	android:src="@drawable/star_icon_off" android:layout_marginTop="2dp" android:layout_marginLeft="2dp"
+	        	android:layout_width="12dp" android:layout_height="12dp"/>
+		
+		</LinearLayout>
+		
+		<TextView  android:id="@+id/doctor_full_name3"
+		    android:layout_height="wrap_content" 
+		    android:text="Collaborates: Yes"
+		    android:layout_marginLeft="10dip"
+		    android:textColor="#FFFFFF99"
+		    android:textSize="14dip" 
+		    android:layout_width="wrap_content"/>
+
+		<TextView  android:id="@+id/doctor_avg_rank"
+		    android:layout_height="wrap_content" 
+		    android:text="Avg Rank: 0 based on 0 PCP votes"
+		    android:layout_marginLeft="10dip"
+		    android:textColor="#FFA500"
+		    android:textSize="14dip" 
+		    android:layout_width="wrap_content"/>
+
+		<RatingBar android:id="@+id/detail_user_rank" android:visibility="gone"
+   			android:layout_width="wrap_content" android:focusable="false"
+   			android:layout_height="wrap_content"
+   			style="?android:attr/ratingBarStyleSmall"
+	 	  	android:layout_marginLeft="10dip" 
+	 	  	android:rating="3" android:numStars="5"/>
+	 	
+		</LinearLayout>		    
+    </LinearLayout>
+
+
+<!--  <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" -->
+<LinearLayout
+    android:layout_width="fill_parent" android:layout_height="wrap_content"
+    android:background="@drawable/rounded_top_bottom_shape"
+    android:padding="3dip" android:layout_marginTop="10dip"
+    android:visibility="gone"
+    android:id="@+id/doc_detail_report_change" android:orientation="vertical" >
+
+	<TextView  android:id="@+id/doctor_detail_report_headline" 
+	android:layout_width="fill_parent" android:layout_height="wrap_content" 
+    android:layout_marginLeft="5dip" android:layout_marginBottom="5dip" 
+    android:text="Report Change:"   android:gravity="left"
+    android:textColor="#FDD017" android:textSize="14dip" android:textStyle="bold"/>
+    
+    <TextView  android:id="@+id/doctor_detail_report_label" android:layout_width="fill_parent" android:layout_height="wrap_content" 
+    android:layout_marginLeft="5dip" android:layout_marginBottom="5dip" android:text="Report"   
+    android:visibility="gone" android:gravity="left"
+    android:textColor="#FFFFFF" android:textSize="14dip"/>
+    
+    <EditText android:layout_width="fill_parent" android:id="@+id/report_change_text_edit"
+    android:visibility="gone" 
+    android:layout_height="wrap_content" android:inputType="textMultiLine">
+    </EditText>
+	<Button android:id="@+id/doc_detail_submit_report" 
+	android:layout_height="wrap_content" android:layout_width="wrap_content" 
+	android:layout_gravity="right"	android:text="Save"
+	android:visibility="gone" 
+	android:layout_marginTop="5dip" android:layout_marginRight="10dip"
+	android:textColor="#FFF8C6"	android:background="@drawable/small_button"/>
+	   
+</LinearLayout>
+
+<!-- <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" -->
+<LinearLayout 
+    android:layout_width="fill_parent" android:layout_height="wrap_content"
+    android:background="@drawable/rounded_top_bottom_shape"
+    android:padding="3dip" android:layout_marginTop="10dip"
+    android:id="@+id/doc_detail_holder_one" android:orientation="vertical">
+
+<!-- 	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" -->
+	<LinearLayout 
+    		android:orientation="horizontal" android:layout_marginTop="0dp" android:gravity="right"
+    		android:layout_width="fill_parent" android:layout_height="wrap_content"> 
+    		
+		<TextView  android:id="@+id/doctor_detail_label1head" 
+			android:layout_width="wrap_content" android:layout_height="wrap_content" 
+    		android:layout_marginLeft="5dip" android:layout_marginBottom="0dip" 
+    		android:text="Specialist's Details:"   android:gravity="left" android:layout_weight="1"
+    		android:textColor="#FDD017" android:textSize="14dip" android:textStyle="bold"/>
+		<Button android:id="@+id/doc_detail_report_button" 
+			android:layout_width="wrap_content" android:layout_height="wrap_content" 
+			android:text="Report an Error" android:layout_marginTop="0dip" 
+			android:textColor="#FFF8C6" android:background="@drawable/small_button"/>
+    </LinearLayout>
+    
+	<TextView  android:id="@+id/doctor_detail_label1" android:layout_width="fill_parent" android:layout_height="wrap_content" 
+    	android:layout_marginLeft="5dip" android:layout_marginBottom="5dip" android:text="Language: English"   android:gravity="left"
+    	android:textColor="#FFFFFF" android:textSize="14dip"/>    
+</LinearLayout>
+
+<!-- <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" -->
+<LinearLayout 
+    android:layout_width="fill_parent" android:layout_height="wrap_content"
+    android:background="@drawable/rounded_top_bottom_shape"
+    android:padding="3dip" android:layout_marginTop="2dip"
+    android:id="@+id/doc_detail_holder_two" android:orientation="vertical">
+
+<TextView  android:id="@+id/doctor_detail_label2head" 
+	android:layout_width="fill_parent" android:layout_height="wrap_content" 
+    android:layout_marginLeft="5dip" android:layout_marginBottom="5dip" 
+    android:text="Practice:"   android:gravity="left"
+    android:textColor="#FDD017" android:textSize="14dip" android:textStyle="bold"/>
+<RatingBar android:id="@+id/detail_prac_rank" android:visibility="gone"
+   	android:layout_width="wrap_content" android:focusable="false"
+   	android:layout_height="wrap_content"
+   	style="?android:attr/ratingBarStyleSmall"
+	android:layout_marginLeft="5dip" 
+	android:rating="0" android:numStars="5"/>
+<TextView  android:id="@+id/doctor_detail_label2" android:layout_width="fill_parent" android:layout_height="wrap_content" 
+    android:layout_marginLeft="5dip" android:layout_marginBottom="5dip" android:text="Practice Name"   android:gravity="left"
+    android:textColor="#FFFFFF" android:textSize="14dip"/>    
+</LinearLayout>
+
+<!-- <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" -->
+<LinearLayout 
+    android:layout_width="fill_parent" android:layout_height="wrap_content"
+    android:background="@drawable/rounded_top_bottom_shape"
+    android:padding="3dip" android:layout_marginTop="2dip"
+    android:id="@+id/doc_detail_holder_three" android:orientation="vertical">
+<TextView  android:id="@+id/doctor_detail_label3head" 
+	android:layout_width="fill_parent" android:layout_height="wrap_content" 
+    android:layout_marginLeft="5dip" android:layout_marginBottom="5dip" 
+    android:text="Hospital (Sees inpatients):"   android:gravity="left"
+    android:textColor="#FDD017" android:textSize="14dip" android:textStyle="bold"/>
+    
+<TextView  android:id="@+id/doctor_detail_label3" android:layout_width="fill_parent" android:layout_height="wrap_content" 
+    android:layout_marginLeft="5dip" android:layout_marginBottom="5dip" android:text="Hospital Name"   android:gravity="left"
+    android:textColor="#FFFFFF" android:textSize="14dip"/>    
+</LinearLayout>
+
+<!-- <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" -->
+<LinearLayout 
+    android:orientation="vertical"
+    android:layout_width="fill_parent" android:layout_height="wrap_content"
+    android:background="@drawable/rounded_top_bottom_shape"
+    android:padding="3dip" android:layout_marginTop="2dip"
+    android:id="@+id/doc_detail_holder_bottom">
+<TextView  android:id="@+id/doctor_detail_labelBottomHead" 
+	android:layout_width="fill_parent" android:layout_height="wrap_content" 
+    android:layout_marginLeft="5dip" android:layout_marginBottom="5dip" 
+    android:text="Note:"   android:gravity="left"
+    android:textColor="#FDD017" android:textSize="14dip" android:textStyle="bold"/>
+    
+<TextView  android:id="@+id/doctor_detail_label_bottom" android:layout_width="fill_parent" android:layout_height="wrap_content" 
+    android:layout_marginLeft="5dip" android:layout_marginBottom="5dip" android:text="additionals"   android:gravity="left"
+    android:textColor="#FFFFFF" android:textSize="16dip"/>    
+</LinearLayout>
+		
+<Button android:id="@+id/call_button" 
+	android:layout_height="wrap_content" 
+	android:text="Call Doctor" 
+	android:layout_marginTop="8dip"
+	android:textColor="#FFF8C6"
+	android:textSize="15dip"
+	android:background="@drawable/custom_button"
+	android:layout_width="fill_parent"/>
+		
+<Button android:id="@+id/back_to_filter_button" 
+	android:layout_height="wrap_content" 
+	android:text="Search Again" 
+	android:layout_marginTop="8dip"
+	android:textColor="#FFF8C6"
+	android:background="@drawable/custom_button"
+	android:layout_width="fill_parent"/>
+    
+ 
+</LinearLayout>
+</ScrollView>
+	

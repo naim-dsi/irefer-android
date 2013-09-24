@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="headline">Welcome</string>
+    <string name="hello">Please Register First</string>
+    <string name="app_name">My Medical Neighbors</string>
+    <string name="about_page_title">About My Medical Neighbors</string>
+        
+    <string name="last_name">Last Name</string>
+    <string name="first_name">First Name</string>
+    <string name="email">Email</string>
+    <string name="act_code">Activation Code</string>
+    <string name="user_type_string">Practice</string>
+    <string name="hospital">My Hospital</string>
+    <string name="practice">My Practice</string>
+    
+    <string name="prac_name">My Practice</string>
+    <string name="prac_add_line">185 Second Lane, New DOHS, Dhaka.</string>
+</resources>

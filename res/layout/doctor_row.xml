@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="2dip"
+    android:background="#BB000000">
+    <LinearLayout
+        android:orientation="vertical" 
+        android:layout_width="55dp" android:layout_height="80dp" android:layout_marginRight="5dip">
+    <TextView
+            android:id="@+id/doc_rank_title1" android:gravity="center_horizontal"
+            android:layout_width="fill_parent" android:layout_height="wrap_content"
+            android:textColor="#FFA500" android:textStyle="bold" android:textSize="14dip"
+            android:text="Rank" />
+    <TextView
+            android:id="@+id/doc_rank_title2" android:layout_marginTop="-2dip"
+            android:layout_width="fill_parent" android:layout_height="wrap_content"
+            android:textColor="#58D3F7" android:textStyle="bold" android:textSize="25dip" android:gravity="center_horizontal"
+    		android:text="0" />
+    <Button android:id="@+id/list_rank_button" 
+		android:layout_height="wrap_content" 
+		android:text="Change"  android:focusable="false"
+		android:layout_marginTop="0dip"
+		android:textColor="#000000"
+		android:textSize="12dip" 
+		android:visibility="visible"
+		android:background="@drawable/orange_button"
+		android:layout_width="fill_parent" />
+    </LinearLayout>
+<LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dip"
+        android:layout_weight="1"
+        android:layout_height="wrap_content">
+        <TextView android:id="@+id/doc_row_doc_id"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="NA" android:visibility="gone"/>
+        <TextView
+            android:id="@+id/doc_title1"
+            android:layout_width="fill_parent" android:layout_height="0dip" android:layout_weight="1"
+            android:textColor="#FFFFFF" android:textSize="18dip"
+            android:text="Full Name" android:singleLine="true"
+            android:gravity="center_vertical"
+        />
+        <TextView
+            android:id="@+id/doc_title2"
+            android:layout_width="fill_parent" android:layout_height="0dip" android:layout_weight="1"
+            android:textSize="13dip" android:text="Phone" android:textColor="#FFFFFF99"
+            android:singleLine="true"/>
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:id="@+id/doc_title3"
+            android:textSize="13dip"
+            android:text="Practice Name"
+            android:textColor="#FFFFFF99"
+            android:singleLine="true"/>    
+    
+    	<LinearLayout
+        	android:orientation="horizontal" 
+        	android:layout_width="fill_parent" android:layout_height="0dp" android:layout_weight="1">
+        <TextView
+            android:id="@+id/doc_title4"
+            android:layout_width="wrap_content" android:layout_height="wrap_content" 
+            android:textSize="13dip" android:text="Value:" android:textColor="#FFFFFF99"
+            android:singleLine="true"/>
+            
+        <RatingBar android:id="@+id/list_ratingbar_small"
+   			android:layout_width="wrap_content" android:focusable="false"
+   			android:layout_height="wrap_content"
+   			style="?android:attr/ratingBarStyleSmall"
+	 	  	android:rating="3" android:numStars="5"
+	 	  	android:layout_marginLeft="3dp" android:layout_marginTop="3dp"
+   			/>
+    </LinearLayout>
+	</LinearLayout>
+
+    <Button android:id="@+id/list_call_button"
+		android:layout_marginRight="1dip"
+		android:text="" android:focusable="false"
+		android:background="@drawable/call_button"
+		android:textColor="#FFFFFF"
+		android:textSize="16dip"
+		android:layout_width="48dp" android:layout_height="48dp" android:layout_gravity="center_vertical"/>
+
+</LinearLayout>

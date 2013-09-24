@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/t7_480x720"
+    >
+	
+<!-- 	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" -->
+	<LinearLayout 
+       android:id="@+id/doc_list_top_wrapper" 
+       android:layout_height="wrap_content" android:background="#66151B54"
+       android:paddingLeft="2dip" android:paddingRight="2dip"
+       android:layout_width="fill_parent"
+       android:focusable="true"
+       android:focusableInTouchMode="true">
+    	<EditText android:id="@+id/doc_search_text_edit"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip"
+                android:hint="Search Key"
+                android:singleLine="true" /> 		 
+    </LinearLayout>
+    
+<!--     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" -->
+    <LinearLayout 
+       android:id="@+id/filter_top_wrapper"
+       android:orientation="horizontal" 
+       android:layout_height="wrap_content" android:gravity="left"
+       android:background="#99121212" 
+       android:layout_below="@id/doc_list_top_wrapper"
+       android:layout_width="fill_parent" android:weightSum="1"
+       android:padding="5dip">
+
+		<TextView android:id="@+id/filter_selected_values" android:textSize="20dip" 
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Working "/>
+		<ProgressBar android:id="@+id/docListProgressBar"
+        	style="?android:attr/progressBarStyleSmall" 
+        	android:layout_below="@id/doc_list_top_wrapper"
+        	android:gravity="center_horizontal"
+        	android:layout_width="30dp" android:layout_height="30dp">
+        	</ProgressBar>
+        	
+ 	       <TextView android:id="@+id/filter_selected_values" android:textSize="15dip" 
+ 	       android:maxLines="1" android:visibility="gone"
+ 	       android:scrollbars = "horizontal"
+ 	       android:layout_height="fill_parent" 
+ 	       android:layout_marginBottom="3dp"
+ 	       android:textStyle="normal"
+ 	       android:text="All Search" 
+ 	       android:textColor="#58D3F7" android:layout_width="fill_parent" android:layout_marginLeft="0dp" android:layout_gravity="left"></TextView> 		 
+ 
+    </LinearLayout>
+    
+    
+        	
+    <ListView
+    	android:id="@+id/doctor_list"
+    	android:orientation="vertical"
+    	android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_below="@id/filter_top_wrapper"
+        android:background="#00E0FFFF"
+    	android:cacheColorHint="#00000000"/>
+    
+<!--     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" -->
+    <LinearLayout 
+       android:id="@+id/doc_list_bottom_wrapper" android:visibility="gone"
+       android:layout_height="wrap_content"
+       android:layout_width="fill_parent"
+       android:layout_alignParentBottom="true">
+    	<TextView android:id="@+id/doc_search_footer"
+                android:layout_width="fill_parent"
+                android:layout_height="22dip"
+                android:singleLine="true"
+                android:textColor="#C34A2C" 
+                android:background="#BBA1A1A1"
+                android:textSize="14dip"
+                android:gravity="center"
+                android:text="0 item found"/> 		 
+    </LinearLayout>
+    
+    	
+ </RelativeLayout>
+ 

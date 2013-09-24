@@ -1,0 +1,35 @@
+get into DB :
+
+adb shell
+cd /data/data/com.dsinv.irefer/databases
+sqlite3 irefer_db
+SELECT sql FROM sqlite_master WHERE name = 't_doctor';
+select * from t_doctor where doc_id = 8056;
+Alter table t_doctor rename to t_doctor1;
+select * from t_doctor1 where doc_id = 8056;
+
+select count(*) from t_doctor
+
+
+select * from t_doctor where doc_id = 8109;
+
+
+select last_name , first_name, mid_name from t_doctor where doc_id = 8109;
+
+select last_name , first_name, mid_name from t_doctor where last_name = 'Aragona';
+
+update t_doctor set last_name = 'Jo' , first_name = 'Doc' where last_name = 'Aragona';
+
+update t_doctor set last_name = 'Doc' , first_name = 'Jo' where doc_id = 8109;
+
+select last_name , first_name, mid_name from t_doctor where doc_id = 8109;
+
+Aragona
+
+
+select _id, last_name , first_name from t_users where last_name = 'Aragona';
+1|Aragona|James
+
+select *  from t_users where _id = 1;
+
+update t_users set last_name = 'Jo' , first_name = 'Doc'  where _id = 1;

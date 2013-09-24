@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="2dip">
+    
+        <TextView
+            android:id="@+id/doc_lite_title1"
+            android:layout_width="fill_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:textColor="#000000"
+            android:textSize="18dip"
+            android:gravity="center_vertical"
+        />
+        <TextView
+            android:id="@+id/doc_lite_title2"
+            android:layout_width="fill_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:textSize="13dip"
+            android:text="shamim"
+            android:textColor="#111133"
+            android:singleLine="true"/>
+</LinearLayout>

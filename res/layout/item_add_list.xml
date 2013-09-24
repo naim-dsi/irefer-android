@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/t7_480x720"
+    >
+	
+<!-- 	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" -->
+	<LinearLayout
+       android:id="@+id/item_add_top_wrapper" android:background="#66151B54"
+       android:paddingLeft="2dip" android:paddingRight="2dip"
+       android:layout_height="wrap_content"
+       android:layout_width="fill_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+    	<EditText android:id="@+id/item_search_text_edit"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip"
+                android:hint="Search Key"
+                android:singleLine="true" /> 		 
+    </LinearLayout>
+    
+    <ListView
+    	android:id="@+id/itemList"
+    	android:orientation="vertical"
+    	android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_below="@id/item_add_top_wrapper"
+        android:background="#55E0FFFF"
+        android:cacheColorHint="#00000000"
+    	/>
+    
+<!--     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" -->
+    <LinearLayout 
+       android:id="@+id/item_add_bottom_wrapper2"
+       android:layout_height="wrap_content" android:orientation="vertical"
+       android:layout_width="fill_parent" android:background="#DDA1A1A1"
+       android:layout_alignParentBottom="true">
+       
+       <Button android:id="@+id/all_item_add_button" 
+		android:layout_height="wrap_content" 
+		android:text="Add All" 
+		android:textColor="#FFF8C6"
+		android:textSize="15dip"
+		android:background="@drawable/custom_button"
+		android:layout_marginTop="5dip"
+		android:layout_marginLeft="5dip"
+		android:layout_marginRight="5dip"
+		android:layout_width="fill_parent">
+		</Button>
+       
+    	<TextView android:id="@+id/item_search_footer"
+                android:layout_width="fill_parent"
+                android:layout_height="18dip"
+                android:layout_marginBottom="2dip"
+                android:singleLine="true"
+                android:textColor="#D34A2C" 
+                android:textSize="14dip"
+                android:gravity="center"
+                android:text="0 item found"/> 		 
+    </LinearLayout>
+    
+    	
+ </RelativeLayout>
+ 

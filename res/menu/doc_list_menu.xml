@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/sort_by_grade"
+    	android:title="Sort By Grade" />
+    <item android:id="@+id/sort_by_rank"
+    	android:title="Sort By Rank" />
+    <item android:id="@+id/sort_by_name"
+    	android:title="Sort By Last Name" />
+    <item android:id="@+id/sort_by_first_name"
+    	android:title="Sort By First Name" />
+</menu>
