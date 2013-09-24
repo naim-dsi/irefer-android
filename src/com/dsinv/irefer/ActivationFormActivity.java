@@ -78,7 +78,13 @@ public class ActivationFormActivity extends Activity {
 		        	//String pId = cr.getString(6);
 		        	//if(uEmail.equals(cr.getString(4))) {
 		        		try {
-				        	String res = getDataFromURL(ABC.WEB_URL+"user/activate?code="+actCode+"&email="+uEmail);
+		        			String res = ""; 
+				        	String urlString = ""; 
+				        	urlString = ABC.WEB_URL+"user/activate?code="+actCode+"&email="+uEmail;
+				        	int i=1;
+				        	Log.d("NI","URL::"+urlString);
+							res = getDataFromURL(urlString);
+							Log.d("NI","JSONDATA::"+res);
 				        	try {
 				        		parseJSONDataAndSaveUser(res);
 				        		Toast.makeText(ActivationFormActivity.this, "Thank You for registering " + getString( R.string.app_name ) , Toast.LENGTH_SHORT).show();
@@ -86,8 +92,9 @@ public class ActivationFormActivity extends Activity {
 				        		setResult(RESULT_OK);
 				        		finish();
 				        	} catch(Exception ex) {
-				        		Toast.makeText(ActivationFormActivity.this, res+"! Please try again with correct information.", Toast.LENGTH_SHORT).show();
-					        	System.out.println("SMM:NOT REGISTERED::"+ex+res);
+				        		//Toast.makeText(ActivationFormActivity.this, res+"! Please try again with correct information.", Toast.LENGTH_SHORT).show();
+				        		Log.e("NI","ERROR::"+ex.getMessage());
+				        		//System.out.println("SMM:NOT REGISTERED::"+ex+res);
 					        	ex.printStackTrace();
 				        	}
 				        } catch(Exception ex) {
