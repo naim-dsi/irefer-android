@@ -131,6 +131,7 @@ public class PCPRegFormActivity extends Activity {
         Button regBtn = (Button) findViewById(R.id.pcpRegSubmit);
         regBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				String urlString = "";
 				/* there should be only one user */
 				System.out.println("SMM::INFO:LNAME::["+lNameView.getText()+"]");
 				if(lNameView == null || lNameView.getText() == null || lNameView.getText().toString().equals("")) {
@@ -177,11 +178,14 @@ public class PCPRegFormActivity extends Activity {
 				String res ="";
 				try {
 					if(userType == 1)
-						res = getDataFromURL(ABC.WEB_URL+"user/register?last_name="+lName+"&first_name="+fName+"&email="+uEmail+
-		        			"&prac_id="+selectedPracticeId+(specId > 0 ? "&spec_id="+specId : ""));
+						urlString = ABC.WEB_URL+"user/register?doc_id="+docId+"&last_name="+lName+"&first_name="+fName+"&email="+uEmail+
+			        			"&prac_id="+selectedPracticeId+(specId > 0 ? "&spec_id="+specId : "");
 					if(userType == 2)
-						res = getDataFromURL(ABC.WEB_URL+"user/register?last_name="+lName+"&first_name="+fName+"&email="+uEmail+
-		        			"&hosp_id="+selectedPracticeId+(specId > 0 ? "&spec_id="+specId : ""));
+						urlString = ABC.WEB_URL+"user/register?doc_id="+docId+"&last_name="+lName+"&first_name="+fName+"&email="+uEmail+
+			        			"&hosp_id="+selectedPracticeId+(specId > 0 ? "&spec_id="+specId : "");
+					Log.d("NI","URL::"+urlString);
+					res = getDataFromURL(urlString);
+					Log.d("NI","JSONDATA::"+res);
 		        } catch(Exception ex) {
 		        	Toast.makeText(PCPRegFormActivity.this, "Failed to connect to server, Please check intenet setting.", Toast.LENGTH_SHORT).show();
 		        	System.out.println("SMM:ERROR::"+ex);

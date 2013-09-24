@@ -170,6 +170,7 @@ public class ItemChooseActivity extends Activity {
     				try {
     					JSONObject obj = (JSONObject)docList2.get(selectedItemIdx);
     					intent.putExtra("user_type", userType);
+    					intent.putExtra("doc_id", obj.getInt("id"));
     					intent.putExtra("prac_id", obj.getInt("prac_id"));
         				//System.out.println("SMM::PRAC_ID="+obj.getInt("prac_id"));
         				intent.putExtra("prac_name", obj.getString("prac_name"));
@@ -234,26 +235,31 @@ public class ItemChooseActivity extends Activity {
 	
 	private void populateListData(String s) {
 		
-        
+        String urlString = "";
         String jsonData = "";
         try {
          	if(opr == DbAdapter.PRACTICE)
-         		jsonData = getDataFromURL(ABC.WEB_URL+"practice/json?code="+s);
+         		urlString = ABC.WEB_URL+"practice/json?code="+s;
          	if(opr == DbAdapter.HOSPITAL)
-         		jsonData = getDataFromURL(ABC.WEB_URL+"hospital/json?code="+s);
+         		urlString = ABC.WEB_URL+"hospital/json?code="+s;
          	if(opr == DbAdapter.SPECIALTY){
          		if(userType == 1)
-         			jsonData = getDataFromURL(ABC.WEB_URL+"speciality/json?type=2&code="+s);
+         			urlString = ABC.WEB_URL+"speciality/json?type=2&code="+s;
          		if(userType == 2)
-         			jsonData = getDataFromURL(ABC.WEB_URL+"speciality/json?type=1&code="+s);
+         			urlString = ABC.WEB_URL+"speciality/json?type=1&code="+s;
          	}
          	if(opr == DbAdapter.DOCTOR) {
          		if(userType == 1)
-         			jsonData = getDataFromURL(ABC.WEB_URL+"doctor/jsonLite?prac_ids=1&doc_name="+s);
+         			urlString = ABC.WEB_URL+"doctor/jsonLite?prac_ids=1&doc_name="+s;
+         			
          		if(userType == 2)
-         			jsonData = getDataFromURL(ABC.WEB_URL+"doctor/jsonLite?hosp_ids=1&doc_name="+s);
+         			urlString = ABC.WEB_URL+"doctor/jsonLite?hosp_ids=1&doc_name="+s;
          	}
-         		//System.out.println("SMM:INTERNET::"+ABC.WEB_URL+"practice/json?code="+s.toString());
+         	Log.d("NI","URL::"+urlString);
+         	jsonData = getDataFromURL(urlString);
+			Log.d("NI","JSONDATA::"+jsonData);
+         	
+         		
          } catch(Exception ex) {
          	Toast.makeText(ItemChooseActivity.this, "Failed to load data from intenet.", Toast.LENGTH_SHORT).show();
          	System.out.println("SMM:ERROR::"+ex);
