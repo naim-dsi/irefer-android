@@ -2,8 +2,10 @@ package com.dsinv.irefer;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -235,69 +237,80 @@ public class ItemChooseActivity extends Activity {
 	
 	private void populateListData(String s) {
 		
-        String urlString = "";
-        String jsonData = "";
+       
         try {
-         	if(opr == DbAdapter.PRACTICE)
-         		urlString = ABC.WEB_URL+"practice/json?code="+s;
-         	if(opr == DbAdapter.HOSPITAL)
-         		urlString = ABC.WEB_URL+"hospital/json?code="+s;
-         	if(opr == DbAdapter.SPECIALTY){
-         		if(userType == 1)
-         			urlString = ABC.WEB_URL+"speciality/json?type=2&code="+s;
-         		if(userType == 2)
-         			urlString = ABC.WEB_URL+"speciality/json?type=1&code="+s;
-         	}
-         	if(opr == DbAdapter.DOCTOR) {
-         		if(userType == 1)
-         			urlString = ABC.WEB_URL+"doctor/jsonLite?prac_ids=1&doc_name="+s;
-         			
-         		if(userType == 2)
-         			urlString = ABC.WEB_URL+"doctor/jsonLite?hosp_ids=1&doc_name="+s;
-         	}
-         	Log.d("NI","URL::"+urlString);
-         	jsonData = getDataFromURL(urlString);
-			Log.d("NI","JSONDATA::"+jsonData);
-         	
-         		
-         } catch(Exception ex) {
-         	Toast.makeText(ItemChooseActivity.this, "Failed to load data from intenet.", Toast.LENGTH_SHORT).show();
-         	System.out.println("SMM:ERROR::"+ex);
-         }
-     
-        //System.out.println("SMM222:JSON::"+jsonData);
-        docList = new ArrayList<Map<String,String>>();
-         try {
-         	Map<String, Object[]> map = parseJSONData(jsonData);
-         	nameArr = map.get("nameArr");
-         	addArr = map.get("addArr");
-         	idArr = map.get("idArr");
-         } catch(Exception ex) {
-         	Toast.makeText(ItemChooseActivity.this, "Failed to parse JSON data.", Toast.LENGTH_SHORT).show();
-         	System.out.println(ex);
-         	Log.d("JSON:ERROR", ex.getMessage(),ex);
-         	//nameArr = new Object[]{"11","22"};
-         }
-         System.out.println("SMM111:DOC-LENGTH::"+docList.size());
-         if(opr == DbAdapter.DOCTOR) {
-         	simpleAdapter = new SimpleAdapter(this,
-         			docList,
-         			R.layout.doctor_row_lite,
-         			new String[] {"docTitile1","docTitile2"},
-         			new int[] {R.id.doc_lite_title1, R.id.doc_lite_title2});
-         	//simpleAdapter.setNotifyOnChange(true); // This is so I don't have to manually sync whenever changed 
-         	simpleAdapter.notifyDataSetChanged();
-         	itemListView.setAdapter(simpleAdapter);
-         	return;
-         }
-         System.out.println("SMM:JSON-LENGTH::"+nameArr.length);
-         //footerView.setText((String)nameArr[0]);
-         autoCompleteAdapter.clear();
-         int i = 0;//(opr == DbAdapter.DOCTOR ? 0 : 1);
-         for (; i < nameArr.length; i++) {
-              autoCompleteAdapter.add((String) nameArr[i]);
-                 //System.out.println("SMM:INFO::"+nameArr[i]);
-         }
+        	 String urlString = "";
+             String jsonData = "";
+			 s = URLEncoder.encode(s, "UTF-8");
+			 s=s.replace("+", "%20");
+		
+	        try {
+	         	if(opr == DbAdapter.PRACTICE)
+	         		urlString = ABC.WEB_URL+"practice/json?code="+s;
+	         	if(opr == DbAdapter.HOSPITAL)
+	         		urlString = ABC.WEB_URL+"hospital/json?code="+s;
+	         	if(opr == DbAdapter.SPECIALTY){
+	         		if(userType == 1)
+	         			urlString = ABC.WEB_URL+"speciality/json?type=2&code="+s;
+	         		if(userType == 2)
+	         			urlString = ABC.WEB_URL+"speciality/json?type=1&code="+s;
+	         	}
+	         	if(opr == DbAdapter.DOCTOR) {
+	         		if(userType == 1)
+	         			urlString = ABC.WEB_URL+"doctor/jsonLite?prac_ids=1&doc_name="+s;
+	         			
+	         		if(userType == 2)
+	         			urlString = ABC.WEB_URL+"doctor/jsonLite?hosp_ids=1&doc_name="+s;
+	         	}
+	         	Log.d("NI","URL::"+urlString);
+	         	//urlString = java.net.URLEncoder.encode(urlString);
+	         	//Log.d("NI","Encoded URL::"+urlString);
+	         	jsonData = getDataFromURL(urlString);
+				Log.d("NI","JSONDATA::"+jsonData);
+	         	
+	         		
+	         } catch(Exception ex) {
+	         	Toast.makeText(ItemChooseActivity.this, "Failed to load data from intenet.", Toast.LENGTH_SHORT).show();
+	         	System.out.println("SMM:ERROR::"+ex);
+	         }
+	     
+	        //System.out.println("SMM222:JSON::"+jsonData);
+	        docList = new ArrayList<Map<String,String>>();
+	         try {
+	         	Map<String, Object[]> map = parseJSONData(jsonData);
+	         	nameArr = map.get("nameArr");
+	         	addArr = map.get("addArr");
+	         	idArr = map.get("idArr");
+	         } catch(Exception ex) {
+	         	Toast.makeText(ItemChooseActivity.this, "Failed to parse JSON data.", Toast.LENGTH_SHORT).show();
+	         	System.out.println(ex);
+	         	Log.d("JSON:ERROR", ex.getMessage(),ex);
+	         	//nameArr = new Object[]{"11","22"};
+	         }
+	         System.out.println("SMM111:DOC-LENGTH::"+docList.size());
+	         if(opr == DbAdapter.DOCTOR) {
+	         	simpleAdapter = new SimpleAdapter(this,
+	         			docList,
+	         			R.layout.doctor_row_lite,
+	         			new String[] {"docTitile1","docTitile2"},
+	         			new int[] {R.id.doc_lite_title1, R.id.doc_lite_title2});
+	         	//simpleAdapter.setNotifyOnChange(true); // This is so I don't have to manually sync whenever changed 
+	         	simpleAdapter.notifyDataSetChanged();
+	         	itemListView.setAdapter(simpleAdapter);
+	         	return;
+	         }
+	         System.out.println("SMM:JSON-LENGTH::"+nameArr.length);
+	         //footerView.setText((String)nameArr[0]);
+	         autoCompleteAdapter.clear();
+	         int i = 0;//(opr == DbAdapter.DOCTOR ? 0 : 1);
+	         for (; i < nameArr.length; i++) {
+	              autoCompleteAdapter.add((String) nameArr[i]);
+	                 //System.out.println("SMM:INFO::"+nameArr[i]);
+	         }
+        } catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public Map<String, Object[]> parseJSONData(String jsonData) throws Exception {

@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -178,13 +179,13 @@ public class PCPRegFormActivity extends Activity {
 				String res ="";
 				try {
 					if(userType == 1)
-						urlString = ABC.WEB_URL+"user/register?doc_id="+docId+"&last_name="+lName+"&first_name="+fName+"&email="+uEmail+
+						urlString = ABC.WEB_URL+"user/register?doc_id="+docId+"&last_name="+URLEncoder.encode(lName, "UTF-8").replace("+", "%20")+"&first_name="+URLEncoder.encode(fName, "UTF-8").replace("+", "%20")+"&email="+URLEncoder.encode(uEmail, "UTF-8").replace("+", "%20")+
 			        			"&prac_id="+selectedPracticeId+(specId > 0 ? "&spec_id="+specId : "");
 					if(userType == 2)
-						urlString = ABC.WEB_URL+"user/register?doc_id="+docId+"&last_name="+lName+"&first_name="+fName+"&email="+uEmail+
+						urlString = ABC.WEB_URL+"user/register?doc_id="+docId+"&last_name="+URLEncoder.encode(lName, "UTF-8").replace("+", "%20")+"&first_name="+URLEncoder.encode(fName, "UTF-8").replace("+", "%20")+"&email="+URLEncoder.encode(uEmail, "UTF-8").replace("+", "%20")+
 			        			"&hosp_id="+selectedPracticeId+(specId > 0 ? "&spec_id="+specId : "");
 					Log.d("NI","URL::"+urlString);
-					res = getDataFromURL(urlString);
+		         	res = getDataFromURL(urlString);
 					Log.d("NI","JSONDATA::"+res);
 		        } catch(Exception ex) {
 		        	Toast.makeText(PCPRegFormActivity.this, "Failed to connect to server, Please check intenet setting.", Toast.LENGTH_SHORT).show();
