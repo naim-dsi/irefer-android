@@ -888,23 +888,36 @@ public class SetupActivity extends Activity {
         	//int count = urls.length;
         	
         	String jsonData = "";
+        	String urlString = "";
             int start = 0, end = Utils.docSyncStep;
 			boolean flag = true;
 			try {
 				publishProgress(-1);
-				jsonData = getDataFromURL(ABC.WEB_URL+"practice/jsonCounty?cnty_id="+cntyIds);
+				urlString = ABC.WEB_URL+"practice/jsonCounty?cnty_id="+cntyIds;
+				jsonData = getDataFromURL(urlString);
+				Log.d("NI","URL Practice::"+urlString);
+				Log.d("NI","JSONDATA Practice::"+jsonData);
 				parseJSONData(jsonData, DbAdapter.PRACTICE, null);
 				
 				publishProgress(-2);
-				jsonData = getDataFromURL(ABC.WEB_URL+"hospital/jsonCounty?cnty_id="+cntyIds);
+				urlString = ABC.WEB_URL+"hospital/jsonCounty?cnty_id="+cntyIds;
+				jsonData = getDataFromURL(urlString);
+				Log.d("NI","URL Hospital::"+urlString);
+				Log.d("NI","JSONDATA Hospital::"+jsonData);
 				parseJSONData(jsonData, DbAdapter.HOSPITAL, null);
 				
 				publishProgress(-4);
-				jsonData = getDataFromURL(ABC.WEB_URL+"speciality/json?limit=1000");
+				urlString = ABC.WEB_URL+"speciality/json?limit=1000";
+				jsonData = getDataFromURL(urlString);
+				Log.d("NI","URL Speciality::"+urlString);
+				Log.d("NI","JSONDATA Speciality::"+jsonData);
 				parseJSONData(jsonData, DbAdapter.SPECIALTY, "");
 				
 				publishProgress(-3);
-				jsonData = getDataFromURL(ABC.WEB_URL+"insurance/json");
+				urlString = ABC.WEB_URL+"insurance/json";
+				jsonData = getDataFromURL(urlString);
+				Log.d("NI","URL Insurance::"+urlString);
+				Log.d("NI","JSONDATA Insurance::"+jsonData);
 				parseJSONData(jsonData, DbAdapter.INSURANCE, null);
 				
 				/*
@@ -915,7 +928,10 @@ public class SetupActivity extends Activity {
 				parseJSONData(jsonData, DbAdapter.SPECIALTY, "3");
 				*/
 				if(dba.getCount(DbAdapter.STATE) == 0){
-					jsonData = getDataFromURL(ABC.WEB_URL+"state/json");
+					urlString = ABC.WEB_URL+"state/json";
+					jsonData = getDataFromURL(urlString);
+					Log.d("NI","URL State::"+urlString);
+					Log.d("NI","JSONDATA State::"+jsonData);
 					parseJSONData(jsonData, DbAdapter.STATE, null);	
 				}
 				dba.deleteAll(DbAdapter.DOCTOR);
@@ -925,10 +941,13 @@ public class SetupActivity extends Activity {
 					try {		
 						//dialog.setMessage("Downloading Doctor Data...");
 						publishProgress(-5);
-						jsonData = getDataFromURL(ABC.WEB_URL+"doctor/json?prac_ids=1&cnty_ids="+cntyIds
+						urlString = ABC.WEB_URL+"doctor/json?prac_ids=1&cnty_ids="+cntyIds
 								//+"&insu_ids="+insuIds
 								//+"&spec_ids="+specIds+"&hosp_ids="+hospIds
-								+"&limit="+limit+"&user_id="+userId);
+								+"&limit="+limit+"&user_id="+userId;
+						jsonData = getDataFromURL(urlString);
+						Log.d("NI","URL Doctor::"+urlString);
+						//Log.d("NI","JSONDATA Doctor::"+jsonData);
 						docReceived = 0;
 						publishProgress(0);
 						parseDoctorJSONData(jsonData);

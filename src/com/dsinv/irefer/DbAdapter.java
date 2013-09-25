@@ -45,6 +45,14 @@ public class DbAdapter {
 	public static final int DOC_REPORT = 9;
 	public static final int STATISTICS = 10;
 	public static final int STATE      = 11;
+	public static final int DOC_PRACTICE      = 12;
+	public static final int DOC_HOSPITAL      = 13;
+	public static final int DOC_INSURANCE      = 14;
+	public static final int DOC_SPECIALTY      = 15;
+	public static final int DOC_PLAN      = 16;
+	public static final int DOC_ACO      = 17;
+	public static final int PLAN      = 18;
+	public static final int ACO      = 19;
 
 	/*NON DB*/
 	public static final int OFFICE_HOUR = 100;
@@ -62,10 +70,18 @@ public class DbAdapter {
 		"t_doc_fts",
 		"t_doc_report",
 		"t_statistics",
-		"t_state"};
+		"t_state",//NEW//  
+		"t_doc_practice",
+		"t_doc_hospital",
+		"t_doc_insurance",
+		"t_doc_specialty",
+		"t_doc_plan",
+		"t_doc_aco",
+		"t_plan",
+		"t_aco"};
 	//5324
 	public static final String tcols[][] = {
-		/* users	  */	{	PK,	"user_id", "last_name", "first_name", "email", "act_code", "my_prac_id", 
+		/* users	  */	{	PK,	"user_id", "last_name", "first_name", "email", "act_code", "my_prac_id", "doc_id",
 			"my_hos_id", "my_county_id", "need_to_sync", "update_setting", "rank_doc", "rank_doc_practice"},
 		/* practice   */	{	PK,	"prac_id", "name", "address"},
 		/* hospital   */	{	PK,	"hos_id", "name", "address"},
@@ -81,12 +97,20 @@ public class DbAdapter {
 		/* doc fts  */	    {	"doc_id", "text"},
 		/* doc report  */	{	PK, "doc_id", "user_id", "text", "report_time", "submit_time"},
 		/* statistics  */   {	PK, "count_type", "count"},
-		/* county   */	    {	PK,	"state_id", "name", "code"},   
+		/* county   */	    {	PK,	"state_id", "name", "code"}, //NEW//  
+		/* doc_practice */	{	PK,	"practice_id", "doc_id" },
+		/* doc_hospital */  {	PK,	"hospital_id", "doc_id" },
+		/* doc_insurance */ {	PK,	"insurance_id", "doc_id" },
+		/* doc_specialty */ {	PK,	"specialty_id", "doc_id" },
+		/* doc_plan */  	{	PK,	"plan_id", "doc_id" },
+		/* doc_aco */  		{	PK,	"aco_id", "doc_id" },
+		/* plan */  		{	PK,	"plan_id", "name" },
+		/* aco */  			{	PK,	"aco_id", "name" },
 		
 	};
 	
 	private static final int tcref[][] = {
-		{NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO,NO, NO},
+		{NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO,NO, NO},
 		{NO, NO, NO, NO},
 		{NO, NO, NO, NO},
 		{NO, NO, NO, NO},
@@ -97,22 +121,33 @@ public class DbAdapter {
 		{NO, NO},
 		{NO, NO, NO, NO, NO, NO},
 		{NO, NO, NO},
-		{NO, NO, NO, NO}
+		{NO, NO, NO, NO},//NEW//  
+		{NO, NO, NO},
+		{NO, NO, NO},
+		{NO, NO, NO},
+		{NO, NO, NO},
+		{NO, NO, NO},
+		{NO, NO, NO},
+		{NO, NO, NO},
+		{NO, NO, NO}
 	};
 	
 	private static final String ttypes[] = {
-		".ittttiiiiiii", ".itt", ".itt", ".itt", ".itti", ".itt", 
-		".ittttttiitiiiitiiitttiiiiif", ".itti", "tt", "iiittt", "iii", ".itt"
+		".ittttiiiiiiii", ".itt", ".itt", ".itt", ".itti", ".itt", 
+		".ittttttiitiiiitiiitttiiiiif", ".itti", "tt", "iiittt", "iii", ".itt",//NEW//  
+		".ii", ".ii", ".ii", ".ii", ".ii", ".ii", ".it", ".it"
 	};
 
 	private static final String tuniques[] = {
-		"..YYY........", "....", "....", "....", ".....", "....", 
-		"............................", ".....", "..", "......", "...", "...."
+		"..YYY.........", "....", "....", "....", ".....", "....", 
+		"............................", ".....", "..", "......", "...", "....",//NEW//
+		"...","...","...","...","...","...","...","..."
 	};
 	
 	private static final String tnulls[] = {
-		".............", ".YY.", ".YY.", ".YY.", ".YY..", ".YY.", 
-		"............................", ".YY..", "..", "......", "...", "...."
+		"..............", ".YY.", ".YY.", ".YY.", ".YY..", ".YY.", 
+		"............................", ".YY..", "..", "......", "...", "....",//NEW// 
+		"YYY","YYY","YYY","YYY","YYY","YYY","YY.","YY."
 	};
 /*	
 	private static final int tcvar[][] = {
