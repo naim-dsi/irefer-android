@@ -74,7 +74,7 @@ public class DbAdapter {
 		"t_doc_practice",
 		"t_doc_hospital",
 		"t_doc_insurance",
-		"t_doc_specialty",
+		"t_doc_speciality",
 		"t_doc_plan",
 		"t_doc_aco",
 		"t_plan",
@@ -101,10 +101,10 @@ public class DbAdapter {
 		/* doc_practice */	{	PK,	"practice_id", "doc_id" },
 		/* doc_hospital */  {	PK,	"hospital_id", "doc_id" },
 		/* doc_insurance */ {	PK,	"insurance_id", "doc_id" },
-		/* doc_specialty */ {	PK,	"specialty_id", "doc_id" },
+		/* doc_specialty */ {	PK,	"speciality_id", "doc_id" },
 		/* doc_plan */  	{	PK,	"plan_id", "doc_id" },
 		/* doc_aco */  		{	PK,	"aco_id", "doc_id" },
-		/* plan */  		{	PK,	"plan_id", "name" },
+		/* plan */  		{	PK,	"plan_id", "name" , "insurance_id" },
 		/* aco */  			{	PK,	"aco_id", "name" },
 		
 	};
@@ -128,26 +128,26 @@ public class DbAdapter {
 		{NO, NO, NO},
 		{NO, NO, NO},
 		{NO, NO, NO},
-		{NO, NO, NO},
+		{NO, NO, NO, NO},
 		{NO, NO, NO}
 	};
 	
 	private static final String ttypes[] = {
 		".ittttiiiiiiii", ".itt", ".itt", ".itt", ".itti", ".itt", 
 		".ittttttiitiiiitiiitttiiiiif", ".itti", "tt", "iiittt", "iii", ".itt",//NEW//  
-		".ii", ".ii", ".ii", ".ii", ".ii", ".ii", ".it", ".it"
+		".ii", ".ii", ".ii", ".ii", ".ii", ".ii", ".iti", ".it"
 	};
 
 	private static final String tuniques[] = {
 		"..YYY.........", "....", "....", "....", ".....", "....", 
 		"............................", ".....", "..", "......", "...", "....",//NEW//
-		"...","...","...","...","...","...","...","..."
+		"...","...","...","...","...","...","....","..."
 	};
 	
 	private static final String tnulls[] = {
 		"..............", ".YY.", ".YY.", ".YY.", ".YY..", ".YY.", 
 		"............................", ".YY..", "..", "......", "...", "....",//NEW// 
-		"YYY","YYY","YYY","YYY","YYY","YYY","YY.","YY."
+		"YYY","YYY","YYY","YYY","YYY","YYY","YY.Y","YY."
 	};
 /*	
 	private static final int tcvar[][] = {
@@ -434,7 +434,15 @@ public class DbAdapter {
             	cv.put(tcols[DOC_REPORT][4], data[3]);
             	cv.put(tcols[DOC_REPORT][5], data[4]);
             	return cv;
-        	
+        	case PLAN:
+            	cv.put(tcols[PLAN][1], new Integer(data[0]));
+            	cv.put(tcols[PLAN][2], data[1]);
+            	cv.put(tcols[PLAN][3], new Integer(data[2]));
+            	return cv;
+        	case ACO:
+            	cv.put(tcols[ACO][1], new Integer(data[0]));
+            	cv.put(tcols[ACO][2], data[1]);
+            	return cv;	
         }
         return null;
     }	

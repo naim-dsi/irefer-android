@@ -278,7 +278,7 @@ public class IreferActivity extends Activity {
         	if(reg == 0) {
         		/* fresh copy */
         		searchBtn.setVisibility(View.GONE);
-        		regBtn3.setVisibility(View.GONE);
+        		//regBtn3.setVisibility(View.GONE);
         		regBtn4.setVisibility(View.GONE);
         		userLabel1.setVisibility(View.GONE);
         		userLabel2.setVisibility(View.GONE);
@@ -287,7 +287,7 @@ public class IreferActivity extends Activity {
         		//searchType.setVisibility(View.GONE);
         	} else if(reg == 1) {  //requested
         		searchBtn.setVisibility(View.GONE);
-        		regBtn3.setVisibility(View.VISIBLE);
+        		//regBtn3.setVisibility(View.VISIBLE);
         		regBtn.setVisibility(View.GONE);
         		regBtn2.setVisibility(View.GONE);
         		regBtn4.setVisibility(View.GONE);
@@ -304,7 +304,7 @@ public class IreferActivity extends Activity {
         		//allSearchText.setVisibility(View.VISIBLE);
         		regBtn.setVisibility(View.GONE);
         		regBtn2.setVisibility(View.GONE);
-        		regBtn3.setVisibility(View.GONE);
+        		//regBtn3.setVisibility(View.GONE);
         		regBtn4.setVisibility(View.VISIBLE);
         		//searchType.setVisibility(View.VISIBLE);
         		//aboutBtn.setVisibility(View.VISIBLE);

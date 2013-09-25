@@ -766,6 +766,14 @@ public class SetupActivity extends Activity {
     		else if(opt == DbAdapter.SPECIALTY) {
     			//if("1".equals(type))
     			dba.deleteAll(opt);
+    		}else if(opt == DbAdapter.PLAN) {
+    			//if("1".equals(type))
+    			dba.deleteAll(opt);
+			}
+			else if(opt == DbAdapter.ACO) {
+    			//if("1".equals(type))
+    			dba.deleteAll(opt);
+			
     		} else
     			dba.deleteAll(opt);
         	
@@ -774,46 +782,54 @@ public class SetupActivity extends Activity {
         	//docReceived = arr.length();
         	int i=0, j=arr.length();
         	System.out.println("["+opt+"] LEN="+j);
-        	if(opt == DbAdapter.INSURANCE || opt == DbAdapter.SPECIALTY || opt == DbAdapter.STATE)
+        	if(opt == DbAdapter.INSURANCE || opt == DbAdapter.SPECIALTY || opt == DbAdapter.STATE || opt == DbAdapter.PLAN || opt == DbAdapter.ACO)
         		i = 1;
         	while(i < j) { 
         		JSONObject jsonObj = arr.getJSONObject(i++);
         		//System.gc();
         		switch(opt){
-        		case DbAdapter.PRACTICE:
-        			if((myPracId+"").equals(jsonObj.getString("id")))
-        				break;
-        			//dba.insert(opt,
-        			if(pracInsertList == null)
-        				pracInsertList = new ArrayList();
-        			pracInsertList.add(new String[]{jsonObj.getString("id"),
-							 	jsonObj.getString("name"), jsonObj.getString("add_line_1")} );
-        			pracMap.put(jsonObj.getString("id"), jsonObj.getString("name"));
-        			break;
-        		case DbAdapter.HOSPITAL:
-        			if((myHospId+"").equals(jsonObj.getString("id")))
-            			break;
-        			if(hospInsertList == null)
-        				hospInsertList = new ArrayList();
-        			//dba.insert(opt, 
-        			hospInsertList.add(new String[]{jsonObj.getString("id"),
-							 	jsonObj.getString("name"), jsonObj.getString("add_line_1")} );
-        			hospMap.put(jsonObj.getString("id"), jsonObj.getString("name"));
-        			break;
-        		case DbAdapter.SPECIALTY:
-        			dba.insert(opt, new String[]{jsonObj.getString("id"),
-							 	jsonObj.getString("name"), "", jsonObj.getString("group_id")} );
-        			specMap.put(jsonObj.getString("id"), jsonObj.getString("name"));
-        			break;
-        		case DbAdapter.INSURANCE:
-        			dba.insert(opt, new String[]{jsonObj.getString("id"),
-							 	jsonObj.getString("name"), ""} );
-        			insuMap.put(jsonObj.getString("id"), jsonObj.getString("name"));
-        			break;
-        		case DbAdapter.STATE:
-        			dba.insert(opt, new String[]{jsonObj.getString("id"),
-							 	jsonObj.getString("name"), jsonObj.getString("code")} );
-        			break;
+	        		case DbAdapter.PRACTICE:
+	        			if((myPracId+"").equals(jsonObj.getString("id")))
+	        				break;
+	        			//dba.insert(opt,
+	        			if(pracInsertList == null)
+	        				pracInsertList = new ArrayList();
+	        			pracInsertList.add(new String[]{jsonObj.getString("id"),
+								 	jsonObj.getString("name"), jsonObj.getString("add_line_1")} );
+	        			pracMap.put(jsonObj.getString("id"), jsonObj.getString("name"));
+	        			break;
+	        		case DbAdapter.HOSPITAL:
+	        			if((myHospId+"").equals(jsonObj.getString("id")))
+	            			break;
+	        			if(hospInsertList == null)
+	        				hospInsertList = new ArrayList();
+	        			//dba.insert(opt, 
+	        			hospInsertList.add(new String[]{jsonObj.getString("id"),
+								 	jsonObj.getString("name"), jsonObj.getString("add_line_1")} );
+	        			hospMap.put(jsonObj.getString("id"), jsonObj.getString("name"));
+	        			break;
+	        		case DbAdapter.SPECIALTY:
+	        			dba.insert(opt, new String[]{jsonObj.getString("id"),
+								 	jsonObj.getString("name"), "", jsonObj.getString("group_id")} );
+	        			specMap.put(jsonObj.getString("id"), jsonObj.getString("name"));
+	        			break;
+	        		case DbAdapter.INSURANCE:
+	        			dba.insert(opt, new String[]{jsonObj.getString("id"),
+								 	jsonObj.getString("name"), ""} );
+	        			insuMap.put(jsonObj.getString("id"), jsonObj.getString("name"));
+	        			break;
+	        		case DbAdapter.STATE:
+	        			dba.insert(opt, new String[]{jsonObj.getString("id"),
+								 	jsonObj.getString("name"), jsonObj.getString("code")} );
+	        			break;
+	        		case DbAdapter.PLAN:
+	        			dba.insert(opt, new String[]{jsonObj.getString("id"),
+								 	jsonObj.getString("name"), jsonObj.getString("insurance_id")} );
+	        			break;
+	        		case DbAdapter.ACO:
+	        			dba.insert(opt, new String[]{jsonObj.getString("id"),
+								 	jsonObj.getString("name")} );
+	        			break;
         		}
         	}
         	System.out.println("SMM::"+(System.currentTimeMillis()/1000)%1000+"::JSON-FINISH");
@@ -920,6 +936,23 @@ public class SetupActivity extends Activity {
 				Log.d("NI","JSONDATA Insurance::"+jsonData);
 				parseJSONData(jsonData, DbAdapter.INSURANCE, null);
 				
+				
+				 
+				publishProgress(-7);
+				urlString = ABC.WEB_URL+"plan/json";
+				jsonData = getDataFromURL(urlString);
+				Log.d("NI","URL PLAN::"+urlString);
+				Log.d("NI","JSONDATA PLAN::"+jsonData);
+				parseJSONData(jsonData, DbAdapter.PLAN, null);
+				
+				publishProgress(-8);
+				urlString = ABC.WEB_URL+"aco/json";
+				jsonData = getDataFromURL(urlString);
+				Log.d("NI","URL ACO::"+urlString);
+				Log.d("NI","JSONDATA ACO::"+jsonData);
+				parseJSONData(jsonData, DbAdapter.ACO, null);
+				
+				
 				/*
 				jsonData = getDataFromURL(ABC.WEB_URL+"speciality/json?type=2");
 				parseJSONData(jsonData, DbAdapter.SPECIALTY, "2");
@@ -934,9 +967,13 @@ public class SetupActivity extends Activity {
 					Log.d("NI","JSONDATA State::"+jsonData);
 					parseJSONData(jsonData, DbAdapter.STATE, null);	
 				}
+				/*if(true){
+					return 0L;
+				}*/
 				dba.deleteAll(DbAdapter.DOCTOR);
 				dba.deleteAll(DbAdapter.DOC_FTS);
 				while(flag) {
+					
 					String limit  = start+","+Utils.docSyncStep; 
 					try {		
 						//dialog.setMessage("Downloading Doctor Data...");
@@ -984,6 +1021,10 @@ public class SetupActivity extends Activity {
         		dialog.setMessage("Syncing Insurance...");
         	else if(progress[0] == -4)
         		dialog.setMessage("Syncing Speciality...");
+        	else if(progress[0] == -7)
+        		dialog.setMessage("Syncing Plan...");
+        	else if(progress[0] == -8)
+        		dialog.setMessage("Syncing ACO...");
         	else if(progress[0] == -5)
         		dialog.setMessage("Syncing Doctors...");
         	else if(progress[0] == -6)
