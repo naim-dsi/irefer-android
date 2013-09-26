@@ -5,6 +5,10 @@ import java.util.StringTokenizer;
 import java.util.List;
 import java.util.ArrayList;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
@@ -443,6 +447,31 @@ public class DbAdapter {
             	cv.put(tcols[ACO][1], new Integer(data[0]));
             	cv.put(tcols[ACO][2], data[1]);
             	return cv;	
+        	case DOC_PRACTICE:
+            	cv.put(tcols[DOC_PRACTICE][1], new Integer(data[0]));
+            	cv.put(tcols[DOC_PRACTICE][2], new Integer(data[1]));
+            	return cv;	
+        	case DOC_HOSPITAL:
+        		cv.put(tcols[DOC_HOSPITAL][1], new Integer(data[0]));
+            	cv.put(tcols[DOC_HOSPITAL][2], new Integer(data[1]));
+            	return cv;	
+        	case DOC_INSURANCE:
+            	cv.put(tcols[DOC_INSURANCE][1], new Integer(data[0]));
+            	cv.put(tcols[DOC_INSURANCE][2], new Integer(data[1]));
+            	return cv;	
+        	case DOC_SPECIALTY:
+            	cv.put(tcols[DOC_SPECIALTY][1], new Integer(data[0]));
+            	cv.put(tcols[DOC_SPECIALTY][2], new Integer(data[1]));
+            	return cv;	
+        	case DOC_PLAN:
+            	cv.put(tcols[DOC_PLAN][1], new Integer(data[0]));
+            	cv.put(tcols[DOC_PLAN][2], new Integer(data[1]));
+            	return cv;	
+        	case DOC_ACO:
+            	cv.put(tcols[DOC_ACO][1], new Integer(data[0]));
+            	cv.put(tcols[DOC_ACO][2], new Integer(data[1]));
+            	return cv;	
+            	
         }
         return null;
     }	
@@ -537,11 +566,169 @@ public class DbAdapter {
     
     public void insertDoctor(List ftsArr, List dataArr) throws RuntimeException{
     	db.beginTransaction();
-    	for(int i=0, j=dataArr.size(); i<j; i++) {
-    		//String ftsText = (String)ftsArr.get(i);
-    		String[] data = (String[])dataArr.get(i);
-    		long id = db.insert(tname[DOCTOR], null, formatInstance(DOCTOR, data));
-    		//db.insert(tname[DOC_FTS], null, formatInstance(DOC_FTS, new String[]{ id+"", ftsText}));
+    	try{
+    	
+	    	JSONTokener jsonTokener;
+	    	JSONArray arr;
+	    	JSONObject jsonObj;
+	    	for(int i=0, j=dataArr.size(); i<j; i++) {
+	    		//String ftsText = (String)ftsArr.get(i);
+	    		String[] data = (String[])dataArr.get(i);
+	    		long id = db.insert(tname[DOCTOR], null, formatInstance(DOCTOR, data));
+	    		
+	    		if(!data[27].equals("0")){
+	    			//hospital
+	    			try{
+		    			jsonTokener = new JSONTokener(data[28]);
+		            	arr = (JSONArray) jsonTokener.nextValue();
+		            	int ix=0, jx=arr.length();
+		            	while(ix < jx) { 
+		            		jsonObj = arr.getJSONObject(ix);
+		            		ix++;
+		            		if(!jsonObj.getString("id").equals("")||!jsonObj.getString("id").equals("0")){
+		            			insert(DOC_HOSPITAL, new String[]{jsonObj.getString("id"),Long.toString(id)} );
+		            		}
+		            	}
+		            	jsonTokener = null;
+		        		arr = null;
+		        		jsonObj = null;
+		            	System.gc();
+	    			}
+	    			catch(Exception ex)
+	    			{
+	    				ex.printStackTrace();
+	    			}
+	            	
+	    		}
+	    		
+				if(!data[28].equals("0")){
+				    //speciality
+				    try{
+						jsonTokener = new JSONTokener(data[28]);
+		            	arr = (JSONArray) jsonTokener.nextValue();
+		            	int ix=0, jx=arr.length();
+		            	while(ix < jx) { 
+		            		jsonObj = arr.getJSONObject(ix);
+		            		ix++;
+		            		if(!jsonObj.getString("id").equals("")||!jsonObj.getString("id").equals("0")){
+		            			insert(DOC_SPECIALTY, new String[]{jsonObj.getString("id"),Long.toString(id)} );
+		            		}
+		            	}
+		            	jsonTokener = null;
+		        		arr = null;
+		        		jsonObj = null;
+		            	System.gc();
+	            	}
+	    			catch(Exception ex)
+	    			{
+	    				ex.printStackTrace();
+	    			}
+				}
+				
+				if(!data[29].equals("0")){
+					//insurance
+					try{
+						jsonTokener = new JSONTokener(data[28]);
+		            	arr = (JSONArray) jsonTokener.nextValue();
+		            	int ix=0, jx=arr.length();
+		            	while(ix < jx) { 
+		            		jsonObj = arr.getJSONObject(ix);
+		            		ix++;
+		            		if(!jsonObj.getString("id").equals("")||!jsonObj.getString("id").equals("0")){
+		            			insert(DOC_INSURANCE, new String[]{jsonObj.getString("id"),Long.toString(id)} );
+		            		}
+		            	}
+		            	jsonTokener = null;
+		        		arr = null;
+		        		jsonObj = null;
+		            	System.gc();
+	            	}
+	    			catch(Exception ex)
+	    			{
+	    				ex.printStackTrace();
+	    			}
+				}
+				
+				if(!data[30].equals("0")){
+					//practice
+					try{
+						jsonTokener = new JSONTokener(data[28]);
+		            	arr = (JSONArray) jsonTokener.nextValue();
+		            	int ix=0, jx=arr.length();
+		            	while(ix < jx) { 
+		            		jsonObj = arr.getJSONObject(ix);
+		            		ix++;
+		            		if(!jsonObj.getString("id").equals("")||!jsonObj.getString("id").equals("0")){
+		            			insert(DOC_PRACTICE, new String[]{jsonObj.getString("id"),Long.toString(id)} );
+		            		}
+		            	}
+		            	jsonTokener = null;
+		        		arr = null;
+		        		jsonObj = null;
+		            	System.gc();
+	            	}
+	    			catch(Exception ex)
+	    			{
+	    				ex.printStackTrace();
+	    			}
+				}
+				
+				if(!data[31].equals("0")){
+					//plan
+					try{
+						jsonTokener = new JSONTokener(data[28]);
+		            	arr = (JSONArray) jsonTokener.nextValue();
+		            	int ix=0, jx=arr.length();
+		            	while(ix < jx) { 
+		            		jsonObj = arr.getJSONObject(ix);
+		            		ix++;
+		            		if(!jsonObj.getString("id").equals("")||!jsonObj.getString("id").equals("0")){
+		            			insert(DOC_PLAN, new String[]{jsonObj.getString("id"),Long.toString(id)} );
+		            		}
+		            	}
+		            	jsonTokener = null;
+		        		arr = null;
+		        		jsonObj = null;
+		            	System.gc();
+	            	}
+	    			catch(Exception ex)
+	    			{
+	    				ex.printStackTrace();
+	    			}
+				}
+				
+				if(!data[32].equals("0")){
+					//aco
+					try{
+						jsonTokener = new JSONTokener(data[28]);
+		            	arr = (JSONArray) jsonTokener.nextValue();
+		            	int ix=0, jx=arr.length();
+		            	while(ix < jx) { 
+		            		jsonObj = arr.getJSONObject(ix);
+		            		ix++;
+		            		if(!jsonObj.getString("id").equals("")||!jsonObj.getString("id").equals("0")){
+		            			insert(DOC_ACO, new String[]{jsonObj.getString("id"),Long.toString(id)} );
+		            		}
+		            	}
+		            	jsonTokener = null;
+		        		arr = null;
+		        		jsonObj = null;
+		            	System.gc();
+	            	}
+	    			catch(Exception ex)
+	    			{
+	    				ex.printStackTrace();
+	    			}
+				}
+				
+	    		//db.insert(tname[DOC_FTS], null, formatInstance(DOC_FTS, new String[]{ id+"", ftsText}));
+	    	}
+    	
+    	}
+    	catch(Exception ex)
+    	{
+    		Log.e("NI", ex.getMessage());
+    		ex.printStackTrace();
     	}
     	db.setTransactionSuccessful();
     	db.endTransaction();
