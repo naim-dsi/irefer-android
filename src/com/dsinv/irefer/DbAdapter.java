@@ -567,8 +567,9 @@ public class DbAdapter {
     public void insertDoctor(List ftsArr, List dataArr) throws RuntimeException{
     	db.beginTransaction();
     	try{
-    	
-	    	JSONTokener jsonTokener;
+    		int ix=0, jx=0;
+    		StringBuilder stringSQL = new StringBuilder("") ;
+    		JSONTokener jsonTokener;
 	    	JSONArray arr;
 	    	JSONObject jsonObj;
 	    	for(int i=0, j=dataArr.size(); i<j; i++) {
@@ -579,20 +580,42 @@ public class DbAdapter {
 	    		if(!data[27].equals("0")){
 	    			//hospital
 	    			try{
-		    			jsonTokener = new JSONTokener(data[28]);
+		    			jsonTokener = new JSONTokener(data[27]);
 		            	arr = (JSONArray) jsonTokener.nextValue();
-		            	int ix=0, jx=arr.length();
-		            	while(ix < jx) { 
-		            		jsonObj = arr.getJSONObject(ix);
-		            		ix++;
-		            		if(!jsonObj.getString("id").equals("")||!jsonObj.getString("id").equals("0")){
-		            			insert(DOC_HOSPITAL, new String[]{jsonObj.getString("id"),Long.toString(id)} );
-		            		}
+		            	ix=0;
+		            	jx=arr.length();
+		            	if(jx>ix){
+		            		stringSQL = new StringBuilder("");
+			            	stringSQL.append("INSERT INTO '"+tname[DOC_HOSPITAL]+"' ( ") ;
+			        		for(int i2=1;i2<tcols[DOC_HOSPITAL].length;i2++){
+			        			if(i2>1){
+			        				stringSQL.append(", ");
+			        			}
+			        			stringSQL.append("'"+tcols[DOC_HOSPITAL][i2]+"'");
+			            	}
+			        		stringSQL.append(" ) VALUES ");
+		            	
+			        		while(ix < jx) { 
+			            		jsonObj = arr.getJSONObject(ix);
+			            		ix++;
+			            		if(!jsonObj.getString("id").equals("")||!jsonObj.getString("id").equals("0")){
+			            			if(ix>1)
+			            			{
+			            				stringSQL.append(" , ");
+			            			}
+			            			stringSQL.append("( ");
+			            			stringSQL.append(jsonObj.getString("id"));
+			            			stringSQL.append(", ");
+			            			stringSQL.append(Long.toString(id));
+			            			stringSQL.append(" ) ");
+			            			
+			            		}
+			            	}
+			        		stringSQL.append(" ; ");
+			        		Log.d("NI","SQL hospital::"+stringSQL.toString());
+			        		db.execSQL(stringSQL.toString());
+			        		//http://stackoverflow.com/questions/15613377/insert-multiple-rows-in-sqlite-error-error-code-1
 		            	}
-		            	jsonTokener = null;
-		        		arr = null;
-		        		jsonObj = null;
-		            	System.gc();
 	    			}
 	    			catch(Exception ex)
 	    			{
@@ -606,18 +629,39 @@ public class DbAdapter {
 				    try{
 						jsonTokener = new JSONTokener(data[28]);
 		            	arr = (JSONArray) jsonTokener.nextValue();
-		            	int ix=0, jx=arr.length();
-		            	while(ix < jx) { 
-		            		jsonObj = arr.getJSONObject(ix);
-		            		ix++;
-		            		if(!jsonObj.getString("id").equals("")||!jsonObj.getString("id").equals("0")){
-		            			insert(DOC_SPECIALTY, new String[]{jsonObj.getString("id"),Long.toString(id)} );
-		            		}
+		            	ix=0;
+		            	jx=arr.length();
+		            	if(jx>ix){
+		            		stringSQL = new StringBuilder("");
+			            	stringSQL.append("INSERT INTO '"+tname[DOC_SPECIALTY]+"' ( ") ;
+			        		for(int i2=1;i2<tcols[DOC_SPECIALTY].length;i2++){
+			        			if(i2>1){
+			        				stringSQL.append(", ");
+			        			}
+			        			stringSQL.append("'"+tcols[DOC_SPECIALTY][i2]+"'");
+			            	}
+			        		stringSQL.append(" ) VALUES ");
+		            	
+			        		while(ix < jx) { 
+			            		jsonObj = arr.getJSONObject(ix);
+			            		ix++;
+			            		if(!jsonObj.getString("id").equals("")||!jsonObj.getString("id").equals("0")){
+			            			if(ix>1)
+			            			{
+			            				stringSQL.append(" , ");
+			            			}
+			            			stringSQL.append("( ");
+			            			stringSQL.append(jsonObj.getString("id"));
+			            			stringSQL.append(", ");
+			            			stringSQL.append(Long.toString(id));
+			            			stringSQL.append(" ) ");
+			            		}
+			            	}
+			        		stringSQL.append(" ; ");
+			        		Log.d("NI","SQL speciality::"+stringSQL.toString());
+			        		db.execSQL(stringSQL.toString());
 		            	}
-		            	jsonTokener = null;
-		        		arr = null;
-		        		jsonObj = null;
-		            	System.gc();
+		            	
 	            	}
 	    			catch(Exception ex)
 	    			{
@@ -628,20 +672,41 @@ public class DbAdapter {
 				if(!data[29].equals("0")){
 					//insurance
 					try{
-						jsonTokener = new JSONTokener(data[28]);
+						jsonTokener = new JSONTokener(data[29]);
 		            	arr = (JSONArray) jsonTokener.nextValue();
-		            	int ix=0, jx=arr.length();
-		            	while(ix < jx) { 
-		            		jsonObj = arr.getJSONObject(ix);
-		            		ix++;
-		            		if(!jsonObj.getString("id").equals("")||!jsonObj.getString("id").equals("0")){
-		            			insert(DOC_INSURANCE, new String[]{jsonObj.getString("id"),Long.toString(id)} );
-		            		}
+		            	ix=0;
+		            	jx=arr.length();
+		            	if(jx>ix){
+		            		stringSQL = new StringBuilder("");
+			            	stringSQL.append("INSERT INTO '"+tname[DOC_INSURANCE]+"' ( ") ;
+			        		for(int i2=1;i2<tcols[DOC_INSURANCE].length;i2++){
+			        			if(i2>1){
+			        				stringSQL.append(", ");
+			        			}
+			        			stringSQL.append("'"+tcols[DOC_INSURANCE][i2]+"'");
+			            	}
+			        		stringSQL.append(" ) VALUES ");
+		            	
+			        		while(ix < jx) { 
+			            		jsonObj = arr.getJSONObject(ix);
+			            		ix++;
+			            		if(!jsonObj.getString("id").equals("")||!jsonObj.getString("id").equals("0")){
+			            			if(ix>1)
+			            			{
+			            				stringSQL.append(" , ");
+			            			}
+			            			stringSQL.append("( ");
+			            			stringSQL.append(jsonObj.getString("id"));
+			            			stringSQL.append(", ");
+			            			stringSQL.append(Long.toString(id));
+			            			stringSQL.append(" ) ");
+			            		}
+			            	}
+			        		stringSQL.append(" ; ");
+			        		Log.d("NI","SQL insurance::"+stringSQL.toString());
+			        		db.execSQL(stringSQL.toString());
 		            	}
-		            	jsonTokener = null;
-		        		arr = null;
-		        		jsonObj = null;
-		            	System.gc();
+		            	
 	            	}
 	    			catch(Exception ex)
 	    			{
@@ -652,20 +717,41 @@ public class DbAdapter {
 				if(!data[30].equals("0")){
 					//practice
 					try{
-						jsonTokener = new JSONTokener(data[28]);
+						jsonTokener = new JSONTokener(data[30]);
 		            	arr = (JSONArray) jsonTokener.nextValue();
-		            	int ix=0, jx=arr.length();
-		            	while(ix < jx) { 
-		            		jsonObj = arr.getJSONObject(ix);
-		            		ix++;
-		            		if(!jsonObj.getString("id").equals("")||!jsonObj.getString("id").equals("0")){
-		            			insert(DOC_PRACTICE, new String[]{jsonObj.getString("id"),Long.toString(id)} );
-		            		}
+		            	ix=0;
+		            	jx=arr.length();
+		            	if(jx>ix){
+		            		stringSQL = new StringBuilder("");
+			            	stringSQL.append("INSERT INTO '"+tname[DOC_PRACTICE]+"' ( ") ;
+			        		for(int i2=1;i2<tcols[DOC_PRACTICE].length;i2++){
+			        			if(i2>1){
+			        				stringSQL.append(", ");
+			        			}
+			        			stringSQL.append("'"+tcols[DOC_PRACTICE][i2]+"'");
+			            	}
+			        		stringSQL.append(" ) VALUES ");
+		            	
+			        		while(ix < jx) { 
+			            		jsonObj = arr.getJSONObject(ix);
+			            		ix++;
+			            		if(!jsonObj.getString("id").equals("")||!jsonObj.getString("id").equals("0")){
+			            			if(ix>1)
+			            			{
+			            				stringSQL.append(" , ");
+			            			}
+			            			stringSQL.append("( ");
+			            			stringSQL.append(jsonObj.getString("id"));
+			            			stringSQL.append(", ");
+			            			stringSQL.append(Long.toString(id));
+			            			stringSQL.append(" ) ");
+			            		}
+			            	}
+			        		stringSQL.append(" ; ");
+			        		Log.d("NI","SQL practice::"+stringSQL.toString());
+			        		db.execSQL(stringSQL.toString());
 		            	}
-		            	jsonTokener = null;
-		        		arr = null;
-		        		jsonObj = null;
-		            	System.gc();
+		            	
 	            	}
 	    			catch(Exception ex)
 	    			{
@@ -676,20 +762,41 @@ public class DbAdapter {
 				if(!data[31].equals("0")){
 					//plan
 					try{
-						jsonTokener = new JSONTokener(data[28]);
+						jsonTokener = new JSONTokener(data[31]);
 		            	arr = (JSONArray) jsonTokener.nextValue();
-		            	int ix=0, jx=arr.length();
-		            	while(ix < jx) { 
-		            		jsonObj = arr.getJSONObject(ix);
-		            		ix++;
-		            		if(!jsonObj.getString("id").equals("")||!jsonObj.getString("id").equals("0")){
-		            			insert(DOC_PLAN, new String[]{jsonObj.getString("id"),Long.toString(id)} );
-		            		}
+		            	ix=0;
+		            	jx=arr.length();
+		            	if(jx>ix){
+		            		stringSQL = new StringBuilder("");
+			            	stringSQL.append("INSERT INTO '"+tname[DOC_PLAN]+"' ( ") ;
+			        		for(int i2=1;i2<tcols[DOC_PLAN].length;i2++){
+			        			if(i2>1){
+			        				stringSQL.append(", ");
+			        			}
+			        			stringSQL.append("'"+tcols[DOC_PLAN][i2]+"'");
+			            	}
+			        		stringSQL.append(" ) VALUES ");
+		            	
+			        		while(ix < jx) { 
+			            		jsonObj = arr.getJSONObject(ix);
+			            		ix++;
+			            		if(!jsonObj.getString("id").equals("")||!jsonObj.getString("id").equals("0")){
+			            			if(ix>1)
+			            			{
+			            				stringSQL.append(" , ");
+			            			}
+			            			stringSQL.append("( ");
+			            			stringSQL.append(jsonObj.getString("id"));
+			            			stringSQL.append(", ");
+			            			stringSQL.append(Long.toString(id));
+			            			stringSQL.append(" ) ");
+			            		}
+			            	}
+			        		stringSQL.append(" ; ");
+			        		Log.d("NI","SQL plan::"+stringSQL.toString());
+			        		db.execSQL(stringSQL.toString());
 		            	}
-		            	jsonTokener = null;
-		        		arr = null;
-		        		jsonObj = null;
-		            	System.gc();
+		            	
 	            	}
 	    			catch(Exception ex)
 	    			{
@@ -700,20 +807,41 @@ public class DbAdapter {
 				if(!data[32].equals("0")){
 					//aco
 					try{
-						jsonTokener = new JSONTokener(data[28]);
+						jsonTokener = new JSONTokener(data[32]);
 		            	arr = (JSONArray) jsonTokener.nextValue();
-		            	int ix=0, jx=arr.length();
-		            	while(ix < jx) { 
-		            		jsonObj = arr.getJSONObject(ix);
-		            		ix++;
-		            		if(!jsonObj.getString("id").equals("")||!jsonObj.getString("id").equals("0")){
-		            			insert(DOC_ACO, new String[]{jsonObj.getString("id"),Long.toString(id)} );
-		            		}
+		            	ix=0;
+		            	jx=arr.length();
+		            	if(jx>ix){
+		            		stringSQL = new StringBuilder("");
+			            	stringSQL.append("INSERT INTO '"+tname[DOC_ACO]+"' ( ") ;
+			        		for(int i2=1;i2<tcols[DOC_ACO].length;i2++){
+			        			if(i2>1){
+			        				stringSQL.append(", ");
+			        			}
+			        			stringSQL.append("'"+tcols[DOC_ACO][i2]+"'");
+			            	}
+			        		stringSQL.append(" ) VALUES ");
+		            	
+			        		while(ix < jx) { 
+			            		jsonObj = arr.getJSONObject(ix);
+			            		ix++;
+			            		if(!jsonObj.getString("id").equals("")||!jsonObj.getString("id").equals("0")){
+			            			if(ix>1)
+			            			{
+			            				stringSQL.append(" , ");
+			            			}
+			            			stringSQL.append("( ");
+			            			stringSQL.append(jsonObj.getString("id"));
+			            			stringSQL.append(", ");
+			            			stringSQL.append(Long.toString(id));
+			            			stringSQL.append(" ) ");
+			            		}
+			            	}
+			        		stringSQL.append(" ; ");
+			        		Log.d("NI","SQL aco::"+stringSQL.toString());
+			        		db.execSQL(stringSQL.toString());
 		            	}
-		            	jsonTokener = null;
-		        		arr = null;
-		        		jsonObj = null;
-		            	System.gc();
+		            	
 	            	}
 	    			catch(Exception ex)
 	    			{

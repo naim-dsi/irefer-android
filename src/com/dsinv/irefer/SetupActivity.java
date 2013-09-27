@@ -867,7 +867,7 @@ public class SetupActivity extends Activity {
             		dba.insertDoctor(docFTSList, docInsertList);
             		docInsertList = null;
                 	docFTSList = null;
-                	System.gc();
+                	//System.gc();
                 	docInsertList = new ArrayList();
                 	docFTSList = new ArrayList();
         		}
@@ -927,7 +927,7 @@ public class SetupActivity extends Activity {
 			try {
 				/////////////////////////////
 				
-				publishProgress(-1);
+				/*publishProgress(-1);
 				urlString = ABC.WEB_URL+"practice/jsonCounty?cnty_id="+cntyIds;
 				jsonData = getDataFromURL(urlString);
 				Log.d("NI","URL Practice::"+urlString);
@@ -979,7 +979,7 @@ public class SetupActivity extends Activity {
 				//Log.d("NI","JSONDATA ACO::"+jsonData);
 				parseJSONData(jsonData, DbAdapter.ACO, null);
 				jsonData = null;
-    			System.gc();
+    			System.gc();*/
     			
 				//////////////////////////////
 				/*
@@ -991,7 +991,7 @@ public class SetupActivity extends Activity {
 				*/
 				///////////////////////////
 				
-				if(dba.getCount(DbAdapter.STATE) == 0){
+				/*if(dba.getCount(DbAdapter.STATE) == 0){
 					urlString = ABC.WEB_URL+"state/json";
 					jsonData = getDataFromURL(urlString);
 					Log.d("NI","URL State::"+urlString);
@@ -999,7 +999,7 @@ public class SetupActivity extends Activity {
 					parseJSONData(jsonData, DbAdapter.STATE, null);	
 					jsonData = null;
 	    			System.gc();
-				}
+				}*/
 				
 				///////////////////////////
 				/*if(true){
@@ -1008,6 +1008,12 @@ public class SetupActivity extends Activity {
 				
 				dba.deleteAll(DbAdapter.DOCTOR);
 				dba.deleteAll(DbAdapter.DOC_FTS);
+				dba.deleteAll(DbAdapter.DOC_HOSPITAL);
+				dba.deleteAll(DbAdapter.DOC_SPECIALTY);
+				dba.deleteAll(DbAdapter.DOC_INSURANCE);
+				dba.deleteAll(DbAdapter.DOC_PRACTICE);
+				dba.deleteAll(DbAdapter.DOC_PLAN);
+				dba.deleteAll(DbAdapter.DOC_ACO);
 				while(flag) {
 					//start++;
 					String limit  = start+","+Utils.docSyncStep; 
