@@ -31,8 +31,8 @@ public class Utils {
 	public static int FILTER_PAGE = 13;
 	private static Random randomGenerator = new Random();
     
-	public static int docSyncLimit = 50;
-	public static int docSyncStep = 10;
+	public static int docSyncLimit = 15000;
+	public static int docSyncStep = 5000;
 	public static Pattern EMAIL_ADDRESS_PATTERN = Pattern.compile(
             "[a-zA-Z0-9+._%-+]{1,256}" +
             "@" +
