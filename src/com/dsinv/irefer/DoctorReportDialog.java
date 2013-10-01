@@ -45,7 +45,8 @@ public class DoctorReportDialog extends Dialog {
 		this.setCancelable(true);
 		/* TODO: save button */
 		Button reportSaveBtn = (Button) this.findViewById(R.id.doc_report_dialog_save);
-   
+		Button closeButton = (Button) this.findViewById(R.id.doc_report_dialog_close);
+		   
 		reportSaveBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				String str = ((EditText)findViewById(R.id.doc_report_text)).getText().toString()+"\n";
@@ -69,6 +70,13 @@ public class DoctorReportDialog extends Dialog {
 				//reportTextEdit.setVisibility(View.GONE);
 				//reportBtn.setVisibility(View.GONE);
 				Toast.makeText(ctx, "Report Saved", Toast.LENGTH_SHORT).show();
+				dismiss();
+				//System.out.println("SMM::reportID="+reportId);
+			}
+		});
+		closeButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				
 				dismiss();
 				//System.out.println("SMM::reportID="+reportId);
 			}

@@ -646,6 +646,7 @@ public class DbAdapter {
     
     //returns CURSOR or NULL
     public Cursor fetchAll(int tableId) throws RuntimeException {
+    	
     	if(tableId == 0) {
     		return dbr.query(tname[tableId], tcols[tableId], null, null, null, null, "last_name");
     	} else if(tableId == 6) {
@@ -693,7 +694,95 @@ public class DbAdapter {
         	cur.moveToFirst();
         return cur;
     }
+    //////////////////////////////////////////////////////////////////////////////////
+    ////////////////******************************************/////////////////////////
+
     
+    
+    
+    
+    public Cursor fetchInsurance(int tableId, String docins) {
+    	Cursor cur = dbr.query(true, tname[tableId], tcols[tableId], 
+    			tcols[tableId][1]+" IN ("+docins+")",
+        		null, null, null, null, null);
+        if(cur!=null)
+        	cur.moveToFirst();
+        return cur;
+    }
+    public Cursor fetchdocInsurance(int tableId, long netId) {
+    	Cursor cur = dbr.query(true, tname[tableId], tcols[tableId], 
+    			tcols[tableId][2]+"="+netId,
+        		null, null, null, null, null);
+        if(cur!=null)
+        	cur.moveToFirst();
+        return cur;
+    }
+    
+    public Cursor fetchdocSpeciality(int tableId, long netId) {
+    	Cursor cur = dbr.query(true, tname[tableId], tcols[tableId], 
+    			tcols[tableId][2]+"="+netId,
+        		null, null, null, null, null);
+        if(cur!=null)
+        	cur.moveToFirst();
+        return cur;
+    }
+    public Cursor fetchSpeciality(int tableId, String docins) {
+    	Cursor cur = dbr.query(true, tname[tableId], tcols[tableId], 
+    			tcols[tableId][1]+" IN ("+docins+")",
+        		null, null, null, null, null);
+        if(cur!=null)
+        	cur.moveToFirst();
+        return cur;
+    }
+    
+    public Cursor fetchdocHospital(int tableId, long netId) {
+    	Cursor cur = dbr.query(true, tname[tableId], tcols[tableId], 
+    			tcols[tableId][2]+"="+netId,
+        		null, null, null, null, null);
+        if(cur!=null)
+        	cur.moveToFirst();
+        return cur;
+    }
+    public Cursor fetchHospital(int tableId, String docins) {
+    	Cursor cur = dbr.query(true, tname[tableId], tcols[tableId], 
+    			tcols[tableId][1]+" IN ("+docins+")",
+        		null, null, null, null, null);
+        if(cur!=null)
+        	cur.moveToFirst();
+        return cur;
+    }
+    
+    public Cursor fetchdocPractice(int tableId, long netId) {
+    	Cursor cur = dbr.query(true, tname[tableId], tcols[tableId], 
+    			tcols[tableId][2]+"="+netId,
+        		null, null, null, null, null);
+        if(cur!=null)
+        	cur.moveToFirst();
+        return cur;
+    }
+    public Cursor fetchPractice(int tableId, String docins) {
+    	Cursor cur = dbr.query(true, tname[tableId], tcols[tableId], 
+    			tcols[tableId][1]+" IN ("+docins+")",
+        		null, null, null, null, null);
+        if(cur!=null)
+        	cur.moveToFirst();
+        return cur;
+    }
+    public int getDoctorIdbyUserId(int tableId, String userId) {
+    	Cursor cur = dbr.query(true, tname[tableId], tcols[tableId], 
+    			tcols[tableId][1]+"="+userId,
+        		null, null, null, null, null);
+        if(cur!=null)
+        	cur.moveToFirst();
+         int s = cur.getInt(7);
+        
+        return s;
+    }
+    
+    
+
+    ///////////////////***********************************************///////////////////
+    //////////////////////////////////////////////////////////////////////////////////
     public Cursor fetchByNetIds(int tableId, String netId) {
     	Cursor cur = dbr.query(true, tname[tableId], tcols[tableId], 
     			tcols[tableId][1]+" IN ("+netId+")",

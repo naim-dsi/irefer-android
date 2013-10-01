@@ -31,6 +31,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -137,6 +138,17 @@ public class DoctorDetailActivity extends Activity {
         ctx = this.getApplicationContext();
         
         Button rankBtn = (Button) findViewById(R.id.doc_detail_rank_button);
+        Button referButton = (Button) findViewById(R.id.doc_refer);
+        referButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				//rankDialog = new Dialog(DoctorDetailActivity.this, R.style.FullHeightDialog);
+				rankDialog = new ReferDialog(DoctorDetailActivity.this, R.style.FullHeightDialog,
+						dba, doctorId, userId, docName);
+				
+                //now that the dialog is set up, it's time to show it    
+                rankDialog.show();				
+			}
+		});
         rankBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				//rankDialog = new Dialog(DoctorDetailActivity.this, R.style.FullHeightDialog);
@@ -161,7 +173,171 @@ public class DoctorDetailActivity extends Activity {
     }
 	
 	private Map<String, String> loadDoctorDetailsFromDatabase(Long doctorId) {
-        Cursor cr = dba.fetchByNetId(DbAdapter.DOCTOR, doctorId);        
+        Cursor cr = dba.fetchByNetId(DbAdapter.DOCTOR, doctorId);
+        
+        //Insurance///////////////////////////////////////////////////////////////////
+        Cursor cr3 = dba.fetchdocInsurance(DbAdapter.DOC_INSURANCE, doctorId);
+        String insurances = "";
+        String docins = "";
+        cr3.moveToFirst();
+        for(int i=0; i<cr3.getCount(); i++) {
+        	if(i == 0)
+        	{
+        		docins=cr3.getString(1);
+        		cr3.moveToNext();
+        	}
+        	else
+        	{
+	        	docins = docins + " , " +cr3.getString(1);
+	    		cr3.moveToNext();
+        	}
+    	}
+        if (docins.length() > 0 && docins.charAt(docins.length()-1)==',') {
+        	docins = docins.substring(0, docins.length()-1);
+        }
+        Log.d("NR::", docins);
+        Cursor cr2 = dba.fetchInsurance(DbAdapter.INSURANCE, docins);
+        cr2.moveToFirst();        
+        for(int i=0; i<cr2.getCount(); i++) {
+        	if(i == 0)
+        	{
+        		insurances = cr2.getString(2);
+        		Log.d("NR::", cr2.getString(2));
+        		cr2.moveToNext();
+        	}
+        	else
+        	{
+	        	insurances = insurances + " , " +cr2.getString(2);	
+	        	Log.d("NR::", cr2.getString(2));
+	    		cr2.moveToNext();
+        	}
+    	}
+        //Speciality///////////////////////////////////////////////////////////////
+        cr3 = dba.fetchdocSpeciality(DbAdapter.DOC_SPECIALTY, doctorId);
+        String specialities = "";
+        docins = "";
+        cr3.moveToFirst();
+        for(int i=0; i<cr3.getCount(); i++) {
+        	if(i == 0)
+        	{
+        		docins=cr3.getString(1);
+        		cr3.moveToNext();
+        	}
+        	else
+        	{
+	        	docins = docins + " , " +cr3.getString(1);
+	    		cr3.moveToNext();
+        	}
+    	}
+        if (docins.length() > 0 && docins.charAt(docins.length()-1)==',') {
+        	docins = docins.substring(0, docins.length()-1);
+        }
+        Log.d("NR::", docins);
+        cr2 = dba.fetchSpeciality(DbAdapter.SPECIALTY, docins);
+        cr2.moveToFirst();        
+        for(int i=0; i<cr2.getCount(); i++) {
+        	if(i == 0)
+        	{
+        		specialities = cr2.getString(2);
+        		Log.d("NR::", cr2.getString(2));
+        		cr2.moveToNext();
+        	}
+        	else
+        	{
+        		specialities = specialities + " , " +cr2.getString(2);	
+	        	Log.d("NR::", cr2.getString(2));
+	    		cr2.moveToNext();
+        	}
+    	}
+      //Hospitals///////////////////////////////////////////////////////////////
+        cr3 = dba.fetchdocHospital(DbAdapter.DOC_HOSPITAL, doctorId);
+        String hospitals = "";
+        docins = "";
+        cr3.moveToFirst();
+        for(int i=0; i<cr3.getCount(); i++) {
+        	if(i == 0)
+        	{
+        		docins=cr3.getString(1);
+        		cr3.moveToNext();
+        	}
+        	else
+        	{
+	        	docins = docins + " , " +cr3.getString(1);
+	    		cr3.moveToNext();
+        	}
+    	}
+        if (docins.length() > 0 && docins.charAt(docins.length()-1)==',') {
+        	docins = docins.substring(0, docins.length()-1);
+        }
+        Log.d("NR::", docins);
+        cr2 = dba.fetchHospital(DbAdapter.HOSPITAL, docins);
+        cr2.moveToFirst();        
+        for(int i=0; i<cr2.getCount(); i++) {
+        	if(i == 0)
+        	{
+        		hospitals = "- "+cr2.getString(2)+"\n";
+        		Log.d("NR::", cr2.getString(2));
+        		cr2.moveToNext();
+        	}
+        	else if(cr2.getCount() == i+1)
+        	{
+        		hospitals = hospitals + "- " +cr2.getString(2);	
+	        	Log.d("NR::", cr2.getString(2));
+	    		cr2.moveToNext();
+        	}
+        	else
+        	{
+        		hospitals = hospitals + "- " +cr2.getString(2)+"\n";	
+	        	Log.d("NR::", cr2.getString(2));
+	    		cr2.moveToNext();
+        	}
+    	}
+        
+      //Practice///////////////////////////////////////////////////////////////
+        cr3 = dba.fetchdocPractice(DbAdapter.DOC_PRACTICE, doctorId);
+        String practices = "";
+        docins = "";
+        cr3.moveToFirst();
+        for(int i=0; i<cr3.getCount(); i++) {
+        	if(i == 0)
+        	{
+        		docins=cr3.getString(1);
+        		cr3.moveToNext();
+        	}
+        	else
+        	{
+	        	docins = docins + " , " +cr3.getString(1);
+	    		cr3.moveToNext();
+        	}
+    	}
+        if (docins.length() > 0 && docins.charAt(docins.length()-1)==',') {
+        	docins = docins.substring(0, docins.length()-1);
+        }
+        Log.d("NR::", docins);
+        cr2 = dba.fetchPractice(DbAdapter.PRACTICE, docins);
+        cr2.moveToFirst();        
+        for(int i=0; i<cr2.getCount(); i++) {
+        	if(i == 0)
+        	{
+        		practices = "- "+cr2.getString(2)+"\n"+cr2.getString(3)+"\n\n";
+        		Log.d("NR::", cr2.getString(2));
+        		cr2.moveToNext();
+        	}
+        	else if(cr2.getCount() == i+1)
+        	{
+        		practices = practices + "- " +cr2.getString(2)+"\n"+cr2.getString(3);	
+	        	Log.d("NR::", cr2.getString(2));
+	    		cr2.moveToNext();
+        	}
+        	else
+        	{
+        		practices = practices + "- " +cr2.getString(2)+"\n"+cr2.getString(3)+"\n\n";	
+	        	Log.d("NR::", cr2.getString(2));
+	    		cr2.moveToNext();
+        	}
+    	}
+        
+        
         Map<String, String> data = new HashMap<String, String>();
         Long practiceId = 0L;
         Long hospitalId = 0L;
@@ -171,6 +347,7 @@ public class DoctorDetailActivity extends Activity {
         String hId = "";
         String sId = "";
         String iId = "";
+        
         if(cr != null && cr.getCount() > 0) {
         	cr.moveToFirst();
         	data.put("first_name", cr.getString(3));
@@ -221,7 +398,7 @@ public class DoctorDetailActivity extends Activity {
         		//data.put("practice_add", cr.getString(3));
         		cr.moveToNext();
         	}
-        	data.put("practice_name", pName);
+        	data.put("practice_name", practices);
     		data.put("practice_add", pAdd);
         	cr.close();
         }
@@ -234,7 +411,7 @@ public class DoctorDetailActivity extends Activity {
         		hName = hName+"(N)";
         		cr.moveToNext();
         	}
-        	data.put("hospital_name", hName);
+        	data.put("hospital_name", hospitals);
         	data.put("hospital_add", hAdd);
         	cr.close();
         }
@@ -245,7 +422,7 @@ public class DoctorDetailActivity extends Activity {
         		sName = Utils.isEmpty(sName) ? cr.getString(2) : sName+","+cr.getString(2);
         		cr.moveToNext();
         	}
-        	data.put("speciality", sName);        	
+        	data.put("speciality", specialities);        	
         	cr.close();
         }
         /*
@@ -269,7 +446,7 @@ public class DoctorDetailActivity extends Activity {
         */
         cr = dba.fetchByNetId(DbAdapter.INSURANCE, insuranceId);
         if(cr != null && cr.getCount() > 0) {
-        	data.put("insurance", cr.getString(2));  
+        	data.put("insurance", insurances);  
         	data.put("insurance_add", cr.getString(3)); 
         	cr.close();
         }

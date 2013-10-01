@@ -45,6 +45,12 @@ android:layout_height="fill_parent">
 			android:layout_marginTop="5dip" 
 			android:textColor="#000000"
 			android:background="@drawable/orange_button"/>
+		<Button android:id="@+id/doc_refer" 
+			android:layout_width="wrap_content" android:layout_height="wrap_content" 
+			android:text="Refer"
+			android:layout_marginTop="5dip" 
+			android:textColor="#000000"
+			android:background="@drawable/orange_button"/>
 		        
        <ImageView android:id="@+id/doc_detail_pic"	        
 	        android:background="@drawable/rounded_top_bottom_shape"

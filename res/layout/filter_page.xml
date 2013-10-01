@@ -4,10 +4,10 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:gravity="right">
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/filterScrollView01"
+<ScrollView android:id="@+id/filterScrollView01"
 android:layout_width="fill_parent" android:background="@drawable/t7_480x720"
 android:layout_height="fill_parent">
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -18,11 +18,11 @@ android:layout_height="fill_parent">
     android:focusable="true"
     android:focusableInTouchMode="true">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
     android:layout_width="fill_parent" android:layout_height="wrap_content"
     android:background="@drawable/custom_button3"
     android:orientation="horizontal">
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
     android:layout_width="0dp" android:gravity="left"  android:layout_weight="1" 
     android:layout_height="wrap_content"
     android:layout_marginTop="7dip"
@@ -43,12 +43,12 @@ android:layout_height="fill_parent">
     
 </LinearLayout>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
     android:layout_width="fill_parent" android:layout_height="wrap_content"    
     android:layout_marginTop="0dip" android:layout_marginBottom="0dip"
     android:orientation="horizontal" android:baselineAligned="false">
     
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
     android:layout_width="wrap_content"  android:layout_height="wrap_content"    
     android:layout_marginTop="0dip"  android:layout_marginBottom="0dip" 
     android:orientation="horizontal" android:baselineAligned="false">
@@ -66,7 +66,7 @@ android:layout_height="fill_parent">
 </Button>
 </LinearLayout>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
     android:layout_weight="1" android:layout_width="0dip"
     android:layout_height="wrap_content"  android:gravity="right"
     android:layout_marginTop="0dip" android:layout_marginBottom="0dip" 
@@ -98,14 +98,14 @@ android:layout_height="fill_parent">
 </LinearLayout>
 
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
     android:id="@+id/filterInsuranceBtn" android:orientation="horizontal"
     android:layout_width="fill_parent" android:layout_height="wrap_content"
     android:background="@drawable/custom_button3" android:clickable="true"
     android:paddingTop="10dip" android:paddingBottom="10dip"  android:gravity="right"
     android:layout_marginTop="5dip" android:layout_marginBottom="0dip">
     
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
     android:orientation="vertical"
     android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="left"
     >
@@ -125,14 +125,14 @@ android:layout_height="fill_parent">
     android:textSize="15dip"/>
 </LinearLayout>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
     android:id="@+id/filterPracticeBtn" android:orientation="horizontal"
     android:layout_width="fill_parent" android:layout_height="wrap_content"
     android:background="@drawable/custom_button3" android:clickable="true" android:visibility="gone"
     android:paddingTop="10dip" android:paddingBottom="10dip"  android:gravity="right"
     android:layout_marginTop="5dip" android:layout_marginBottom="0dip">
     
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
     android:orientation="vertical"
     android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="left"
     >
@@ -152,14 +152,14 @@ android:layout_height="fill_parent">
     android:textSize="15dip"/>
 </LinearLayout>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
     android:id="@+id/filterSpecialityBtn" android:orientation="horizontal"
     android:layout_width="fill_parent" android:layout_height="wrap_content"
     android:background="@drawable/custom_button3" android:clickable="true"
     android:paddingTop="10dip" android:paddingBottom="0dip"  android:gravity="right"
     android:layout_marginTop="5dip" android:layout_marginBottom="0dip">
     
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
     android:orientation="vertical"
     android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="left"
     >
@@ -183,14 +183,14 @@ android:layout_height="fill_parent">
     android:textSize="15dip"/>
 </LinearLayout>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
     android:id="@+id/filterHospitalBtn" android:orientation="horizontal"
     android:layout_width="fill_parent" android:layout_height="wrap_content"
     android:background="@drawable/custom_button3" android:clickable="true"
     android:paddingTop="10dip" android:paddingBottom="10dip"  android:gravity="right"
     android:layout_marginTop="5dip" android:layout_marginBottom="0dip">
     
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
     android:orientation="vertical"
     android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="left"
     >
@@ -210,14 +210,14 @@ android:layout_height="fill_parent">
     android:textSize="15dip"/>
 </LinearLayout>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
     android:id="@+id/filterCountyBtn" android:orientation="horizontal"
     android:layout_width="fill_parent" android:layout_height="wrap_content"
     android:background="@drawable/custom_button3" android:clickable="true"
     android:paddingTop="10dip" android:paddingBottom="10dip"  android:gravity="right"
     android:layout_marginTop="5dip" android:layout_marginBottom="0dip">
     
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
     android:orientation="vertical"
     android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="left"
     >
@@ -254,14 +254,14 @@ android:layout_height="fill_parent">
                 android:visibility="gone"
                 android:singleLine="true" /> 
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
     android:id="@+id/filterLanguageBtn" android:orientation="horizontal" android:visibility="gone"
     android:layout_width="fill_parent" android:layout_height="wrap_content"
     android:background="@drawable/custom_button3" android:clickable="true"
     android:paddingTop="10dip" android:paddingBottom="10dip"  android:gravity="right"
     android:layout_marginTop="5dip" android:layout_marginBottom="0dip">
     
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
     android:orientation="vertical"
     android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="left"
     >
@@ -281,14 +281,45 @@ android:layout_height="fill_parent">
     android:textSize="15dip"/>
 </LinearLayout>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:visibility="gone"
+
+
+<!-- 	NEW -->
+<LinearLayout
+    android:id="@+id/filterACOBtn" android:orientation="horizontal" android:visibility="gone"
+    android:layout_width="fill_parent" android:layout_height="wrap_content"
+    android:background="@drawable/custom_button3" android:clickable="true"
+    android:paddingTop="10dip" android:paddingBottom="10dip"  android:gravity="right"
+    android:layout_marginTop="5dip" android:layout_marginBottom="0dip">
+    
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="left"
+    >
+<TextView android:id="@+id/filterACO" 
+    android:layout_width="wrap_content" android:layout_height="wrap_content" 
+    android:text="ACO" android:textColor="#FFFFFF" android:textSize="20dip" android:singleLine="true" 
+    android:layout_marginTop="0dip" android:layout_marginRight="5dip"
+ />
+</LinearLayout>
+<TextView  android:id="@+id/filterACOValue"
+    android:layout_weight="1" android:layout_width="0dip" 
+    android:layout_height="wrap_content"  android:gravity="right"
+    android:singleLine="true" 
+    android:layout_marginTop="5dip"
+    android:text="All"
+    android:textColor="#FFFFFF99"
+    android:textSize="15dip"/>
+</LinearLayout>
+<!-- 	NEW -->
+
+<LinearLayout android:visibility="gone"
     android:id="@+id/filterOfficeHourBtn" android:orientation="horizontal"
     android:layout_width="fill_parent" android:layout_height="wrap_content"
     android:background="@drawable/custom_button3" android:clickable="true"
     android:paddingTop="10dip" android:paddingBottom="10dip"  android:gravity="right"
     android:layout_marginTop="5dip" android:layout_marginBottom="0dip">
     
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
     android:orientation="vertical"
     android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="left"
     >
@@ -317,7 +348,7 @@ android:layout_height="fill_parent">
 		
 </LinearLayout>
 </ScrollView>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
        android:id="@+id/setup_bottom_wrapper"
        android:layout_height="wrap_content" android:orientation="horizontal"
        android:layout_width="fill_parent" android:background="#DD101010"  android:padding="0dp"
@@ -330,7 +361,7 @@ android:layout_height="fill_parent">
 		android:layout_marginLeft="2dp" android:layout_marginRight="2dp" android:layout_marginTop="4dp" android:layout_marginBottom="4dp">
 		</Button>
         
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <LinearLayout
         android:id="@+id/filter_bottom_button1" 
 		android:layout_height="48dp" android:layout_width="52dp" 
 		android:background="@drawable/action_bar_setup"

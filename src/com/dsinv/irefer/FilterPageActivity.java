@@ -30,12 +30,14 @@ public class FilterPageActivity extends Activity {
 	private TextView practiceValue;
 	private TextView countyValue;
 	private TextView languageValue;
+	private TextView acoValue;
 	private TextView officeHourValue;
 	private TextView zipCodeValue;
 	private TextView docNameValue;
 	
 	private View officeHourBtn;
 	private View languageBtn;
+	private View acoBtn;
 	private Button showAdvBtn;
 	
 	private Button onlineBtn;
@@ -53,6 +55,7 @@ public class FilterPageActivity extends Activity {
 	private String[] practiceNameArr = {"NA"};
 	private String[] countyNameArr = {"NA"};
 	private String[] languageArr = {"NA"};
+	private String[] acoArr = {"NA"};
 	private String[] officeHourArr = {"NA"};
 	
 	private boolean[] insuranceSelection = {false};
@@ -62,6 +65,7 @@ public class FilterPageActivity extends Activity {
 	private boolean[] practiceSelection = {false};
 	private boolean[] countySelection = {false};
 	private boolean[] languageSelection = {false};
+	private boolean[] acoSelection = {false};
 	private boolean[] officeHourSelection = {false};
 	
 	private int[] insuranceIdArr = {0};
@@ -71,6 +75,7 @@ public class FilterPageActivity extends Activity {
 	private int[] practiceIdArr = {0};
 	private int[] countyIdArr = {0};
 	private int[] languageIdArr = {0};
+	private int[] acoIdArr = {0};
 	private int[] officeHourIdArr = {0};
 	
 	private String insuranceName = "";
@@ -83,7 +88,10 @@ public class FilterPageActivity extends Activity {
 	private String practiceId = "";
 	private String countyName = "";
 	private String countyId = "";
+
+	private String acoId = "";
 	private String languageName = "";
+	private String acoName = "";
 	private String languageId = "";
 	private String officeHourName = "";
 	private String officeHourId = "";
@@ -142,6 +150,8 @@ public class FilterPageActivity extends Activity {
         practiceValue   = (TextView) findViewById(R.id.filterPracticeValue);
         countyValue     = (TextView) findViewById(R.id.filterCountyValue);
         languageValue   = (TextView) findViewById(R.id.filterLanguageValue);
+        acoValue   = (TextView) findViewById(R.id.filterACOValue);
+        
         officeHourValue = (TextView) findViewById(R.id.filterOfficeHourValue);
         zipCodeValue    = (TextView) findViewById(R.id.zip_code_text_edit);
         docNameValue    = (TextView) findViewById(R.id.doc_name_text_edit);
@@ -380,6 +390,28 @@ public class FilterPageActivity extends Activity {
 			}
 		});
         
+        acoBtn = (View) findViewById(R.id.filterACOBtn);
+        acoBtn.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				if( onlineFlag == 1 ) {
+					Intent intent = new Intent(FilterPageActivity.this, ItemSelectActivity.class);;
+					
+					if( onlineFlag == 1 ) {
+						System.out.println("online select activity ...");
+						intent = new Intent(FilterPageActivity.this, ItemOnlineSelectActivity.class);
+					}
+					intent.putExtra("opr", DbAdapter.ACO);
+					intent.putExtra("nameArr",(String[])hospitalNameArr);				
+					intent.putExtra("idArr",hospitalIdArr);				
+					intent.putExtra("selectionArr",hospitalSelection);				
+					startActivityForResult(intent, 106);					
+				}else {
+					AlertDialog.Builder builder = getDialogBuilder(DbAdapter.ACO);
+					builder.show();
+				}
+			}
+		});
+        
         officeHourBtn = (View) findViewById(R.id.filterOfficeHourBtn);
         officeHourBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -393,10 +425,12 @@ public class FilterPageActivity extends Activity {
 			public void onClick(View v) {
 				if(officeHourBtn.getVisibility() == View.GONE){
 					languageBtn.setVisibility(View.VISIBLE);
+					acoBtn.setVisibility(View.VISIBLE);
 					officeHourBtn.setVisibility(View.VISIBLE);
 					showAdvBtn.setText("Hide Advance Options");	
 				} else {
 					languageBtn.setVisibility(View.GONE);
+					acoBtn.setVisibility(View.GONE);
 					officeHourBtn.setVisibility(View.GONE);
 					showAdvBtn.setText("Show Advance Options");
 				}
@@ -439,6 +473,8 @@ public class FilterPageActivity extends Activity {
             	intent.putExtra("specialityId", specialityId);
             	intent.putExtra("hospitalName", hospitalName);
             	intent.putExtra("hospitalId", hospitalId);
+            	intent.putExtra("acoName", acoName);
+            	intent.putExtra("acoId", acoId);
             	intent.putExtra("countyName", countyName);
             	intent.putExtra("countyId", countyId);
             	intent.putExtra("userId", userId+"");
@@ -519,6 +555,7 @@ public class FilterPageActivity extends Activity {
         loadSpeciality();
         loadCounty();
         loadLanguage();
+        loadACO();
         loadOfficeHour();
     }
     
@@ -578,6 +615,10 @@ public class FilterPageActivity extends Activity {
     		countyValue.setText(str1);
     		countyName = str1;
     		countyId = str2;
+    	}else if(requestCode == 106) {
+    		acoValue.setText(str1);
+    		acoName = str1;
+    		acoId = str2;
     	}
     	
     	//TODO handle here. 
@@ -698,6 +739,31 @@ public class FilterPageActivity extends Activity {
 			countyValue.setText(countyName);
         }
     }
+    
+    private void loadACO() {
+    	Cursor cr = dba.fetchAll(DbAdapter.ACO);
+        if(cr != null && cr.getCount() > 0) {
+        	cr.moveToFirst();
+        	acoArr = new String[cr.getCount()];
+			acoSelection = new boolean[cr.getCount()];
+			acoIdArr = new int[cr.getCount()];
+			for(int i=0; i<cr.getCount(); i++) {
+				if(i == 0) {
+					acoName = cr.getString(2);
+					acoId = cr.getString(1);
+				} else {
+					acoName = acoName+","+cr.getString(2);
+					acoId = acoId+","+cr.getString(1);
+				}
+				acoArr[i] = cr.getString(2);
+				acoSelection[i] = true;
+				acoIdArr[i] = cr.getInt(1);
+        		cr.moveToNext();
+        	}
+			cr.close();
+			acoValue.setText(acoName);
+        }
+    }
 
     private void loadLanguage() {
     	ABC.Language arr[] = ABC.Language.values();
@@ -745,6 +811,9 @@ public class FilterPageActivity extends Activity {
     			break;
     		case DbAdapter.OFFICE_HOUR:
     			builder.setTitle("Choose Office Hour");
+    			break;
+    		case DbAdapter.ACO:
+    			builder.setTitle("Choose ACO");
     			break;
     		default:
     			break;
@@ -879,6 +948,28 @@ public class FilterPageActivity extends Activity {
 							}
 						}
 						languageValue.setText(languageName);
+					}
+				});
+				break;
+			case DbAdapter.ACO:
+				builder.setMultiChoiceItems(acoArr, acoSelection, new DialogInterface.OnMultiChoiceClickListener() {
+					public void onClick(DialogInterface dialog, int which,
+							boolean isChecked) {
+						// TODO Auto-generated method stub
+						acoName = "All";
+						acoId   = "";			
+						for(int i=0; i<acoSelection.length; i++) {
+							if(acoSelection[i]) {
+								if(!acoName.equals("All")){  
+									acoName = acoName +","+acoArr[i].toString();
+									acoId   = acoId +","+ new Integer(acoIdArr[i]).toString();
+								} else {
+									acoName = acoArr[i].toString();
+									acoId   = new Integer(acoIdArr[i]).toString();
+								}
+							}
+						}
+						acoValue.setText(acoName);
 					}
 				});
 				break;
