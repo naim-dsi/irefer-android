@@ -115,13 +115,16 @@ public class DoctorRankDialog extends Dialog {
             public void onClick(View v) {
         		try {
         			dba.rankDoctor(doctorId, Math.round(ratingBar.getRating()));
+        			Log.d("NR::", ""+doctorId+Math.round(ratingBar.getRating()));
         			//rankTxt.setText(Math.round(ratingBar.getRating()));
         			if(isOnlineSearch){
         				String res = Utils.getDataFromURL(ABC.WEB_URL+"userDocRank/rank?user_id="+
         					userId+"&doc_id="+doctorId+"&rank="+Math.round(ratingBar.getRating()) );
         				Toast.makeText(ctx, " "+res, Toast.LENGTH_SHORT).show();
         			} else
-        				Toast.makeText(ctx, "Rank updated", Toast.LENGTH_SHORT).show();
+        				Toast.makeText(ctx, "Rank updated to "+Math.round(ratingBar.getRating()), Toast.LENGTH_SHORT).show();
+        				ctx.rankTxt.setText(""+Math.round(ratingBar.getRating()));
+	        			
 				} catch(Exception ex) {
 					//Toast.makeText(ctx, "Failed to rank ", Toast.LENGTH_SHORT).show();
 					ex.printStackTrace();
@@ -129,6 +132,7 @@ public class DoctorRankDialog extends Dialog {
         		dismiss();
             }
         });
+       
 	}
 	
 }

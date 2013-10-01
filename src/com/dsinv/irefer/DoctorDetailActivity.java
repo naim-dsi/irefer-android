@@ -52,7 +52,7 @@ public class DoctorDetailActivity extends Activity {
 	private Dialog reportDialog;
 	private RatingBar ratingBar;
 	private EditText reportTextEdit;
-	private TextView rankTxt;
+	public TextView rankTxt;
 	private LinearLayout reportLayout;
 	private Button reportBtn;
 	private Button reportDialogBtn;
@@ -156,9 +156,10 @@ public class DoctorDetailActivity extends Activity {
 						dba, doctorId, docName, userId, userRankValue, isOnlineSearch);
 				
                 //now that the dialog is set up, it's time to show it    
-                rankDialog.show();				
+                rankDialog.show();
 			}
 		});
+        
 
         Button reportDialogBtn = (Button) findViewById(R.id.doc_detail_report_button);
         reportDialogBtn.setOnClickListener(new View.OnClickListener() {
@@ -633,6 +634,8 @@ public class DoctorDetailActivity extends Activity {
 		back.setOnClickListener(new View.OnClickListener() {			
 			public void onClick(View v) {
 				intent.putExtra("close_me", true);
+				intent.putExtra("rank", rankTxt.getText().toString());
+				
 				setResult(RESULT_OK, intent);
 				finish();
 			}
@@ -773,7 +776,8 @@ public class DoctorDetailActivity extends Activity {
     	
         protected Long doInBackground(URL... urls) {
         	//int count = urls.length;
-            long totalSize = 0;
+            Log.d("NR::", "AAA");
+        	long totalSize = 0;
             URL url = urls[0];
             try {
     			InputStream is = (InputStream) this.fetch(url);
@@ -789,6 +793,7 @@ public class DoctorDetailActivity extends Activity {
         }
 
         protected void onProgressUpdate(Integer... progress) {
+        	Log.d("NR::", "AAA");
             //setProgressPercent(progress[0]);
         }
 

@@ -927,7 +927,7 @@ public class SetupActivity extends Activity {
 			try {
 				/////////////////////////////
 				
-				/*publishProgress(-1);
+				publishProgress(-1);
 				urlString = ABC.WEB_URL+"practice/jsonCounty?cnty_id="+cntyIds;
 				jsonData = getDataFromURL(urlString);
 				Log.d("NI","URL Practice::"+urlString);
@@ -979,7 +979,7 @@ public class SetupActivity extends Activity {
 				//Log.d("NI","JSONDATA ACO::"+jsonData);
 				parseJSONData(jsonData, DbAdapter.ACO, null);
 				jsonData = null;
-    			System.gc();*/
+    			System.gc();
     			
 				//////////////////////////////
 				/*
@@ -991,7 +991,7 @@ public class SetupActivity extends Activity {
 				*/
 				///////////////////////////
 				
-				/*if(dba.getCount(DbAdapter.STATE) == 0){
+				if(dba.getCount(DbAdapter.STATE) == 0){
 					urlString = ABC.WEB_URL+"state/json";
 					jsonData = getDataFromURL(urlString);
 					Log.d("NI","URL State::"+urlString);
@@ -999,7 +999,7 @@ public class SetupActivity extends Activity {
 					parseJSONData(jsonData, DbAdapter.STATE, null);	
 					jsonData = null;
 	    			System.gc();
-				}*/
+				}
 				
 				///////////////////////////
 				/*if(true){

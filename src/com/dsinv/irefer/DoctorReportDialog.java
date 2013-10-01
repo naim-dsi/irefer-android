@@ -69,7 +69,15 @@ public class DoctorReportDialog extends Dialog {
 				//reportTxt.setVisibility(View.VISIBLE);
 				//reportTextEdit.setVisibility(View.GONE);
 				//reportBtn.setVisibility(View.GONE);
+				String jsonData = "";       
+				try {
+						jsonData = getDataFromURL(ABC.WEB_URL+"doctor/report?doc_id=" + userId+"&ref_doc_id="+doctorId+"&report="+str+"&time="+str2);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				Toast.makeText(ctx, "Report Saved", Toast.LENGTH_SHORT).show();
+				
 				dismiss();
 				//System.out.println("SMM::reportID="+reportId);
 			}
@@ -88,5 +96,17 @@ public class DoctorReportDialog extends Dialog {
 
 		//set up button
 	}
-	
+	private String getDataFromURL(String urlStr) throws Exception {
+		System.out.println("SMM::URL::"+urlStr);
+        URL url = new URL(urlStr);
+        URLConnection urlCon = url.openConnection();
+        BufferedReader in = new BufferedReader(new InputStreamReader(urlCon.getInputStream()));
+        String data = "";
+        String line = "";       
+        while ((line = in.readLine()) != null) {
+            data += line;
+        }
+        in.close();
+        return data;
+    }
 }

@@ -17,6 +17,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -239,6 +240,7 @@ public class DoctorListAdapter extends SimpleAdapter {
                 				Toast.makeText(ctx, " "+res, Toast.LENGTH_SHORT).show();
                 			} else {
                 				dba.rankDoctor(Integer.parseInt((String)data.get("docId")), rankValue);
+                				Log.d("NR::", ""+Integer.parseInt((String)data.get("docId"))+rankValue);
                 				Toast.makeText(ctx, "Rank Updated to "+rankValue, Toast.LENGTH_SHORT).show();
                 			}
                 			data.put("u_rank",Integer.toString(rankValue));

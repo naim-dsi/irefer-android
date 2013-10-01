@@ -68,16 +68,20 @@ public class ReferDialog extends Dialog {
 				int currentDocId = dba.getDoctorIdbyUserId(dba.USERS,userId);
 				Log.d("NR::", "X = "+doctorId +", Y = "+currentDocId);
 				String jsonData = "";       
-//		        jsonData = getDataFromURL(ABC.WEB_URL+"doctor/referral?doc_id=" + currentDocId+"&ref_doc_id="+doctorId+"&initial="+initial+"&insurance="+insurance+"&email="+email);
-//		        JSONTokener jsonTokener = new JSONTokener(jsonData);
-//		        JSONArray arr = (JSONArray) jsonTokener.nextValue();
-//		        JSONObject x = arr.getJSONObject(0);
+		        try {
+					jsonData = getDataFromURL(ABC.WEB_URL+"doctor/referral2?doc_id=" + currentDocId+"&ref_doc_id="+doctorId+"&initial="+patient_ini+"&insurance="+insurance+"&email="+patient_email);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		        
 				Toast.makeText(ctx, "Referral Successful", Toast.LENGTH_LONG).show();
 				
 				dismiss();
 				//System.out.println("SMM::reportID="+reportId);
 			}
 		});
+		
 		closeButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				
@@ -85,12 +89,27 @@ public class ReferDialog extends Dialog {
 				//System.out.println("SMM::reportID="+reportId);
 			}
 		});
+		
 		//there are a lot of settings, for dialog, check them all out!
 		//set up text
 		//TextView text = (TextView) rankDialog.findViewById(R.id.rank_dialog_text1);
 		//text.setText(docName);
 
 		//set up button
+		
 	}
+	private String getDataFromURL(String urlStr) throws Exception {
+		System.out.println("SMM::URL::"+urlStr);
+        URL url = new URL(urlStr);
+        URLConnection urlCon = url.openConnection();
+        BufferedReader in = new BufferedReader(new InputStreamReader(urlCon.getInputStream()));
+        String data = "";
+        String line = "";       
+        while ((line = in.readLine()) != null) {
+            data += line;
+        }
+        in.close();
+        return data;
+    }
 	
 }

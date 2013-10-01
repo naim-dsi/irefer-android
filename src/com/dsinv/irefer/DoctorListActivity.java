@@ -515,8 +515,16 @@ public class DoctorListActivity extends Activity {
 			&& data.getBooleanExtra("close_me", false) 
 			&& requestCode == 1100 
 			&& resultCode == RESULT_OK) {
+			//Log.d("NR::",data.getStringExtra("name"));
+			Log.d("NR::","AAABBB");
+			
 			finish();	
-		}		
+		}	
+		else
+		{
+			Log.d("NR::","AAA");
+		}
+		
 	}
 		//faisal > ends
 		
