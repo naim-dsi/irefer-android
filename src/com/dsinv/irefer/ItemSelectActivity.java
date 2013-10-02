@@ -26,6 +26,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -159,6 +160,7 @@ public class ItemSelectActivity extends Activity {
 	 
 	        public void onTextChanged(CharSequence s, int start, int before, int count) {
 	                autoCompleteAdapter.clear();
+	                
 	                /*
 	                String jsonData = "";
 	                try {
@@ -204,6 +206,12 @@ public class ItemSelectActivity extends Activity {
 	                    }
 	                        //System.out.println("SMM:INFO::"+nameArr[i]);
 	                }
+	                textView.setFocusableInTouchMode(true);
+	                textView.requestFocus();
+	                InputMethodManager inputMethodManager = (InputMethodManager) ItemSelectActivity.this
+	                        .getSystemService(ItemSelectActivity.this.INPUT_METHOD_SERVICE);
+	                inputMethodManager.showSoftInput(textView, InputMethodManager.SHOW_IMPLICIT);
+//	                
 	        }
 	    };
 	    textView.addTextChangedListener(textChecker);

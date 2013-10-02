@@ -32,7 +32,7 @@ import android.widget.TextView;
 //import android.widget.Toast;
 
 public class DbAdapter {
-	
+
 	public static final String PK = "_id";
 	
 	public static final int NO				= -1;
@@ -85,8 +85,8 @@ public class DbAdapter {
 		"t_aco"};
 	//5324
 	public static final String tcols[][] = {
-		/* users	  */	{	PK,	"user_id", "last_name", "first_name", "email", "act_code", "my_prac_id", "doc_id",
-			"my_hos_id", "my_county_id", "need_to_sync", "update_setting", "rank_doc", "rank_doc_practice"},
+		/* users	  */	{	PK,	"user_id", "last_name", "first_name", "email", "act_code", "my_prac_id",
+			"my_hos_id", "my_county_id", "need_to_sync", "update_setting", "rank_doc", "rank_doc_practice", "doc_id"},
 		/* practice   */	{	PK,	"prac_id", "name", "address"},
 		/* hospital   */	{	PK,	"hos_id", "name", "address"},
 		/* insurance  */    {	PK,	"ins_id", "name", "address"},
@@ -94,9 +94,11 @@ public class DbAdapter {
 		/* resource   */	{	PK,	"res_id", "name", "address"},
 		/* doctor     */	{	PK,	"doc_id", "last_name", "first_name", "mid_name",  //4
 			"degree", "doc_phone", "language", "grade", "gender", "image_url",        //10
-			"prac_id", "hosp_id", "spec_id", "insu_id",  "zip_code", "county_id", "res_flag", "see_patient",  // 18
-                                                "doc_fax", "npi", "office_hour", "u_rank", "up_rank", "quality",
-                                                "cost", "rank_user_number", "avg_rank" }, 
+			"prac_id", "hosp_id", "spec_id", "insu_id", //14 
+			 "zip_code", "county_id", "res_flag", "see_patient",  // 18
+            "doc_fax", "npi", "office_hour", "u_rank", "up_rank", "quality", //24
+            "cost", "rank_user_number", "avg_rank","prac_ids", "hosp_ids", "spec_ids", "insu_ids",
+            "plan_ids", "aco_ids", "prac_names", "hosp_names", "spec_names", "insu_names", "plan_names","aco_names"}, 
 		/* county   */	    {	PK,	"county_id", "name", "code", "state_id"},   
 		/* doc fts  */	    {	"doc_id", "text"},
 		/* doc report  */	{	PK, "doc_id", "user_id", "text", "report_time", "submit_time"},
@@ -120,7 +122,7 @@ public class DbAdapter {
 		{NO, NO, NO, NO},
 		{NO, NO, NO, NO, NO},
 		{NO, NO, NO, NO},
-		{NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO},
+		{NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO},
 		{NO, NO, NO, NO, NO},
 		{NO, NO},
 		{NO, NO, NO, NO, NO, NO},
@@ -138,19 +140,19 @@ public class DbAdapter {
 	
 	private static final String ttypes[] = {
 		".ittttiiiiiiii", ".itt", ".itt", ".itt", ".itti", ".itt", 
-		".ittttttiitiiiitiiitttiiiiif", ".itti", "tt", "iiittt", "iii", ".itt",//NEW//  
+		".ittttttiitiiiitiiitttiiiiiftttttttttttt", ".itti", "tt", "iiittt", "iii", ".itt",//NEW//  
 		".ii", ".ii", ".ii", ".ii", ".ii", ".ii", ".iti", ".it"
 	};
 
 	private static final String tuniques[] = {
 		"..YYY.........", "....", "....", "....", ".....", "....", 
-		"............................", ".....", "..", "......", "...", "....",//NEW//
+		"..............................................", ".....", "..", "......", "...", "....",//NEW//
 		"...","...","...","...","...","...","....","..."
 	};
 	
 	private static final String tnulls[] = {
 		"..............", ".YY.", ".YY.", ".YY.", ".YY..", ".YY.", 
-		"............................", ".YY..", "..", "......", "...", "....",//NEW// 
+		"..............................................", ".YY..", "..", "......", "...", "....",//NEW// 
 		"YYY","YYY","YYY","YYY","YYY","YYY","YY.Y","YY."
 	};
 /*	
@@ -350,6 +352,7 @@ public class DbAdapter {
                 cv.put(tcols[USERS][10], new Integer(data[9]));
                 cv.put(tcols[USERS][11], new Integer(data[10]));
                 cv.put(tcols[USERS][12], new Integer(data[11]));
+                cv.put(tcols[USERS][13], new Integer(data[12]));
                 return cv;
                 
         	case PRACTICE:
@@ -384,34 +387,46 @@ public class DbAdapter {
         		return cv;
         	case DOCTOR:
         		//System.out.println("SMM::TCOL-LENGTH="+tcols[DOCTOR].length);
-            	cv.put(tcols[DOCTOR][1], new Integer(data[0]));
-            	cv.put(tcols[DOCTOR][2], data[1]);
-            	cv.put(tcols[DOCTOR][3], data[2]);
-            	cv.put(tcols[DOCTOR][4], data[3]);
-            	cv.put(tcols[DOCTOR][5], data[4]);
-            	cv.put(tcols[DOCTOR][6], data[5]);
-            	cv.put(tcols[DOCTOR][7], data[6]);
-            	cv.put(tcols[DOCTOR][8], new Integer(data[7]));
-            	cv.put(tcols[DOCTOR][9], new Integer(data[8]));
-            	cv.put(tcols[DOCTOR][10], data[9]);
-            	cv.put(tcols[DOCTOR][11], new Integer(data[10]));
-            	cv.put(tcols[DOCTOR][12], new Integer(data[11]));
-            	cv.put(tcols[DOCTOR][13], new Integer(data[12]));
-            	cv.put(tcols[DOCTOR][14], new Integer(data[13]));
-            	cv.put(tcols[DOCTOR][15], data[14]);
-            	cv.put(tcols[DOCTOR][16], new Integer(data[15]));
-            	cv.put(tcols[DOCTOR][17], new Integer(data[16]));
-            	cv.put(tcols[DOCTOR][18], new Integer(data[17]));
-            	cv.put(tcols[DOCTOR][19], data[18]);
-            	cv.put(tcols[DOCTOR][20], data[19]);
-            	cv.put(tcols[DOCTOR][21], data[20]);
-            	cv.put(tcols[DOCTOR][22], new Integer(data[21]));
-            	cv.put(tcols[DOCTOR][23], new Integer(data[22]));
-            	cv.put(tcols[DOCTOR][24], new Integer(data[23]));
-            	cv.put(tcols[DOCTOR][25], new Integer(data[24]));
-            	cv.put(tcols[DOCTOR][26], new Integer(data[25]));
-            	cv.put(tcols[DOCTOR][27], new Double(data[26]));
-            	return cv;	   
+        		cv.put(tcols[DOCTOR][1], new Integer(data[0]));
+                cv.put(tcols[DOCTOR][2], data[1]);
+                cv.put(tcols[DOCTOR][3], data[2]);
+                cv.put(tcols[DOCTOR][4], data[3]);
+                cv.put(tcols[DOCTOR][5], data[4]);
+                cv.put(tcols[DOCTOR][6], data[5]);
+                cv.put(tcols[DOCTOR][7], data[6]);
+                cv.put(tcols[DOCTOR][8], new Integer(data[7]));
+                cv.put(tcols[DOCTOR][9], new Integer(data[8]));
+                cv.put(tcols[DOCTOR][10], data[9]);
+                cv.put(tcols[DOCTOR][11], new Integer(data[10]));
+                cv.put(tcols[DOCTOR][12], new Integer(data[11]));
+                cv.put(tcols[DOCTOR][13], new Integer(data[12]));
+                cv.put(tcols[DOCTOR][14], new Integer(data[13]));
+                cv.put(tcols[DOCTOR][15], data[14]);
+                cv.put(tcols[DOCTOR][16], new Integer(data[15]));
+                cv.put(tcols[DOCTOR][17], new Integer(data[16]));
+                cv.put(tcols[DOCTOR][18], new Integer(data[17]));
+                cv.put(tcols[DOCTOR][19], data[18]);
+                cv.put(tcols[DOCTOR][20], data[19]);
+                cv.put(tcols[DOCTOR][21], data[20]);
+                cv.put(tcols[DOCTOR][22], new Integer(data[21]));
+                cv.put(tcols[DOCTOR][23], new Integer(data[22]));
+                cv.put(tcols[DOCTOR][24], new Integer(data[23]));
+                cv.put(tcols[DOCTOR][25], new Integer(data[24]));
+                cv.put(tcols[DOCTOR][26], new Integer(data[25]));
+                cv.put(tcols[DOCTOR][27], new Double(data[26]));
+            	cv.put(tcols[DOCTOR][28], data[27]);
+            	cv.put(tcols[DOCTOR][29], data[28]);
+            	cv.put(tcols[DOCTOR][30], data[29]);
+            	cv.put(tcols[DOCTOR][31], data[30]);
+            	cv.put(tcols[DOCTOR][32], data[31]);
+            	cv.put(tcols[DOCTOR][33], data[32]);
+            	cv.put(tcols[DOCTOR][34], data[33]);
+            	cv.put(tcols[DOCTOR][35], data[34]);
+            	cv.put(tcols[DOCTOR][36], data[35]);
+            	cv.put(tcols[DOCTOR][37], data[36]);
+            	cv.put(tcols[DOCTOR][38], data[37]);
+            	cv.put(tcols[DOCTOR][39], data[38]);
+            	return cv;	     
         	case COUNTY:
             	cv.put(tcols[COUNTY][1], new Integer(data[0]));
             	cv.put(tcols[COUNTY][2], data[1]);
@@ -565,7 +580,7 @@ public class DbAdapter {
     }
     
     public void insertDoctor(List ftsArr, List dataArr) throws RuntimeException{
-    	
+    	db.beginTransaction();
     	try{
     		int ix=0, jx=0, tblQueryGen=0;
     		StringBuilder docSQL = new StringBuilder("") ;
@@ -582,426 +597,427 @@ public class DbAdapter {
 	    	for(int i=0, j=dataArr.size(); i<j; i++) {
 	    		//String ftsText = (String)ftsArr.get(i);
 	    		String[] data = (String[])dataArr.get(i);
-	    		//long id = db.insert(tname[DOCTOR], null, formatInstance(DOCTOR, data));
-	    		if(i==0)
-    			{
-	    			docSQL.append("INSERT INTO '"+tname[DOCTOR]+"' ") ;
-	    			docSQL.append(" SELECT ");
-    				docSQL.append("NULL");
-        			docSQL.append(" AS ");
-        			docSQL.append("'"+tcols[DOCTOR][tblQueryGen]+"' ");
-        			
-	    			for(tblQueryGen = 1 ; tblQueryGen<tcols[DOCTOR].length ; tblQueryGen++)
-	    			{
-	    				docSQL.append(", ");
-	    				
-	    				if(dbHelper.getType(ttypes[DOCTOR].charAt(tblQueryGen))=="INTEGER")
-	    				{
-	    					docSQL.append(new Integer(data[tblQueryGen-1]));
-	    				}
-	    				else if(dbHelper.getType(ttypes[DOCTOR].charAt(tblQueryGen))=="TEXT")
-	    				{
-	    					docSQL.append("'"+data[tblQueryGen-1]+"' ");
-	    				}
-	    				else if(dbHelper.getType(ttypes[DOCTOR].charAt(tblQueryGen))=="DATE")
-	    				{
-	    					docSQL.append("'"+data[tblQueryGen-1]+"' ");
-	    				}
-	    				else if(dbHelper.getType(ttypes[DOCTOR].charAt(tblQueryGen))=="REAL")
-	    				{
-	    					docSQL.append(new Double(data[tblQueryGen-1]));
-	    				}
-	    				else
-	    				{
-	    					docSQL.append("NULL");
-	    				}
-	    				docSQL.append(" AS ");
-	        			docSQL.append("'"+tcols[DOCTOR][tblQueryGen]+"' ");
-	    	        }
-	    		}
-	    		else
-	    		{
-	    			docSQL.append(" UNION ");
-    				docSQL.append(" SELECT ");
-    				docSQL.append("NULL");
-    				for(tblQueryGen = 1 ; tblQueryGen<tcols[DOCTOR].length ; tblQueryGen++)
-	    			{
-    					docSQL.append(", ");
-    					if(dbHelper.getType(ttypes[DOCTOR].charAt(tblQueryGen))=="INTEGER")
-	    				{
-	    					docSQL.append(new Integer(data[tblQueryGen-1]));
-	    				}
-	    				else if(dbHelper.getType(ttypes[DOCTOR].charAt(tblQueryGen))=="TEXT")
-	    				{
-	    					docSQL.append("'"+data[tblQueryGen-1]+"' ");
-	    				}
-	    				else if(dbHelper.getType(ttypes[DOCTOR].charAt(tblQueryGen))=="DATE")
-	    				{
-	    					docSQL.append("'"+data[tblQueryGen-1]+"' ");
-	    				}
-	    				else if(dbHelper.getType(ttypes[DOCTOR].charAt(tblQueryGen))=="REAL")
-	    				{
-	    					docSQL.append(new Double(data[tblQueryGen-1]));
-	    				}
-	    				else
-	    				{
-	    					docSQL.append("NULL");
-	    				}
-	    			}
-	    		}
-	    		if(!data[27].equals("0")){
-	    			//hospital
-	    			try{
-		    			jsonTokener = new JSONTokener(data[27]);
-		            	arr = (JSONArray) jsonTokener.nextValue();
-		            	ix=0;
-		            	jx=arr.length();
-		            	if(jx>ix){
-		            		while(ix < jx) { 
-			            		jsonObj = arr.getJSONObject(ix);
-			            		ix++;
-			            		if(!jsonObj.getString("id").equals("")||!jsonObj.getString("id").equals("0"))
-			            		{	
-				            		if(hospitalSQL.toString().equals(""))
-			            			{
-				            			hospitalSQL.append("INSERT INTO '"+tname[DOC_HOSPITAL]+"' ") ;
-				            			hospitalSQL.append(" SELECT ");
-				            			hospitalSQL.append("NULL");
-				            			hospitalSQL.append(" AS ");
-				            			hospitalSQL.append("'"+tcols[DOC_HOSPITAL][0]+"' ");
-				            			hospitalSQL.append(", ");
-				            			hospitalSQL.append(jsonObj.getString("id"));
-				            			hospitalSQL.append(" AS ");
-				            			hospitalSQL.append("'"+tcols[DOC_HOSPITAL][1]+"' ");
-				            			hospitalSQL.append(", ");
-				            			hospitalSQL.append(new Integer(data[0]));
-				            			hospitalSQL.append(" AS ");
-				            			hospitalSQL.append("'"+tcols[DOC_HOSPITAL][2]+"' ");
-			            			}
-				            		else
-			            			{
-				            			hospitalSQL.append(" UNION ");
-			            				hospitalSQL.append(" SELECT ");
-			            				hospitalSQL.append("NULL");
-			            				hospitalSQL.append(", ");
-			            				hospitalSQL.append(jsonObj.getString("id"));
-			            				hospitalSQL.append(", ");
-			            				hospitalSQL.append(new Integer(data[0]));
-				            			
-			            			}
-			            		}
-			            	}
-			        		//http://stackoverflow.com/questions/15613377/insert-multiple-rows-in-sqlite-error-error-code-1
-		            	}
-	    			}
-	    			catch(Exception ex)
-	    			{
-	    				ex.printStackTrace();
-	    			}
-	            	
-	    		}
+	    		long id = db.insert(tname[DOCTOR], null, formatInstance(DOCTOR, data));
+//	    		if(i==0)
+//    			{
+//	    			docSQL.append("INSERT INTO '"+tname[DOCTOR]+"' ") ;
+//	    			docSQL.append(" SELECT ");
+//    				docSQL.append("NULL");
+//        			docSQL.append(" AS ");
+//        			docSQL.append("'"+tcols[DOCTOR][tblQueryGen]+"' ");
+//        			
+//	    			for(tblQueryGen = 1 ; tblQueryGen<tcols[DOCTOR].length ; tblQueryGen++)
+//	    			{
+//	    				docSQL.append(", ");
+//	    				
+//	    				if(dbHelper.getType(ttypes[DOCTOR].charAt(tblQueryGen))=="INTEGER")
+//	    				{
+//	    					docSQL.append(new Integer(data[tblQueryGen-1]));
+//	    				}
+//	    				else if(dbHelper.getType(ttypes[DOCTOR].charAt(tblQueryGen))=="TEXT")
+//	    				{
+//	    					docSQL.append("'"+data[tblQueryGen-1]+"' ");
+//	    				}
+//	    				else if(dbHelper.getType(ttypes[DOCTOR].charAt(tblQueryGen))=="DATE")
+//	    				{
+//	    					docSQL.append("'"+data[tblQueryGen-1]+"' ");
+//	    				}
+//	    				else if(dbHelper.getType(ttypes[DOCTOR].charAt(tblQueryGen))=="REAL")
+//	    				{
+//	    					docSQL.append(new Double(data[tblQueryGen-1]));
+//	    				}
+//	    				else
+//	    				{
+//	    					docSQL.append("NULL");
+//	    				}
+//	    				docSQL.append(" AS ");
+//	        			docSQL.append("'"+tcols[DOCTOR][tblQueryGen]+"' ");
+//	    	        }
+//	    		}
+//	    		else
+//	    		{
+//	    			docSQL.append(" UNION ");
+//    				docSQL.append(" SELECT ");
+//    				docSQL.append("NULL");
+//    				for(tblQueryGen = 1 ; tblQueryGen<tcols[DOCTOR].length ; tblQueryGen++)
+//	    			{
+//    					docSQL.append(", ");
+//    					if(dbHelper.getType(ttypes[DOCTOR].charAt(tblQueryGen))=="INTEGER")
+//	    				{
+//	    					docSQL.append(new Integer(data[tblQueryGen-1]));
+//	    				}
+//	    				else if(dbHelper.getType(ttypes[DOCTOR].charAt(tblQueryGen))=="TEXT")
+//	    				{
+//	    					docSQL.append("'"+data[tblQueryGen-1]+"' ");
+//	    				}
+//	    				else if(dbHelper.getType(ttypes[DOCTOR].charAt(tblQueryGen))=="DATE")
+//	    				{
+//	    					docSQL.append("'"+data[tblQueryGen-1]+"' ");
+//	    				}
+//	    				else if(dbHelper.getType(ttypes[DOCTOR].charAt(tblQueryGen))=="REAL")
+//	    				{
+//	    					docSQL.append(new Double(data[tblQueryGen-1]));
+//	    				}
+//	    				else
+//	    				{
+//	    					docSQL.append("NULL");
+//	    				}
+//	    			}
+//	    		}
 	    		
-				if(!data[28].equals("0")){
-				    //speciality
-				    try{
-						jsonTokener = new JSONTokener(data[28]);
-		            	arr = (JSONArray) jsonTokener.nextValue();
-		            	ix=0;
-		            	jx=arr.length();
-		            	if(jx>ix){
-		            		while(ix < jx) { 
-			            		jsonObj = arr.getJSONObject(ix);
-			            		ix++;
-			            		if(!jsonObj.getString("id").equals("")||!jsonObj.getString("id").equals("0"))
-			            		{
-			            			if(specialitySQL.toString().equals(""))
-			            			{
-			            				specialitySQL.append("INSERT INTO '"+tname[DOC_SPECIALTY]+"' ") ;
-			            				specialitySQL.append(" SELECT ");
-			            				specialitySQL.append("NULL");
-			            				specialitySQL.append(" AS ");
-			            				specialitySQL.append("'"+tcols[DOC_SPECIALTY][0]+"' ");
-			            				specialitySQL.append(", ");
-			            				specialitySQL.append(jsonObj.getString("id"));
-			            				specialitySQL.append(" AS ");
-			            				specialitySQL.append("'"+tcols[DOC_SPECIALTY][1]+"' ");
-			            				specialitySQL.append(", ");
-			            				specialitySQL.append(new Integer(data[0]));
-			            				specialitySQL.append(" AS ");
-			            				specialitySQL.append("'"+tcols[DOC_SPECIALTY][2]+"' ");
-			            			}
-				            		else
-			            			{
-				            			specialitySQL.append(" UNION ");
-				            			specialitySQL.append(" SELECT ");
-				            			specialitySQL.append("NULL");
-				            			specialitySQL.append(", ");
-				            			specialitySQL.append(jsonObj.getString("id"));
-				            			specialitySQL.append(", ");
-				            			specialitySQL.append(new Integer(data[0]));
-				            			
-			            			}
-			            		}
-			            	}
-			        		
-		            	}
-		            	
-	            	}
-	    			catch(Exception ex)
-	    			{
-	    				ex.printStackTrace();
-	    			}
-				}
-				
-				if(!data[29].equals("0")){
-					//insurance
-					try{
-						jsonTokener = new JSONTokener(data[29]);
-		            	arr = (JSONArray) jsonTokener.nextValue();
-		            	ix=0;
-		            	jx=arr.length();
-		            	if(jx>ix){
-		            		while(ix < jx) { 
-			            		jsonObj = arr.getJSONObject(ix);
-			            		ix++;
-			            		if(!jsonObj.getString("id").equals("")||!jsonObj.getString("id").equals("0"))
-			            		{
-			            			if(insuranceSQL.toString().equals(""))
-			            			{
-				            			insuranceSQL.append("INSERT INTO '"+tname[DOC_INSURANCE]+"' ") ;
-			            				insuranceSQL.append(" SELECT ");
-			            				insuranceSQL.append("NULL");
-				            			insuranceSQL.append(" AS ");
-				            			insuranceSQL.append("'"+tcols[DOC_INSURANCE][0]+"' ");
-				            			insuranceSQL.append(", ");
-				            			insuranceSQL.append(jsonObj.getString("id"));
-				            			insuranceSQL.append(" AS ");
-				            			insuranceSQL.append("'"+tcols[DOC_INSURANCE][1]+"' ");
-				            			insuranceSQL.append(", ");
-				            			insuranceSQL.append(new Integer(data[0]));
-				            			insuranceSQL.append(" AS ");
-				            			insuranceSQL.append("'"+tcols[DOC_INSURANCE][2]+"' ");
-			            			}
-				            		else
-			            			{
-			            				insuranceSQL.append(" UNION ");
-			            				insuranceSQL.append(" SELECT ");
-			            				insuranceSQL.append("NULL");
-				            			insuranceSQL.append(", ");
-				            			insuranceSQL.append(jsonObj.getString("id"));
-				            			insuranceSQL.append(", ");
-				            			insuranceSQL.append(new Integer(data[0]));
-				            			
-			            			}
-			            		}
-			            	}
-			        		
-		            	}
-		            	
-	            	}
-	    			catch(Exception ex)
-	    			{
-	    				ex.printStackTrace();
-	    			}
-				}
-				
-				if(!data[30].equals("0")){
-					//practice
-					try{
-						jsonTokener = new JSONTokener(data[30]);
-		            	arr = (JSONArray) jsonTokener.nextValue();
-		            	ix=0;
-		            	jx=arr.length();
-		            	if(jx>ix){
-		            		while(ix < jx) { 
-			            		jsonObj = arr.getJSONObject(ix);
-			            		ix++;
-			            		if(!jsonObj.getString("id").equals("")||!jsonObj.getString("id").equals("0"))
-			            		{
-			            			if(practiceSQL.toString().equals(""))
-			            			{
-				            			practiceSQL.append("INSERT INTO '"+tname[DOC_PRACTICE]+"' ") ;
-			            				practiceSQL.append(" SELECT ");
-			            				practiceSQL.append("NULL");
-				            			practiceSQL.append(" AS ");
-				            			practiceSQL.append("'"+tcols[DOC_PRACTICE][0]+"' ");
-				            			practiceSQL.append(", ");
-				            			practiceSQL.append(jsonObj.getString("id"));
-				            			practiceSQL.append(" AS ");
-				            			practiceSQL.append("'"+tcols[DOC_PRACTICE][1]+"' ");
-				            			practiceSQL.append(", ");
-				            			practiceSQL.append(new Integer(data[0]));
-				            			practiceSQL.append(" AS ");
-				            			practiceSQL.append("'"+tcols[DOC_PRACTICE][2]+"' ");
-			            			}
-				            		else
-			            			{
-			            				practiceSQL.append(" UNION ");
-			            				practiceSQL.append(" SELECT ");
-			            				practiceSQL.append("NULL");
-				            			practiceSQL.append(", ");
-				            			practiceSQL.append(jsonObj.getString("id"));
-				            			practiceSQL.append(", ");
-				            			practiceSQL.append(new Integer(data[0]));
-				            			
-			            			}
-			            		}
-			            	}
-			            	
-		            	}
-		            	
-	            	}
-	    			catch(Exception ex)
-	    			{
-	    				ex.printStackTrace();
-	    			}
-				}
-				
-				if(!data[31].equals("0")){
-					//plan
-					try{
-						jsonTokener = new JSONTokener(data[31]);
-		            	arr = (JSONArray) jsonTokener.nextValue();
-		            	ix=0;
-		            	jx=arr.length();
-		            	if(jx>ix){
-		            		while(ix < jx) { 
-			            		jsonObj = arr.getJSONObject(ix);
-			            		ix++;
-			            		if(!jsonObj.getString("id").equals("")||!jsonObj.getString("id").equals("0"))
-			            		{
-			            			if(planSQL.toString().equals(""))
-			            			{
-				            			planSQL.append("INSERT INTO '"+tname[DOC_PLAN]+"' ") ;
-			            				planSQL.append(" SELECT ");
-			            				planSQL.append("NULL");
-				            			planSQL.append(" AS ");
-				            			planSQL.append("'"+tcols[DOC_PLAN][0]+"' ");
-				            			planSQL.append(", ");
-				            			planSQL.append(jsonObj.getString("id"));
-				            			planSQL.append(" AS ");
-				            			planSQL.append("'"+tcols[DOC_PLAN][1]+"' ");
-				            			planSQL.append(", ");
-				            			planSQL.append(new Integer(data[0]));
-				            			planSQL.append(" AS ");
-				            			planSQL.append("'"+tcols[DOC_PLAN][2]+"' ");
-			            			}
-				            		else
-			            			{
-			            				planSQL.append(" UNION ");
-			            				planSQL.append(" SELECT ");
-			            				planSQL.append("NULL");
-				            			planSQL.append(", ");
-				            			planSQL.append(jsonObj.getString("id"));
-				            			planSQL.append(", ");
-				            			planSQL.append(new Integer(data[0]));
-				            			
-			            			}
-			            		}
-			            	}
-			            	
-		            	}
-		            	
-	            	}
-	    			catch(Exception ex)
-	    			{
-	    				ex.printStackTrace();
-	    			}
-				}
-				
-				if(!data[32].equals("0")){
-					//aco
-					try{
-						jsonTokener = new JSONTokener(data[32]);
-		            	arr = (JSONArray) jsonTokener.nextValue();
-		            	ix=0;
-		            	jx=arr.length();
-		            	if(jx>ix){
-		            		while(ix < jx) { 
-			            		jsonObj = arr.getJSONObject(ix);
-			            		ix++;
-			            		if(!jsonObj.getString("id").equals("")||!jsonObj.getString("id").equals("0"))
-			            		{
-			            			if(acoSQL.toString().equals(""))
-			            			{
-				            			acoSQL.append("INSERT INTO '"+tname[DOC_ACO]+"' ") ;
-			            				acoSQL.append(" SELECT ");
-			            				acoSQL.append("NULL");
-				            			acoSQL.append(" AS ");
-				            			acoSQL.append("'"+tcols[DOC_ACO][0]+"' ");
-				            			acoSQL.append(", ");
-				            			acoSQL.append(jsonObj.getString("id"));
-				            			acoSQL.append(" AS ");
-				            			acoSQL.append("'"+tcols[DOC_ACO][1]+"' ");
-				            			acoSQL.append(", ");
-				            			acoSQL.append(new Integer(data[0]));
-				            			acoSQL.append(" AS ");
-				            			acoSQL.append("'"+tcols[DOC_ACO][2]+"' ");
-			            			}
-				            		else
-			            			{
-			            				acoSQL.append(" UNION ");
-			            				acoSQL.append(" SELECT ");
-			            				acoSQL.append("NULL");
-				            			acoSQL.append(", ");
-				            			acoSQL.append(jsonObj.getString("id"));
-				            			acoSQL.append(", ");
-				            			acoSQL.append(new Integer(data[0]));
-				            			
-			            			}
-			            		}
-			            	}
-			        		
-		            	}
-		            	
-	            	}
-	    			catch(Exception ex)
-	    			{
-	    				ex.printStackTrace();
-	    			}
-				}
+//	    		if(!data[27].equals("0")){
+//	    			//hospital
+//	    			try{
+//		    			jsonTokener = new JSONTokener(data[27]);
+//		            	arr = (JSONArray) jsonTokener.nextValue();
+//		            	ix=0;
+//		            	jx=arr.length();
+//		            	if(jx>ix){
+//		            		while(ix < jx) { 
+//			            		jsonObj = arr.getJSONObject(ix);
+//			            		ix++;
+//			            		if(!jsonObj.getString("id").equals("")||!jsonObj.getString("id").equals("0"))
+//			            		{	
+//				            		if(hospitalSQL.toString().equals(""))
+//			            			{
+//				            			hospitalSQL.append("INSERT INTO '"+tname[DOC_HOSPITAL]+"' ") ;
+//				            			hospitalSQL.append(" SELECT ");
+//				            			hospitalSQL.append("NULL");
+//				            			hospitalSQL.append(" AS ");
+//				            			hospitalSQL.append("'"+tcols[DOC_HOSPITAL][0]+"' ");
+//				            			hospitalSQL.append(", ");
+//				            			hospitalSQL.append(jsonObj.getString("id"));
+//				            			hospitalSQL.append(" AS ");
+//				            			hospitalSQL.append("'"+tcols[DOC_HOSPITAL][1]+"' ");
+//				            			hospitalSQL.append(", ");
+//				            			hospitalSQL.append(new Integer(data[0]));
+//				            			hospitalSQL.append(" AS ");
+//				            			hospitalSQL.append("'"+tcols[DOC_HOSPITAL][2]+"' ");
+//			            			}
+//				            		else
+//			            			{
+//				            			hospitalSQL.append(" UNION ");
+//			            				hospitalSQL.append(" SELECT ");
+//			            				hospitalSQL.append("NULL");
+//			            				hospitalSQL.append(", ");
+//			            				hospitalSQL.append(jsonObj.getString("id"));
+//			            				hospitalSQL.append(", ");
+//			            				hospitalSQL.append(new Integer(data[0]));
+//				            			
+//			            			}
+//			            		}
+//			            	}
+//			        		//http://stackoverflow.com/questions/15613377/insert-multiple-rows-in-sqlite-error-error-code-1
+//		            	}
+//	    			}
+//	    			catch(Exception ex)
+//	    			{
+//	    				ex.printStackTrace();
+//	    			}
+//	            	
+//	    		}
+//	    		
+//				if(!data[28].equals("0")){
+//				    //speciality
+//				    try{
+//						jsonTokener = new JSONTokener(data[28]);
+//		            	arr = (JSONArray) jsonTokener.nextValue();
+//		            	ix=0;
+//		            	jx=arr.length();
+//		            	if(jx>ix){
+//		            		while(ix < jx) { 
+//			            		jsonObj = arr.getJSONObject(ix);
+//			            		ix++;
+//			            		if(!jsonObj.getString("id").equals("")||!jsonObj.getString("id").equals("0"))
+//			            		{
+//			            			if(specialitySQL.toString().equals(""))
+//			            			{
+//			            				specialitySQL.append("INSERT INTO '"+tname[DOC_SPECIALTY]+"' ") ;
+//			            				specialitySQL.append(" SELECT ");
+//			            				specialitySQL.append("NULL");
+//			            				specialitySQL.append(" AS ");
+//			            				specialitySQL.append("'"+tcols[DOC_SPECIALTY][0]+"' ");
+//			            				specialitySQL.append(", ");
+//			            				specialitySQL.append(jsonObj.getString("id"));
+//			            				specialitySQL.append(" AS ");
+//			            				specialitySQL.append("'"+tcols[DOC_SPECIALTY][1]+"' ");
+//			            				specialitySQL.append(", ");
+//			            				specialitySQL.append(new Integer(data[0]));
+//			            				specialitySQL.append(" AS ");
+//			            				specialitySQL.append("'"+tcols[DOC_SPECIALTY][2]+"' ");
+//			            			}
+//				            		else
+//			            			{
+//				            			specialitySQL.append(" UNION ");
+//				            			specialitySQL.append(" SELECT ");
+//				            			specialitySQL.append("NULL");
+//				            			specialitySQL.append(", ");
+//				            			specialitySQL.append(jsonObj.getString("id"));
+//				            			specialitySQL.append(", ");
+//				            			specialitySQL.append(new Integer(data[0]));
+//				            			
+//			            			}
+//			            		}
+//			            	}
+//			        		
+//		            	}
+//		            	
+//	            	}
+//	    			catch(Exception ex)
+//	    			{
+//	    				ex.printStackTrace();
+//	    			}
+//				}
+//				
+//				if(!data[29].equals("0")){
+//					//insurance
+//					try{
+//						jsonTokener = new JSONTokener(data[29]);
+//		            	arr = (JSONArray) jsonTokener.nextValue();
+//		            	ix=0;
+//		            	jx=arr.length();
+//		            	if(jx>ix){
+//		            		while(ix < jx) { 
+//			            		jsonObj = arr.getJSONObject(ix);
+//			            		ix++;
+//			            		if(!jsonObj.getString("id").equals("")||!jsonObj.getString("id").equals("0"))
+//			            		{
+//			            			if(insuranceSQL.toString().equals(""))
+//			            			{
+//				            			insuranceSQL.append("INSERT INTO '"+tname[DOC_INSURANCE]+"' ") ;
+//			            				insuranceSQL.append(" SELECT ");
+//			            				insuranceSQL.append("NULL");
+//				            			insuranceSQL.append(" AS ");
+//				            			insuranceSQL.append("'"+tcols[DOC_INSURANCE][0]+"' ");
+//				            			insuranceSQL.append(", ");
+//				            			insuranceSQL.append(jsonObj.getString("id"));
+//				            			insuranceSQL.append(" AS ");
+//				            			insuranceSQL.append("'"+tcols[DOC_INSURANCE][1]+"' ");
+//				            			insuranceSQL.append(", ");
+//				            			insuranceSQL.append(new Integer(data[0]));
+//				            			insuranceSQL.append(" AS ");
+//				            			insuranceSQL.append("'"+tcols[DOC_INSURANCE][2]+"' ");
+//			            			}
+//				            		else
+//			            			{
+//			            				insuranceSQL.append(" UNION ");
+//			            				insuranceSQL.append(" SELECT ");
+//			            				insuranceSQL.append("NULL");
+//				            			insuranceSQL.append(", ");
+//				            			insuranceSQL.append(jsonObj.getString("id"));
+//				            			insuranceSQL.append(", ");
+//				            			insuranceSQL.append(new Integer(data[0]));
+//				            			
+//			            			}
+//			            		}
+//			            	}
+//			        		
+//		            	}
+//		            	
+//	            	}
+//	    			catch(Exception ex)
+//	    			{
+//	    				ex.printStackTrace();
+//	    			}
+//				}
+//				
+//				if(!data[30].equals("0")){
+//					//practice
+//					try{
+//						jsonTokener = new JSONTokener(data[30]);
+//		            	arr = (JSONArray) jsonTokener.nextValue();
+//		            	ix=0;
+//		            	jx=arr.length();
+//		            	if(jx>ix){
+//		            		while(ix < jx) { 
+//			            		jsonObj = arr.getJSONObject(ix);
+//			            		ix++;
+//			            		if(!jsonObj.getString("id").equals("")||!jsonObj.getString("id").equals("0"))
+//			            		{
+//			            			if(practiceSQL.toString().equals(""))
+//			            			{
+//				            			practiceSQL.append("INSERT INTO '"+tname[DOC_PRACTICE]+"' ") ;
+//			            				practiceSQL.append(" SELECT ");
+//			            				practiceSQL.append("NULL");
+//				            			practiceSQL.append(" AS ");
+//				            			practiceSQL.append("'"+tcols[DOC_PRACTICE][0]+"' ");
+//				            			practiceSQL.append(", ");
+//				            			practiceSQL.append(jsonObj.getString("id"));
+//				            			practiceSQL.append(" AS ");
+//				            			practiceSQL.append("'"+tcols[DOC_PRACTICE][1]+"' ");
+//				            			practiceSQL.append(", ");
+//				            			practiceSQL.append(new Integer(data[0]));
+//				            			practiceSQL.append(" AS ");
+//				            			practiceSQL.append("'"+tcols[DOC_PRACTICE][2]+"' ");
+//			            			}
+//				            		else
+//			            			{
+//			            				practiceSQL.append(" UNION ");
+//			            				practiceSQL.append(" SELECT ");
+//			            				practiceSQL.append("NULL");
+//				            			practiceSQL.append(", ");
+//				            			practiceSQL.append(jsonObj.getString("id"));
+//				            			practiceSQL.append(", ");
+//				            			practiceSQL.append(new Integer(data[0]));
+//				            			
+//			            			}
+//			            		}
+//			            	}
+//			            	
+//		            	}
+//		            	
+//	            	}
+//	    			catch(Exception ex)
+//	    			{
+//	    				ex.printStackTrace();
+//	    			}
+//				}
+//				
+//				if(!data[31].equals("0")){
+//					//plan
+//					try{
+//						jsonTokener = new JSONTokener(data[31]);
+//		            	arr = (JSONArray) jsonTokener.nextValue();
+//		            	ix=0;
+//		            	jx=arr.length();
+//		            	if(jx>ix){
+//		            		while(ix < jx) { 
+//			            		jsonObj = arr.getJSONObject(ix);
+//			            		ix++;
+//			            		if(!jsonObj.getString("id").equals("")||!jsonObj.getString("id").equals("0"))
+//			            		{
+//			            			if(planSQL.toString().equals(""))
+//			            			{
+//				            			planSQL.append("INSERT INTO '"+tname[DOC_PLAN]+"' ") ;
+//			            				planSQL.append(" SELECT ");
+//			            				planSQL.append("NULL");
+//				            			planSQL.append(" AS ");
+//				            			planSQL.append("'"+tcols[DOC_PLAN][0]+"' ");
+//				            			planSQL.append(", ");
+//				            			planSQL.append(jsonObj.getString("id"));
+//				            			planSQL.append(" AS ");
+//				            			planSQL.append("'"+tcols[DOC_PLAN][1]+"' ");
+//				            			planSQL.append(", ");
+//				            			planSQL.append(new Integer(data[0]));
+//				            			planSQL.append(" AS ");
+//				            			planSQL.append("'"+tcols[DOC_PLAN][2]+"' ");
+//			            			}
+//				            		else
+//			            			{
+//			            				planSQL.append(" UNION ");
+//			            				planSQL.append(" SELECT ");
+//			            				planSQL.append("NULL");
+//				            			planSQL.append(", ");
+//				            			planSQL.append(jsonObj.getString("id"));
+//				            			planSQL.append(", ");
+//				            			planSQL.append(new Integer(data[0]));
+//				            			
+//			            			}
+//			            		}
+//			            	}
+//			            	
+//		            	}
+//		            	
+//	            	}
+//	    			catch(Exception ex)
+//	    			{
+//	    				ex.printStackTrace();
+//	    			}
+//				}
+//				
+//				if(!data[32].equals("0")){
+//					//aco
+//					try{
+//						jsonTokener = new JSONTokener(data[32]);
+//		            	arr = (JSONArray) jsonTokener.nextValue();
+//		            	ix=0;
+//		            	jx=arr.length();
+//		            	if(jx>ix){
+//		            		while(ix < jx) { 
+//			            		jsonObj = arr.getJSONObject(ix);
+//			            		ix++;
+//			            		if(!jsonObj.getString("id").equals("")||!jsonObj.getString("id").equals("0"))
+//			            		{
+//			            			if(acoSQL.toString().equals(""))
+//			            			{
+//				            			acoSQL.append("INSERT INTO '"+tname[DOC_ACO]+"' ") ;
+//			            				acoSQL.append(" SELECT ");
+//			            				acoSQL.append("NULL");
+//				            			acoSQL.append(" AS ");
+//				            			acoSQL.append("'"+tcols[DOC_ACO][0]+"' ");
+//				            			acoSQL.append(", ");
+//				            			acoSQL.append(jsonObj.getString("id"));
+//				            			acoSQL.append(" AS ");
+//				            			acoSQL.append("'"+tcols[DOC_ACO][1]+"' ");
+//				            			acoSQL.append(", ");
+//				            			acoSQL.append(new Integer(data[0]));
+//				            			acoSQL.append(" AS ");
+//				            			acoSQL.append("'"+tcols[DOC_ACO][2]+"' ");
+//			            			}
+//				            		else
+//			            			{
+//			            				acoSQL.append(" UNION ");
+//			            				acoSQL.append(" SELECT ");
+//			            				acoSQL.append("NULL");
+//				            			acoSQL.append(", ");
+//				            			acoSQL.append(jsonObj.getString("id"));
+//				            			acoSQL.append(", ");
+//				            			acoSQL.append(new Integer(data[0]));
+//				            			
+//			            			}
+//			            		}
+//			            	}
+//			        		
+//		            	}
+//		            	
+//	            	}
+//	    			catch(Exception ex)
+//	    			{
+//	    				ex.printStackTrace();
+//	    			}
+//				}
 				
 	    		//db.insert(tname[DOC_FTS], null, formatInstance(DOC_FTS, new String[]{ id+"", ftsText}));
 	    	}
-	    	db.beginTransaction();
-	    	try{
-		    	docSQL.append(" ; ");
-		    	db.execSQL(docSQL.toString());
-		    	if(!hospitalSQL.toString().equals(""))
-		    	{
-		    		hospitalSQL.append(" ; ");
-		    		db.execSQL(hospitalSQL.toString());
-		    	}
-		    	if(!practiceSQL.toString().equals(""))
-		    	{
-		    		practiceSQL.append(" ; ");
-		    		db.execSQL(practiceSQL.toString());
-		    	}
-		    	if(!specialitySQL.toString().equals(""))
-		    	{
-		    		specialitySQL.append(" ; ");
-		    		db.execSQL(specialitySQL.toString());
-		    	}
-		    	if(!insuranceSQL.toString().equals(""))
-		    	{
-		    		insuranceSQL.append(" ; ");
-		    		db.execSQL(insuranceSQL.toString());
-		    	}
-		    	if(!planSQL.toString().equals(""))
-		    	{
-		    		planSQL.append(" ; ");
-		    		db.execSQL(planSQL.toString());
-		    	}
-		    	if(!acoSQL.toString().equals(""))
-				{
-		    		acoSQL.append(" ; ");
-		    		db.execSQL(acoSQL.toString());
-				}
-	    	}
-			catch(Exception ex)
-			{
-				ex.printStackTrace();
-			}
+//	    	db.beginTransaction();
+//	    	try{
+//		    	docSQL.append(" ; ");
+//		    	db.execSQL(docSQL.toString());
+//		    	if(!hospitalSQL.toString().equals(""))
+//		    	{
+//		    		hospitalSQL.append(" ; ");
+//		    		db.execSQL(hospitalSQL.toString());
+//		    	}
+//		    	if(!practiceSQL.toString().equals(""))
+//		    	{
+//		    		practiceSQL.append(" ; ");
+//		    		db.execSQL(practiceSQL.toString());
+//		    	}
+//		    	if(!specialitySQL.toString().equals(""))
+//		    	{
+//		    		specialitySQL.append(" ; ");
+//		    		db.execSQL(specialitySQL.toString());
+//		    	}
+//		    	if(!insuranceSQL.toString().equals(""))
+//		    	{
+//		    		insuranceSQL.append(" ; ");
+//		    		db.execSQL(insuranceSQL.toString());
+//		    	}
+//		    	if(!planSQL.toString().equals(""))
+//		    	{
+//		    		planSQL.append(" ; ");
+//		    		db.execSQL(planSQL.toString());
+//		    	}
+//		    	if(!acoSQL.toString().equals(""))
+//				{
+//		    		acoSQL.append(" ; ");
+//		    		db.execSQL(acoSQL.toString());
+//				}
+//	    	}
+//			catch(Exception ex)
+//			{
+//				ex.printStackTrace();
+//			}
 	    	db.setTransactionSuccessful();
 	    	db.endTransaction();
 	    	
@@ -1194,6 +1210,23 @@ public class DbAdapter {
         	cur.moveToFirst();
         return cur;
     }
+    public Cursor fetchAco(int tableId, String docins) {
+    	Cursor cur = dbr.query(true, tname[tableId], tcols[tableId], 
+    			tcols[tableId][1]+" IN ("+docins+")",
+        		null, null, null, null, null);
+        if(cur!=null)
+        	cur.moveToFirst();
+        return cur;
+    }
+    
+    public Cursor fetchAcoSpeciality(int tableId, long netId) {
+    	Cursor cur = dbr.query(true, tname[tableId], tcols[tableId], 
+    			tcols[tableId][2]+"="+netId,
+        		null, null, null, null, null);
+        if(cur!=null)
+        	cur.moveToFirst();
+        return cur;
+    }
     public Cursor fetchSpeciality(int tableId, String docins) {
     	Cursor cur = dbr.query(true, tname[tableId], tcols[tableId], 
     			tcols[tableId][1]+" IN ("+docins+")",
@@ -1242,7 +1275,7 @@ public class DbAdapter {
         		null, null, null, null, null);
         if(cur!=null)
         	cur.moveToFirst();
-         int s = cur.getInt(7);
+         int s = cur.getInt(13);
         
         return s;
     }

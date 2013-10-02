@@ -55,14 +55,15 @@ public class DoctorReportDialog extends Dialog {
 				CheckBox chkBox2 = (CheckBox)findViewById(R.id.doc_report_checkbox2);
 				CheckBox chkBox3 = (CheckBox)findViewById(R.id.doc_report_checkbox3);
 				CheckBox chkBox4 = (CheckBox)findViewById(R.id.doc_report_checkbox4);
+				str=str.trim();
 				if(chkBox1.isChecked())
-					str += "Provider not in Plan\n";
+					str += "- 'Provider not in Plan',";
 				if(chkBox2.isChecked())
-					str += "Address or phone number incorrect\n";
+					str += "- 'Address or phone number incorrect',";
 				if(chkBox3.isChecked())
-					str += "Incorrect speciality\n";
+					str += "- 'Incorrect speciality',";
 				if(chkBox4.isChecked())
-					str += "Hospital list incorrect\n";
+					str += "- 'Hospital list incorrect'";
 				long reportId = dba.insert(DbAdapter.DOC_REPORT, new String[]{doctorId+"", userId, str, str2,""});
 				//ctx.reportTxt.setText(str2+"\n"+str);
 				//reportLayout.setVisibility(View.VISIBLE);
@@ -71,7 +72,7 @@ public class DoctorReportDialog extends Dialog {
 				//reportBtn.setVisibility(View.GONE);
 				String jsonData = "";       
 				try {
-						jsonData = getDataFromURL(ABC.WEB_URL+"doctor/report?doc_id=" + userId+"&ref_doc_id="+doctorId+"&report="+str+"&time="+str2);
+						jsonData = getDataFromURL(ABC.WEB_URL+"doctor/report?doc_id=" + userId+"&ref_doc_id="+doctorId+"&report="+str.trim()+"&time="+str2);
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

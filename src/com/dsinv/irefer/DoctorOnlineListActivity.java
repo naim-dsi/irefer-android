@@ -30,6 +30,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -135,6 +136,12 @@ public class DoctorOnlineListActivity extends Activity {
 	        public void onTextChanged(CharSequence s, int start, int before, int count) {
 	                autoCompleteAdapter.clear();	                
 	                new DownloadDoctorTask().execute(s);
+	                textView.setFocusableInTouchMode(true);
+	                textView.requestFocus();
+	                InputMethodManager inputMethodManager = (InputMethodManager) DoctorOnlineListActivity.this
+	                        .getSystemService(DoctorOnlineListActivity.this.INPUT_METHOD_SERVICE);
+	                inputMethodManager.showSoftInput(textView, InputMethodManager.SHOW_IMPLICIT);
+//	                
 	        }
 	    };
 	    textView.addTextChangedListener(textChecker);

@@ -44,6 +44,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.ViewGroup.LayoutParams;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -386,9 +387,17 @@ public class DoctorListActivity extends Activity {
 		super.onCreateContextMenu(menu, v, menuInfo);
 		Map map = (Map)docList.get(selectedItemIdx);
 		
+		 
+		
 		menu.setHeaderTitle((String)map.get("docTitile1"));
 		menu.add(0, v.getId(), 0, "Rank");
 		menu.add(0, v.getId(), 0, "Report Change");
+		textView.setFocusableInTouchMode(true);
+        textView.requestFocus();
+        InputMethodManager inputMethodManager = (InputMethodManager) DoctorListActivity.this
+                .getSystemService(DoctorListActivity.this.INPUT_METHOD_SERVICE);
+        inputMethodManager.showSoftInput(textView, InputMethodManager.SHOW_IMPLICIT);
+//        
 	}
 	
 	@Override  

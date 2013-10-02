@@ -175,24 +175,24 @@ public class DoctorDetailActivity extends Activity {
 	
 	private Map<String, String> loadDoctorDetailsFromDatabase(Long doctorId) {
         Cursor cr = dba.fetchByNetId(DbAdapter.DOCTOR, doctorId);
-        
+        cr.moveToFirst();
         //Insurance///////////////////////////////////////////////////////////////////
-        Cursor cr3 = dba.fetchdocInsurance(DbAdapter.DOC_INSURANCE, doctorId);
+//        Cursor cr3 = dba.fetchdocInsurance(DbAdapter.DOC_INSURANCE, doctorId);
         String insurances = "";
-        String docins = "";
-        cr3.moveToFirst();
-        for(int i=0; i<cr3.getCount(); i++) {
-        	if(i == 0)
-        	{
-        		docins=cr3.getString(1);
-        		cr3.moveToNext();
-        	}
-        	else
-        	{
-	        	docins = docins + " , " +cr3.getString(1);
-	    		cr3.moveToNext();
-        	}
-    	}
+        String docins = cr.getString(31);
+//        cr3.moveToFirst();
+//        for(int i=0; i<cr3.getCount(); i++) {
+//        	if(i == 0)
+//        	{
+//        		docins=cr3.getString(1);
+//        		cr3.moveToNext();
+//        	}
+//        	else
+//        	{
+//	        	docins = docins + " , " +cr3.getString(1);
+//	    		cr3.moveToNext();
+//        	}
+//    	}
         if (docins.length() > 0 && docins.charAt(docins.length()-1)==',') {
         	docins = docins.substring(0, docins.length()-1);
         }
@@ -214,22 +214,22 @@ public class DoctorDetailActivity extends Activity {
         	}
     	}
         //Speciality///////////////////////////////////////////////////////////////
-        cr3 = dba.fetchdocSpeciality(DbAdapter.DOC_SPECIALTY, doctorId);
+//        cr3 = dba.fetchdocSpeciality(DbAdapter.DOC_SPECIALTY, doctorId);
         String specialities = "";
-        docins = "";
-        cr3.moveToFirst();
-        for(int i=0; i<cr3.getCount(); i++) {
-        	if(i == 0)
-        	{
-        		docins=cr3.getString(1);
-        		cr3.moveToNext();
-        	}
-        	else
-        	{
-	        	docins = docins + " , " +cr3.getString(1);
-	    		cr3.moveToNext();
-        	}
-    	}
+        docins = cr.getString(30);
+//        cr3.moveToFirst();
+//        for(int i=0; i<cr3.getCount(); i++) {
+//        	if(i == 0)
+//        	{
+//        		docins=cr3.getString(1);
+//        		cr3.moveToNext();
+//        	}
+//        	else
+//        	{
+//	        	docins = docins + " , " +cr3.getString(1);
+//	    		cr3.moveToNext();
+//        	}
+//    	}
         if (docins.length() > 0 && docins.charAt(docins.length()-1)==',') {
         	docins = docins.substring(0, docins.length()-1);
         }
@@ -251,22 +251,22 @@ public class DoctorDetailActivity extends Activity {
         	}
     	}
       //Hospitals///////////////////////////////////////////////////////////////
-        cr3 = dba.fetchdocHospital(DbAdapter.DOC_HOSPITAL, doctorId);
+//        cr3 = dba.fetchdocHospital(DbAdapter.DOC_HOSPITAL, doctorId);
         String hospitals = "";
-        docins = "";
-        cr3.moveToFirst();
-        for(int i=0; i<cr3.getCount(); i++) {
-        	if(i == 0)
-        	{
-        		docins=cr3.getString(1);
-        		cr3.moveToNext();
-        	}
-        	else
-        	{
-	        	docins = docins + " , " +cr3.getString(1);
-	    		cr3.moveToNext();
-        	}
-    	}
+        docins = cr.getString(29);
+//        cr3.moveToFirst();
+//        for(int i=0; i<cr3.getCount(); i++) {
+//        	if(i == 0)
+//        	{
+//        		docins=cr3.getString(1);
+//        		cr3.moveToNext();
+//        	}
+//        	else
+//        	{
+//	        	docins = docins + " , " +cr3.getString(1);
+//	    		cr3.moveToNext();
+//        	}
+//    	}
         if (docins.length() > 0 && docins.charAt(docins.length()-1)==',') {
         	docins = docins.substring(0, docins.length()-1);
         }
@@ -293,24 +293,61 @@ public class DoctorDetailActivity extends Activity {
 	    		cr2.moveToNext();
         	}
     	}
-        
-      //Practice///////////////////////////////////////////////////////////////
-        cr3 = dba.fetchdocPractice(DbAdapter.DOC_PRACTICE, doctorId);
-        String practices = "";
-        docins = "";
-        cr3.moveToFirst();
-        for(int i=0; i<cr3.getCount(); i++) {
+////////////////////ACO////////////////////////////////////////////        
+//        cr3 = dba.fetchdocAco(DbAdapter.DOC_ACO, doctorId);
+        String acos = "";
+        docins = cr.getString(33);
+//        cr3.moveToFirst();
+//        for(int i=0; i<cr3.getCount(); i++) {
+//        	if(i == 0)
+//        	{
+//        		docins=cr3.getString(1);
+//        		cr3.moveToNext();
+//        	}
+//        	else
+//        	{
+//	        	docins = docins + " , " +cr3.getString(1);
+//	    		cr3.moveToNext();
+//        	}
+//    	}
+        if (docins.length() > 0 && docins.charAt(docins.length()-1)==',') {
+        	docins = docins.substring(0, docins.length()-1);
+        }
+        Log.d("NR::", docins);
+        cr2 = dba.fetchAco(DbAdapter.ACO, docins);
+        cr2.moveToFirst();        
+        for(int i=0; i<cr2.getCount(); i++) {
         	if(i == 0)
         	{
-        		docins=cr3.getString(1);
-        		cr3.moveToNext();
+        		acos = cr2.getString(2);
+        		Log.d("NR::", cr2.getString(2));
+        		cr2.moveToNext();
         	}
         	else
         	{
-	        	docins = docins + " , " +cr3.getString(1);
-	    		cr3.moveToNext();
+        		acos = acos + " , " +cr2.getString(2);	
+	        	Log.d("NR::", cr2.getString(2));
+	    		cr2.moveToNext();
         	}
-    	}
+    	}        
+        
+      //Practice///////////////////////////////////////////////////////////////
+//        cr3 = dba.fetchdocPractice(DbAdapter.DOC_PRACTICE, doctorId);
+        String practices = "";
+        docins = cr.getString(28);
+//        cr3.moveToFirst();
+//        for(int i=0; i<cr3.getCount(); i++) {
+//        	if(i == 0)
+//        	{
+//        		docins=cr3.getString(1);
+//        		cr3.moveToNext();
+//        	}
+//        	else
+//        	{
+//	        	docins = docins + " , " +cr3.getString(1);
+//	    		cr3.moveToNext();
+//        	}
+//    	}
         if (docins.length() > 0 && docins.charAt(docins.length()-1)==',') {
         	docins = docins.substring(0, docins.length()-1);
         }
@@ -426,6 +463,7 @@ public class DoctorDetailActivity extends Activity {
         	data.put("speciality", specialities);        	
         	cr.close();
         }
+        data.put("acos", acos); 
         /*
         cr = dba.fetchByNetId(DbAdapter.PRACTICE, practiceId);
         if(cr != null && cr.getCount() > 0) {
@@ -607,6 +645,16 @@ public class DoctorDetailActivity extends Activity {
 			//hosp += "1".equals(data.get("see_patient")) ? "See Patient" : "" + "\n";
 		}
 		dglTxt3.setText(hosp);
+		
+		TextView dglTxt5 = (TextView) findViewById(R.id.doctor_detail_label4);		
+		String acos = "";
+		if(!Utils.isEmpty(data.get("acos"))) {
+			acos += "" + data.get("acos").replace('|', '\n')+ "\n";
+			//if(!Utils.isEmpty(data.get("hospital_add")))
+			//	hosp += "" + data.get("hospital_add")+ "\n";
+			//hosp += "1".equals(data.get("see_patient")) ? "See Patient" : "" + "\n";
+		}
+		dglTxt5.setText(acos);
 		
 		TextView dglTxt4 = (TextView) findViewById(R.id.doctor_detail_label_bottom);		
 		String note = "";

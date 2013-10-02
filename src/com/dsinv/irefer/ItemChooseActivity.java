@@ -26,6 +26,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -124,6 +125,12 @@ public class ItemChooseActivity extends Activity {
 	        public void onTextChanged(CharSequence s, int start, int before, int count) {
 	        	
 	    	    populateListData(s.toString());
+	    	    textView.setFocusableInTouchMode(true);
+                textView.requestFocus();
+                InputMethodManager inputMethodManager = (InputMethodManager) ItemChooseActivity.this
+                        .getSystemService(ItemChooseActivity.this.INPUT_METHOD_SERVICE);
+                inputMethodManager.showSoftInput(textView, InputMethodManager.SHOW_IMPLICIT);
+//                
 	    	    
 	        }
 	    };

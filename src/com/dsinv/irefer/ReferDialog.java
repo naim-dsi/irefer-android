@@ -69,7 +69,8 @@ public class ReferDialog extends Dialog {
 				Log.d("NR::", "X = "+doctorId +", Y = "+currentDocId);
 				String jsonData = "";       
 		        try {
-					jsonData = getDataFromURL(ABC.WEB_URL+"doctor/referral2?doc_id=" + currentDocId+"&ref_doc_id="+doctorId+"&initial="+patient_ini+"&insurance="+insurance+"&email="+patient_email);
+		        	Log.d("NR::",ABC.WEB_URL+"doctor/referral2?doc_id=" + currentDocId+"&ref_doc_id="+doctorId+"&insurance="+insurance+"&email="+patient_email.trim()+"&initial="+patient_ini.trim());
+					jsonData = getDataFromURL(ABC.WEB_URL+"doctor/referral2?doc_id=" + currentDocId+"&ref_doc_id="+doctorId+"&insurance="+insurance+"&email="+patient_email.trim()+"&initial="+patient_ini.trim());
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

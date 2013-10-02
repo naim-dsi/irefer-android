@@ -26,6 +26,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -101,10 +103,10 @@ public class ItemAddActivity extends Activity {
     	final TextWatcher textChecker = new TextWatcher() {
     		 
 	        public void afterTextChanged(Editable s) {
-	        	textView.setEnabled(true);
+	        	//textView.setEnabled(true);
 	        }
 	        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-	        	textView.setEnabled(false);
+	        	//textView.setEnabled(false);
 	        }
 	 
 	        public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -144,12 +146,21 @@ public class ItemAddActivity extends Activity {
 	                }
 	                
 	                System.out.println("SMM:INFO::"+nameArr.length);
-	                footerView.setText((String)nameArr[0]);
+	                footerView.setText("Add from list");
 	                
 	                for (int i=0; i < nameArr.length; i++) {
 	                     autoCompleteAdapter.add((String) nameArr[i]);
 	                        //System.out.println("SMM:INFO::"+nameArr[i]);
 	                }
+	                textView.setFocusableInTouchMode(true);
+	                textView.requestFocus();
+	                InputMethodManager inputMethodManager = (InputMethodManager) ItemAddActivity.this
+	                        .getSystemService(ItemAddActivity.this.INPUT_METHOD_SERVICE);
+	                inputMethodManager.showSoftInput(textView, InputMethodManager.SHOW_IMPLICIT);
+//	                if(textView.requestFocus()) {
+//	                    getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+//	                }
+	                
 	        }
 	    };
 	    textView.addTextChangedListener(textChecker);

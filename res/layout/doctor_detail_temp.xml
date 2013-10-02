@@ -335,6 +335,22 @@ android:layout_height="fill_parent">
     android:textColor="#FFFFFF" android:textSize="14dip"/>    
 </LinearLayout>
 
+<LinearLayout 
+    android:layout_width="fill_parent" android:layout_height="wrap_content"
+    android:background="@drawable/rounded_top_bottom_shape"
+    android:padding="3dip" android:layout_marginTop="2dip"
+    android:id="@+id/doc_detail_holder_three" android:orientation="vertical">
+<TextView  android:id="@+id/doctor_detail_label3head" 
+	android:layout_width="fill_parent" android:layout_height="wrap_content" 
+    android:layout_marginLeft="5dip" android:layout_marginBottom="5dip" 
+    android:text="ACO:"   android:gravity="left"
+    android:textColor="#FDD017" android:textSize="14dip" android:textStyle="bold"/>
+    
+<TextView  android:id="@+id/doctor_detail_label4" android:layout_width="fill_parent" android:layout_height="wrap_content" 
+    android:layout_marginLeft="5dip" android:layout_marginBottom="5dip" android:text="Aco Name"   android:gravity="left"
+    android:textColor="#FFFFFF" android:textSize="14dip"/>    
+</LinearLayout>
+
 <!-- <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" -->
 <LinearLayout 
     android:orientation="vertical"
@@ -352,6 +368,8 @@ android:layout_height="fill_parent">
     android:layout_marginLeft="5dip" android:layout_marginBottom="5dip" android:text="additionals"   android:gravity="left"
     android:textColor="#FFFFFF" android:textSize="16dip"/>    
 </LinearLayout>
+
+
 		
 <Button android:id="@+id/call_button" 
 	android:layout_height="wrap_content" 

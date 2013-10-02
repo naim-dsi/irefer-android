@@ -23,6 +23,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -102,7 +103,7 @@ public class ItemOnlineSelectActivity extends Activity {
 	 
 	        public void onTextChanged(CharSequence s, int start, int before, int count) {
                 autoCompleteAdapter.clear();
-                
+                  
                 String jsonData = "";
                 try {
                 	if(opr == DbAdapter.PRACTICE) {
@@ -143,7 +144,13 @@ public class ItemOnlineSelectActivity extends Activity {
                     	j++;
                     }                 
                 }                
-                footerView.setText( (nameArr.length - 1)+" items found");                
+                footerView.setText( (nameArr.length - 1)+" items found");    
+                textView.setFocusableInTouchMode(true);
+                textView.requestFocus();
+                InputMethodManager inputMethodManager = (InputMethodManager) ItemOnlineSelectActivity.this
+                        .getSystemService(ItemOnlineSelectActivity.this.INPUT_METHOD_SERVICE);
+                inputMethodManager.showSoftInput(textView, InputMethodManager.SHOW_IMPLICIT);
+//              
 	        }
 	    };
 	    textView.addTextChangedListener(textChecker);

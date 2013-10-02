@@ -127,6 +127,9 @@ public class ActivationFormActivity extends Activity {
     	String pracId = object0.getString("my_practice_id");
     	if(pracId == null || pracId.equals("null")) pracId = "0";
     	
+    	String docId = object0.getString("doc_id");
+    	if(docId == null || docId.equals("null")) docId = "0";
+    	
     	String hospId = object0.getString("my_hospital_id");
     	if(hospId == null || hospId.equals("null")) hospId = "0";
     	
@@ -136,7 +139,7 @@ public class ActivationFormActivity extends Activity {
 		long userId = dba.insert(DbAdapter.USERS, new String[]{object0.getString("id"), 
 				object0.getString("last_name"), object0.getString("first_name"), object0.getString("email"),
 				object0.getString("activation_code"),
-				pracId, hospId, cntyId, "1", "1", "1", "0"});
+				pracId, hospId, cntyId, "1", "1", "1", "0",docId});
 		
 		if(!pracId.equals("0")) {
 			dba.insert(DbAdapter.PRACTICE, new String[]{object1.getString("id"), 

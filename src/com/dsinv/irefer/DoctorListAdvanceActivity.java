@@ -30,6 +30,7 @@ import android.text.TextWatcher;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -214,7 +215,7 @@ public class DoctorListAdvanceActivity extends Activity {
 	 
 	        public void onTextChanged(CharSequence s, int start, int before, int count) {
 	                autoCompleteAdapter.clear();
-	                
+	                 
 	                //Cursor cr = dba.fetchAll(dba.PRACTICE);
 	                Cursor cr = dba.fetchDoctorFTS(s.toString());
 	                
@@ -271,7 +272,12 @@ public class DoctorListAdvanceActivity extends Activity {
 	                	footerView.setText("No match founr");
 	                }
 	                System.out.println("SMM:INFO::"+nameArr.length);
-	                
+	                textView.setFocusableInTouchMode(true);
+	                textView.requestFocus();
+	                InputMethodManager inputMethodManager = (InputMethodManager) DoctorListAdvanceActivity.this
+	                        .getSystemService(DoctorListAdvanceActivity.this.INPUT_METHOD_SERVICE);
+	                inputMethodManager.showSoftInput(textView, InputMethodManager.SHOW_IMPLICIT);
+//	               
 	        }
 	    };
 	    textView.addTextChangedListener(textChecker);
