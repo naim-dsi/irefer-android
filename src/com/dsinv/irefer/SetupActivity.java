@@ -940,50 +940,50 @@ public class SetupActivity extends Activity {
 				jsonData = null;
     			System.gc();
     			
-//				publishProgress(-2);
-//				urlString = ABC.WEB_URL+"hospital/jsonCounty?cnty_id="+cntyIds;
-//				jsonData = getDataFromURL(urlString);
-//				Log.d("NI","URL Hospital::"+urlString);
-//				//Log.d("NI","JSONDATA Hospital::"+jsonData);
-//				parseJSONData(jsonData, DbAdapter.HOSPITAL, null);
-//				jsonData = null;
-//    			System.gc();
-//    			
-//				publishProgress(-4);
-//				urlString = ABC.WEB_URL+"speciality/json?limit=1000";
-//				jsonData = getDataFromURL(urlString);
-//				Log.d("NI","URL Speciality::"+urlString);
-//				//Log.d("NI","JSONDATA Speciality::"+jsonData);
-//				parseJSONData(jsonData, DbAdapter.SPECIALTY, "");
-//				jsonData = null;
-//    			System.gc();
-//    			
-//				publishProgress(-3);
-//				urlString = ABC.WEB_URL+"insurance/json";
-//				jsonData = getDataFromURL(urlString);
-//				Log.d("NI","URL Insurance::"+urlString);
-//				//Log.d("NI","JSONDATA Insurance::"+jsonData);
-//				parseJSONData(jsonData, DbAdapter.INSURANCE, null);
-//				jsonData = null;
-//    			System.gc();				
-//				 
-//				publishProgress(-7);
-//				urlString = ABC.WEB_URL+"plan/json";
-//				jsonData = getDataFromURL(urlString);
-//				Log.d("NI","URL PLAN::"+urlString);
-//				//Log.d("NI","JSONDATA PLAN::"+jsonData);
-//				parseJSONData(jsonData, DbAdapter.PLAN, null);
-//				jsonData = null;
-//    			System.gc();
-//    			
-//				publishProgress(-8);
-//				urlString = ABC.WEB_URL+"aco/json";
-//				jsonData = getDataFromURL(urlString);
-//				Log.d("NI","URL ACO::"+urlString);
-//				//Log.d("NI","JSONDATA ACO::"+jsonData);
-//				parseJSONData(jsonData, DbAdapter.ACO, null);
-//				jsonData = null;
-//    			System.gc();
+				publishProgress(-2);
+				urlString = ABC.WEB_URL+"hospital/jsonCounty?cnty_id="+cntyIds;
+				jsonData = getDataFromURL(urlString);
+				Log.d("NI","URL Hospital::"+urlString);
+				//Log.d("NI","JSONDATA Hospital::"+jsonData);
+				parseJSONData(jsonData, DbAdapter.HOSPITAL, null);
+				jsonData = null;
+    			System.gc();
+    			
+				publishProgress(-4);
+				urlString = ABC.WEB_URL+"speciality/json?limit=1000";
+				jsonData = getDataFromURL(urlString);
+				Log.d("NI","URL Speciality::"+urlString);
+				//Log.d("NI","JSONDATA Speciality::"+jsonData);
+				parseJSONData(jsonData, DbAdapter.SPECIALTY, "");
+				jsonData = null;
+    			System.gc();
+    			
+				publishProgress(-3);
+				urlString = ABC.WEB_URL+"insurance/json";
+				jsonData = getDataFromURL(urlString);
+				Log.d("NI","URL Insurance::"+urlString);
+				//Log.d("NI","JSONDATA Insurance::"+jsonData);
+				parseJSONData(jsonData, DbAdapter.INSURANCE, null);
+				jsonData = null;
+    			System.gc();				
+				 
+				publishProgress(-7);
+				urlString = ABC.WEB_URL+"plan/json";
+				jsonData = getDataFromURL(urlString);
+				Log.d("NI","URL PLAN::"+urlString);
+				//Log.d("NI","JSONDATA PLAN::"+jsonData);
+				parseJSONData(jsonData, DbAdapter.PLAN, null);
+				jsonData = null;
+    			System.gc();
+    			
+				publishProgress(-8);
+				urlString = ABC.WEB_URL+"aco/json";
+				jsonData = getDataFromURL(urlString);
+				Log.d("NI","URL ACO::"+urlString);
+				//Log.d("NI","JSONDATA ACO::"+jsonData);
+				parseJSONData(jsonData, DbAdapter.ACO, null);
+				jsonData = null;
+    			System.gc();
     			
 				//////////////////////////////
 				/*
@@ -995,61 +995,61 @@ public class SetupActivity extends Activity {
 				*/
 				///////////////////////////
 				
-//				if(dba.getCount(DbAdapter.STATE) == 0){
-//					urlString = ABC.WEB_URL+"state/json";
-//					jsonData = getDataFromURL(urlString);
-//					Log.d("NI","URL State::"+urlString);
-//					//Log.d("NI","JSONDATA State::"+jsonData);
-//					parseJSONData(jsonData, DbAdapter.STATE, null);	
-//					jsonData = null;
-//	    			System.gc();
-//				}
+				if(dba.getCount(DbAdapter.STATE) == 0){
+					urlString = ABC.WEB_URL+"state/json";
+					jsonData = getDataFromURL(urlString);
+					Log.d("NI","URL State::"+urlString);
+					//Log.d("NI","JSONDATA State::"+jsonData);
+					parseJSONData(jsonData, DbAdapter.STATE, null);	
+					jsonData = null;
+	    			System.gc();
+				}
 				
 				///////////////////////////
 				/*if(true){
 					return 0L;
 				}*/
 				
-//				dba.deleteAll(DbAdapter.DOCTOR);
-//				dba.deleteAll(DbAdapter.DOC_FTS);
-//				dba.deleteAll(DbAdapter.DOC_HOSPITAL);
-//				dba.deleteAll(DbAdapter.DOC_SPECIALTY);
-//				dba.deleteAll(DbAdapter.DOC_INSURANCE);
-//				dba.deleteAll(DbAdapter.DOC_PRACTICE);
-//				dba.deleteAll(DbAdapter.DOC_PLAN);
-//				dba.deleteAll(DbAdapter.DOC_ACO);
-//				while(flag) {
-//					//start++;
-//					String limit  = start+","+Utils.docSyncStep; 
-//					try {		
-//						//dialog.setMessage("Downloading Doctor Data...");
-//						publishProgress(-5);
-//						urlString = ABC.WEB_URL+"doctor/json?prac_ids=1&cnty_ids="+cntyIds
-//								//+"&insu_ids="+insuIds
-//								//+"&spec_ids="+specIds+"&hosp_ids="+hospIds
-//								+"&limit="+limit+"&user_id="+userId;
-//						jsonData = getDataFromURL(urlString);
-//						Log.d("NI","URL Doctor::"+urlString);
-//						//Log.d("NI","JSONDATA Doctor::"+jsonData);
-//						docReceived = 0;
-//						publishProgress(0);
-//						parseDoctorJSONData(jsonData);
-//						//publishProgress(100);
-//	                	
-//						//System.out.println("SMM:INTERNET::"+ABC.WEB_URL+"practice/json?code="+s.toString());
-//					} catch(Exception ex) {
-//						//Toast.makeText(SetupActivity.this, "Failed to load data from intenet.", Toast.LENGTH_SHORT).show();
-//						//System.out.println("SMM:ERROR::"+ex);
-//						ex.printStackTrace();
-//						flag = false;
-//					}
-//					//footerView.setText(end+" doctor added");
-//					if(docReceived < end-start || end >= Utils.docSyncLimit)
-//						flag = false;
-//					
-//					start = end;
-//					end = end+Utils.docSyncStep;
-//               	}
+				dba.deleteAll(DbAdapter.DOCTOR);
+				dba.deleteAll(DbAdapter.DOC_FTS);
+				dba.deleteAll(DbAdapter.DOC_HOSPITAL);
+				dba.deleteAll(DbAdapter.DOC_SPECIALTY);
+				dba.deleteAll(DbAdapter.DOC_INSURANCE);
+				dba.deleteAll(DbAdapter.DOC_PRACTICE);
+				dba.deleteAll(DbAdapter.DOC_PLAN);
+				dba.deleteAll(DbAdapter.DOC_ACO);
+				while(flag) {
+					//start++;
+					String limit  = start+","+Utils.docSyncStep; 
+					try {		
+						//dialog.setMessage("Downloading Doctor Data...");
+						publishProgress(-5);
+						urlString = ABC.WEB_URL+"doctor/json?prac_ids=1&cnty_ids="+cntyIds
+								//+"&insu_ids="+insuIds
+								//+"&spec_ids="+specIds+"&hosp_ids="+hospIds
+								+"&limit="+limit+"&user_id="+userId;
+						jsonData = getDataFromURL(urlString);
+						Log.d("NI","URL Doctor::"+urlString);
+						//Log.d("NI","JSONDATA Doctor::"+jsonData);
+						docReceived = 0;
+						publishProgress(0);
+						parseDoctorJSONData(jsonData);
+						//publishProgress(100);
+	                	
+						//System.out.println("SMM:INTERNET::"+ABC.WEB_URL+"practice/json?code="+s.toString());
+					} catch(Exception ex) {
+						//Toast.makeText(SetupActivity.this, "Failed to load data from intenet.", Toast.LENGTH_SHORT).show();
+						//System.out.println("SMM:ERROR::"+ex);
+						ex.printStackTrace();
+						flag = false;
+					}
+					//footerView.setText(end+" doctor added");
+					if(docReceived < end-start || end >= Utils.docSyncLimit)
+						flag = false;
+					
+					start = end;
+					end = end+Utils.docSyncStep;
+               	}
            } catch (Exception e) {
         	   //System.out.println("SMM::ERROR::"+e);
         	   e.printStackTrace();
