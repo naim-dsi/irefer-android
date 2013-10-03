@@ -22,6 +22,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -39,7 +40,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class ItemAddActivity extends Activity {
-
+	private String searchText = "";
 	private DbAdapter	dba;
 	private TextView textView; 
 	private TextView footerView;
@@ -51,7 +52,73 @@ public class ItemAddActivity extends Activity {
     int selectedItemIdx = -1;
     int opr = 0;
     int oprType = -1;
-    
+    protected Handler systemtaskHandler = new Handler();
+	Runnable systemTaskRunner = new Runnable() {
+		public void run()
+        {
+        	try
+    		{
+        		
+        		autoCompleteAdapter.clear();
+                
+                String jsonData = "";
+                try {
+                	if(opr == DbAdapter.PRACTICE)
+                		jsonData = getDataFromURL(ABC.WEB_URL+"practice/json?code="+searchText.toString());
+                	if(opr == DbAdapter.HOSPITAL)
+                		jsonData = getDataFromURL(ABC.WEB_URL+"hospital/json?code="+searchText.toString());
+                	if(opr == DbAdapter.SPECIALTY)
+                		jsonData = getDataFromURL(ABC.WEB_URL+"speciality/json?type=1&code="+searchText.toString());
+                	if(opr == DbAdapter.INSURANCE)
+                		jsonData = getDataFromURL(ABC.WEB_URL+"insurance/json?code="+searchText.toString());
+                	if(opr == DbAdapter.COUNTY)
+                		jsonData = getDataFromURL(ABC.WEB_URL+"county/json?code="+searchText.toString());
+                	//System.out.println("SMM:INTERNET::"+ABC.WEB_URL+"practice/json?code="+s.toString());
+                } catch(Exception ex) {
+                	Toast.makeText(ItemAddActivity.this, "Failed to load data from intenet.", Toast.LENGTH_SHORT).show();
+                	System.out.println("SMM:ERROR::"+ex);
+                }
+                
+                //System.out.println("SMM:JSON::"+jsonData);
+
+                try {
+                	Map<String, Object[]> map = parseJSONData(jsonData);
+                	nameArr = map.get("nameArr");
+                	addArr = map.get("addArr");
+                	idArr = map.get("idArr");
+                	extraArr = map.get("extraArr");
+                } catch(Exception ex) {
+                	Toast.makeText(ItemAddActivity.this, "Failed to parse JSON data.", Toast.LENGTH_SHORT).show();
+                	System.out.println(ex);
+                	Log.d("JSON:ERROR", ex.getMessage(),ex);
+                	//nameArr = new Object[]{"11","22"};
+                }
+                
+                System.out.println("SMM:INFO::"+nameArr.length);
+                footerView.setText("Add from list");
+                
+                for (int i=0; i < nameArr.length; i++) {
+                     autoCompleteAdapter.add((String) nameArr[i]);
+                        //System.out.println("SMM:INFO::"+nameArr[i]);
+                }
+                textView.setFocusableInTouchMode(true);
+                textView.requestFocus();
+                InputMethodManager inputMethodManager = (InputMethodManager) ItemAddActivity.this
+                        .getSystemService(ItemAddActivity.this.INPUT_METHOD_SERVICE);
+                inputMethodManager.showSoftInput(textView, InputMethodManager.SHOW_IMPLICIT);
+//                if(textView.requestFocus()) {
+//                    getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+//                }
+                
+        		
+    		}
+            catch(Exception ex)
+    		{
+            	ex.printStackTrace();
+    			
+    		}
+        }
+    };
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,56 +177,10 @@ public class ItemAddActivity extends Activity {
 	        }
 	 
 	        public void onTextChanged(CharSequence s, int start, int before, int count) {
-	                autoCompleteAdapter.clear();
-	                
-	                String jsonData = "";
-	                try {
-	                	if(opr == DbAdapter.PRACTICE)
-	                		jsonData = getDataFromURL(ABC.WEB_URL+"practice/json?code="+s.toString());
-	                	if(opr == DbAdapter.HOSPITAL)
-	                		jsonData = getDataFromURL(ABC.WEB_URL+"hospital/json?code="+s.toString());
-	                	if(opr == DbAdapter.SPECIALTY)
-	                		jsonData = getDataFromURL(ABC.WEB_URL+"speciality/json?type=1&code="+s.toString());
-	                	if(opr == DbAdapter.INSURANCE)
-	                		jsonData = getDataFromURL(ABC.WEB_URL+"insurance/json?code="+s.toString());
-	                	if(opr == DbAdapter.COUNTY)
-	                		jsonData = getDataFromURL(ABC.WEB_URL+"county/json?code="+s.toString());
-	                	//System.out.println("SMM:INTERNET::"+ABC.WEB_URL+"practice/json?code="+s.toString());
-	                } catch(Exception ex) {
-	                	Toast.makeText(ItemAddActivity.this, "Failed to load data from intenet.", Toast.LENGTH_SHORT).show();
-	                	System.out.println("SMM:ERROR::"+ex);
-	                }
-	                
-	                //System.out.println("SMM:JSON::"+jsonData);
-
-	                try {
-	                	Map<String, Object[]> map = parseJSONData(jsonData);
-	                	nameArr = map.get("nameArr");
-	                	addArr = map.get("addArr");
-	                	idArr = map.get("idArr");
-	                	extraArr = map.get("extraArr");
-	                } catch(Exception ex) {
-	                	Toast.makeText(ItemAddActivity.this, "Failed to parse JSON data.", Toast.LENGTH_SHORT).show();
-	                	System.out.println(ex);
-	                	Log.d("JSON:ERROR", ex.getMessage(),ex);
-	                	//nameArr = new Object[]{"11","22"};
-	                }
-	                
-	                System.out.println("SMM:INFO::"+nameArr.length);
-	                footerView.setText("Add from list");
-	                
-	                for (int i=0; i < nameArr.length; i++) {
-	                     autoCompleteAdapter.add((String) nameArr[i]);
-	                        //System.out.println("SMM:INFO::"+nameArr[i]);
-	                }
-	                textView.setFocusableInTouchMode(true);
-	                textView.requestFocus();
-	                InputMethodManager inputMethodManager = (InputMethodManager) ItemAddActivity.this
-	                        .getSystemService(ItemAddActivity.this.INPUT_METHOD_SERVICE);
-	                inputMethodManager.showSoftInput(textView, InputMethodManager.SHOW_IMPLICIT);
-//	                if(textView.requestFocus()) {
-//	                    getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-//	                }
+	        	searchText = s.toString();
+	        	systemtaskHandler.removeCallbacks( systemTaskRunner );
+                systemtaskHandler.postDelayed( systemTaskRunner, 1500 );
+	        	
 	                
 	        }
 	    };

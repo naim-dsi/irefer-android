@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -38,8 +39,62 @@ public class ResourceListActivity extends Activity {
 	private TextView filterView;
 	private ArrayAdapter<String> autoCompleteAdapter;
     Object idArr[] = null;
+    DoctorListAdapter adapter;
     Object nameArr[] =  new Object[]{"no match found"};
-    
+    private CharSequence searchText = "";
+    protected Handler systemtaskHandler = new Handler();
+    ListView itemListView;
+   	Runnable systemTaskRunner = new Runnable() {
+   		public void run()
+           {
+           	try
+       		{
+           		CharSequence s = searchText;
+           		autoCompleteAdapter.clear();
+                
+                //Cursor cr = dba.fetchAll(dba.PRACTICE);
+                Cursor cr = dba.fetchDoctorByName(s.toString());
+                
+                //faisal > added
+                List<Map<String,String>> data = new ArrayList<Map<String,String>>();
+                
+                if(cr != null && cr.getCount() > 0) {
+                	idArr  = new Object[cr.getCount()];
+                	nameArr  = new Object[cr.getCount()];
+                	cr.moveToFirst();
+                	for (int i=0; i < cr.getCount(); i++) {
+                		idArr[i] = cr.getString(1);
+                		nameArr[i] = cr.getString(2)+" "+cr.getString(4)+" "+cr.getString(3);
+	                    autoCompleteAdapter.add((String)nameArr[i]);
+	                    //faisal > starts
+	                    HashMap<String,String> row = new HashMap<String,String>();
+	                    row.put("docTitile1", cr.getString(3)+" "+cr.getString(4)+" "+cr.getString(2));
+	                	row.put("docTitile2", "Degree: "+cr.getString(5)+" Phone: "+cr.getString(6));
+	                	row.put("docTitile3", "Grade: "+cr.getInt(8)+" Language: "+cr.getString(7));
+	                	data.add(row);
+	                	SimpleAdapter simpleAdapter = new SimpleAdapter(ResourceListActivity.this,data,
+	                			R.layout.doctor_row,
+	                    		new String[] {"docTitile1","docTitile2","docTitile3"},
+	                    		new int[] {R.id.doc_title1, R.id.doc_title2, R.id.doc_title3}
+	                    );
+	                	itemListView.setAdapter(simpleAdapter);
+	                    //faisal > ends
+	                    cr.moveToNext();
+	                }
+                	footerView.setText(cr.getCount()+" match found");
+                	cr.close();
+                } else {
+                	footerView.setText("No match founr");
+                }
+                System.out.println("SMM:INFO::"+nameArr.length);  
+       		}
+            catch(Exception ex)
+       		{
+               	ex.printStackTrace();
+       			
+       		}
+        }
+    };   
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,7 +155,7 @@ public class ResourceListActivity extends Activity {
     	List docList = new ArrayList();
     	
     	//faisal > modify (made the variable final to be used inside inner class)
-    	final ListView itemListView = (ListView)findViewById(R.id.doctor_list);
+    	itemListView = (ListView)findViewById(R.id.doctor_list);
     	
     	Cursor cr = dba.searchDoctor(insuranceIds,specialityIds,hospitalIds,countyIds, docName, zipCode, "", null, 0);
     	//Cursor cr = dba.fetchAll(DbAdapter.DOCTOR);
@@ -122,7 +177,7 @@ public class ResourceListActivity extends Activity {
         	cr.close();
         }
 
-    	DoctorListAdapter adapter = new DoctorListAdapter(
+    	adapter = new DoctorListAdapter(
         		this,
         		docList,
         		R.layout.doctor_row,
@@ -167,50 +222,17 @@ public class ResourceListActivity extends Activity {
     	final TextWatcher textChecker = new TextWatcher() {
     		 
 	        public void afterTextChanged(Editable s) {
-	        	textView.setEnabled(true);
+	        	//textView.setEnabled(true);
 	        }
 	        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-	        	textView.setEnabled(false);
+	        	//textView.setEnabled(false);
 	        }
 	 
 	        public void onTextChanged(CharSequence s, int start, int before, int count) {
-	                autoCompleteAdapter.clear();
-	                
-	                //Cursor cr = dba.fetchAll(dba.PRACTICE);
-	                Cursor cr = dba.fetchDoctorByName(s.toString());
-	                
-	                //faisal > added
-	                List<Map<String,String>> data = new ArrayList<Map<String,String>>();
-	                
-	                if(cr != null && cr.getCount() > 0) {
-	                	idArr  = new Object[cr.getCount()];
-	                	nameArr  = new Object[cr.getCount()];
-	                	cr.moveToFirst();
-	                	for (int i=0; i < cr.getCount(); i++) {
-	                		idArr[i] = cr.getString(1);
-	                		nameArr[i] = cr.getString(2)+" "+cr.getString(4)+" "+cr.getString(3);
-		                    autoCompleteAdapter.add((String)nameArr[i]);
-		                    //faisal > starts
-		                    HashMap<String,String> row = new HashMap<String,String>();
-		                    row.put("docTitile1", cr.getString(3)+" "+cr.getString(4)+" "+cr.getString(2));
-		                	row.put("docTitile2", "Degree: "+cr.getString(5)+" Phone: "+cr.getString(6));
-		                	row.put("docTitile3", "Grade: "+cr.getInt(8)+" Language: "+cr.getString(7));
-		                	data.add(row);
-		                	SimpleAdapter simpleAdapter = new SimpleAdapter(ResourceListActivity.this,data,
-		                			R.layout.doctor_row,
-		                    		new String[] {"docTitile1","docTitile2","docTitile3"},
-		                    		new int[] {R.id.doc_title1, R.id.doc_title2, R.id.doc_title3}
-		                    );
-		                	itemListView.setAdapter(simpleAdapter);
-		                    //faisal > ends
-		                    cr.moveToNext();
-		                }
-	                	footerView.setText(cr.getCount()+" match found");
-	                	cr.close();
-	                } else {
-	                	footerView.setText("No match founr");
-	                }
-	                System.out.println("SMM:INFO::"+nameArr.length);
+	        	searchText = s;
+	        	systemtaskHandler.removeCallbacks( systemTaskRunner );
+                systemtaskHandler.postDelayed( systemTaskRunner, 1500 );    
+	        	
 	                
 	        }
 	    };

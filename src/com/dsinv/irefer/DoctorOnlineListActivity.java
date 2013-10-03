@@ -21,9 +21,11 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
@@ -49,7 +51,7 @@ public class DoctorOnlineListActivity extends Activity {
 	private ArrayAdapter<String> autoCompleteAdapter;        
     private ProgressDialog dialog;
     private List<JSONObject> docJsonList = new ArrayList<JSONObject>();
-    
+    private CharSequence searchText = "";
 	private String hospIds = "";   
 	private String specIds = "";   
 	private String insuIds = "";   
@@ -59,7 +61,27 @@ public class DoctorOnlineListActivity extends Activity {
 	List docList = null;
     DoctorListAdapter adapter;
 	//List<Map<String,String>> data;
-	
+    protected Handler systemtaskHandler = new Handler();
+	Runnable systemTaskRunner = new Runnable() {
+		public void run()
+        {
+        	try
+    		{
+        		autoCompleteAdapter.clear();	                
+                new DownloadDoctorTask().execute(searchText);
+                textView.setFocusableInTouchMode(true);
+                textView.requestFocus();
+                InputMethodManager inputMethodManager = (InputMethodManager) DoctorOnlineListActivity.this
+                        .getSystemService(DoctorOnlineListActivity.this.INPUT_METHOD_SERVICE);
+                inputMethodManager.showSoftInput(textView, InputMethodManager.SHOW_IMPLICIT);
+    		}
+            catch(Exception ex)
+    		{
+            	ex.printStackTrace();
+    			
+    		}
+        }
+    };
 	private Integer ONLINE_LIST_REQUEST_CODE = 1100;
         		         
 	@Override
@@ -127,20 +149,17 @@ public class DoctorOnlineListActivity extends Activity {
     	final TextWatcher textChecker = new TextWatcher() {
     		
 	        public void afterTextChanged(Editable s) {
-	        	textView.setEnabled(true);
+	        	//textView.setEnabled(true);
 	        }
 	        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-	        	textView.setEnabled(false);
+	        	//textView.setEnabled(false);
 	        }
 	 
 	        public void onTextChanged(CharSequence s, int start, int before, int count) {
-	                autoCompleteAdapter.clear();	                
-	                new DownloadDoctorTask().execute(s);
-	                textView.setFocusableInTouchMode(true);
-	                textView.requestFocus();
-	                InputMethodManager inputMethodManager = (InputMethodManager) DoctorOnlineListActivity.this
-	                        .getSystemService(DoctorOnlineListActivity.this.INPUT_METHOD_SERVICE);
-	                inputMethodManager.showSoftInput(textView, InputMethodManager.SHOW_IMPLICIT);
+	        	searchText = s;
+	        	systemtaskHandler.removeCallbacks( systemTaskRunner );
+                systemtaskHandler.postDelayed( systemTaskRunner, 1500 );
+	               
 //	                
 	        }
 	    };

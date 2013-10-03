@@ -22,11 +22,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -56,7 +58,28 @@ public class ItemViewActivity extends Activity {
 	int myCntyId = 0;
 	int userId = 0;
 	int doctorOrResource = 0;
-	
+	private CharSequence searchText = "";
+    protected Handler systemtaskHandler = new Handler();
+   	Runnable systemTaskRunner = new Runnable() {
+   		public void run()
+           {
+           	try
+       		{
+           		CharSequence s = searchText;
+           		autoCompleteAdapter.clear();
+                for (int i=0; i < nameArr.length; i++) {
+                    if(nameArr[i].toLowerCase().contains(s.toString().toLowerCase())) 
+                    	autoCompleteAdapter.add((String) nameArr[i]);
+                        //System.out.println("SMM:INFO::"+nameArr[i]);
+                }
+       		}
+            catch(Exception ex)
+       		{
+               	ex.printStackTrace();
+       			
+       		}
+        }
+    };
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,19 +127,18 @@ public class ItemViewActivity extends Activity {
     	final TextWatcher textChecker = new TextWatcher() {
     		 
 	        public void afterTextChanged(Editable s) {
-	        	textView.setEnabled(true);
+	        	//textView.setEnabled(true);
 	        }
 	        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-	        	textView.setEnabled(false);
+	        	//textView.setEnabled(false);
 	        }
 	 
 	        public void onTextChanged(CharSequence s, int start, int before, int count) {
-	                autoCompleteAdapter.clear();
-	                for (int i=0; i < nameArr.length; i++) {
-	                    if(nameArr[i].toLowerCase().contains(s.toString().toLowerCase())) 
-	                    	autoCompleteAdapter.add((String) nameArr[i]);
-	                        //System.out.println("SMM:INFO::"+nameArr[i]);
-	                }
+	        	searchText = s;
+	        	systemtaskHandler.removeCallbacks( systemTaskRunner );
+                systemtaskHandler.postDelayed( systemTaskRunner, 1500 );
+                
+	        	
 	        }
 	    };
 	    textView.addTextChangedListener(textChecker);

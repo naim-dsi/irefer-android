@@ -16,6 +16,7 @@ import org.json.JSONTokener;
 import com.dsinv.irefer.R;
 import com.dsinv.irefer.DbAdapter;
 
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -25,6 +26,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.ScrollingMovementMethod;
@@ -45,6 +47,7 @@ import android.widget.Toast;
 public class DoctorListAdvanceActivity extends Activity {
 
 	private DbAdapter	dba;
+	private String searchText = "";
 	private TextView textView; 
 	private TextView footerView;
 	private TextView filterView;
@@ -52,7 +55,89 @@ public class DoctorListAdvanceActivity extends Activity {
     Object idArr[] = null;
     Object nameArr[] =  new Object[]{"no match found"};
     String userId = "0";
-    
+    DoctorListAdapter adapter;
+    ListView itemListView;
+    protected Handler systemtaskHandler = new Handler();
+	Runnable systemTaskRunner = new Runnable() {
+		public void run()
+        {
+        	try
+    		{
+        		
+        		autoCompleteAdapter.clear();
+                
+                //Cursor cr = dba.fetchAll(dba.PRACTICE);
+                Cursor cr = dba.fetchDoctorFTS(searchText);
+                
+                //faisal > added
+                List<Map<String,String>> data = new ArrayList<Map<String,String>>();
+                if(cr != null && cr.getCount() > 0) {
+                	Map idMap = new HashMap();
+                	idArr  = new Object[cr.getCount()];
+                	nameArr  = new Object[cr.getCount()];
+                	cr.moveToFirst();
+                	for (int i=0; i < cr.getCount(); i++,cr.moveToNext()) {
+                		if(idMap.get(cr.getInt(1)+"") != null)
+                    		continue;
+                    	idMap.put(cr.getInt(1)+"", new Integer(cr.getInt(1)));
+                    	
+                		idArr[i] = cr.getString(1);
+                		nameArr[i] = cr.getString(2)+" "+cr.getString(4)+" "+cr.getString(3);
+	                    autoCompleteAdapter.add((String)nameArr[i]);
+	                    HashMap<String,String> row = new HashMap<String,String>();
+	                    Cursor cr1 = dba.fetchByNetId(DbAdapter.PRACTICE, cr.getInt(11));
+	            		String pracName = "";
+	            		if(cr1 != null) {
+	            			cr1.moveToFirst();
+	            			if(cr1.getCount() > 0)
+	            				pracName = cr1.getString(2);
+	            			cr1.close();
+	            		}
+	                	idArr[i] = new Integer(cr.getInt(1));
+	                	row.put("docTitile1", cr.getString(3)+" "+cr.getString(4)+" "+cr.getString(2)+", "+cr.getString(5));
+	                	row.put("docTitile2", "Phone: "+cr.getString(6));
+	                	row.put("docTitile3", pracName);
+	                	row.put("docPhone", cr.getString(6));
+	                	row.put("docId", cr.getInt(1)+"");
+	                	row.put("userId", userId);
+	                	row.put("grade", ""+cr.getInt(8));
+	                	row.put("u_rank", Utils.isEmpty(""+cr.getInt(22)) ? "0" : ""+cr.getInt(22));
+	                	data.add(row);
+	                	
+	                	DoctorListAdapter adapter = new DoctorListAdapter(
+	                			DoctorListAdvanceActivity.this,
+	                    		dba,
+	                    		data,
+	                    		R.layout.doctor_row,
+	                    		new String[] {"docId", "docTitile1","docTitile2","docTitile3"},
+	                    		new int[] {R.id.doc_row_doc_id, R.id.doc_title1, R.id.doc_title2, R.id.doc_title3}
+	                    		);
+	                	
+	                	itemListView.setAdapter(adapter);
+	        	    	
+	                	
+	                    
+	                }
+                	footerView.setText(cr.getCount()+" match found");
+                	cr.close();
+                } else {
+                	footerView.setText("No match founr");
+                }
+                System.out.println("SMM:INFO::"+nameArr.length);
+                textView.setFocusableInTouchMode(true);
+                textView.requestFocus();
+                InputMethodManager inputMethodManager = (InputMethodManager) DoctorListAdvanceActivity.this
+                        .getSystemService(DoctorListAdvanceActivity.this.INPUT_METHOD_SERVICE);
+                inputMethodManager.showSoftInput(textView, InputMethodManager.SHOW_IMPLICIT);
+        		
+    		}
+            catch(Exception ex)
+    		{
+            	ex.printStackTrace();
+    			
+    		}
+        }
+    };
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,7 +203,7 @@ public class DoctorListAdvanceActivity extends Activity {
     	List docList = new ArrayList();
     	
     	//faisal > modify (made the variable final to be used inside inner class)
-    	final ListView itemListView = (ListView)findViewById(R.id.doctor_list_adv);
+    	itemListView = (ListView)findViewById(R.id.doctor_list_adv);
     	//itemListView.setOverScrollMode(View.OVER_SCROLL_ALWAYS); 
     	
     	Cursor cr = dba.searchDoctor(insuranceIds,specialityIds,hospitalIds,countyIds, docName, zipCode, "", "0, 100", 0);
@@ -159,7 +244,7 @@ public class DoctorListAdvanceActivity extends Activity {
         	cr.close();
         }
 
-    	DoctorListAdapter adapter = new DoctorListAdapter(
+    	adapter = new DoctorListAdapter(
         		this,
         		dba,
         		docList,
@@ -207,76 +292,18 @@ public class DoctorListAdvanceActivity extends Activity {
     	final TextWatcher textChecker = new TextWatcher() {
     		 
 	        public void afterTextChanged(Editable s) {
-	        	textView.setEnabled(true);
+	        	searchText = s.toString();
+	        	systemtaskHandler.removeCallbacks( systemTaskRunner );
+                systemtaskHandler.postDelayed( systemTaskRunner, 1500 );
+	        	//textView.setEnabled(true);
 	        }
 	        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-	        	textView.setEnabled(false);
+	        	//textView.setEnabled(false);
 	        }
 	 
 	        public void onTextChanged(CharSequence s, int start, int before, int count) {
-	                autoCompleteAdapter.clear();
-	                 
-	                //Cursor cr = dba.fetchAll(dba.PRACTICE);
-	                Cursor cr = dba.fetchDoctorFTS(s.toString());
-	                
-	                //faisal > added
-	                List<Map<String,String>> data = new ArrayList<Map<String,String>>();
-	                if(cr != null && cr.getCount() > 0) {
-	                	Map idMap = new HashMap();
-	                	idArr  = new Object[cr.getCount()];
-	                	nameArr  = new Object[cr.getCount()];
-	                	cr.moveToFirst();
-	                	for (int i=0; i < cr.getCount(); i++,cr.moveToNext()) {
-	                		if(idMap.get(cr.getInt(1)+"") != null)
-	                    		continue;
-	                    	idMap.put(cr.getInt(1)+"", new Integer(cr.getInt(1)));
-	                    	
-	                		idArr[i] = cr.getString(1);
-	                		nameArr[i] = cr.getString(2)+" "+cr.getString(4)+" "+cr.getString(3);
-		                    autoCompleteAdapter.add((String)nameArr[i]);
-		                    HashMap<String,String> row = new HashMap<String,String>();
-		                    Cursor cr1 = dba.fetchByNetId(DbAdapter.PRACTICE, cr.getInt(11));
-		            		String pracName = "";
-		            		if(cr1 != null) {
-		            			cr1.moveToFirst();
-		            			if(cr1.getCount() > 0)
-		            				pracName = cr1.getString(2);
-		            			cr1.close();
-		            		}
-		                	idArr[i] = new Integer(cr.getInt(1));
-		                	row.put("docTitile1", cr.getString(3)+" "+cr.getString(4)+" "+cr.getString(2)+", "+cr.getString(5));
-		                	row.put("docTitile2", "Phone: "+cr.getString(6));
-		                	row.put("docTitile3", pracName);
-		                	row.put("docPhone", cr.getString(6));
-		                	row.put("docId", cr.getInt(1)+"");
-		                	row.put("userId", userId);
-		                	row.put("grade", ""+cr.getInt(8));
-		                	row.put("u_rank", Utils.isEmpty(""+cr.getInt(22)) ? "0" : ""+cr.getInt(22));
-		                	data.add(row);
-		                	
-		                	DoctorListAdapter adapter = new DoctorListAdapter(
-		                			DoctorListAdvanceActivity.this,
-		                    		dba,
-		                    		data,
-		                    		R.layout.doctor_row,
-		                    		new String[] {"docId", "docTitile1","docTitile2","docTitile3"},
-		                    		new int[] {R.id.doc_row_doc_id, R.id.doc_title1, R.id.doc_title2, R.id.doc_title3}
-		                    		);
-		                	
-		                	itemListView.setAdapter(adapter);
-		                    
-		                }
-	                	footerView.setText(cr.getCount()+" match found");
-	                	cr.close();
-	                } else {
-	                	footerView.setText("No match founr");
-	                }
-	                System.out.println("SMM:INFO::"+nameArr.length);
-	                textView.setFocusableInTouchMode(true);
-	                textView.requestFocus();
-	                InputMethodManager inputMethodManager = (InputMethodManager) DoctorListAdvanceActivity.this
-	                        .getSystemService(DoctorListAdvanceActivity.this.INPUT_METHOD_SERVICE);
-	                inputMethodManager.showSoftInput(textView, InputMethodManager.SHOW_IMPLICIT);
+	        	
+	                return;
 //	               
 	        }
 	    };

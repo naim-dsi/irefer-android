@@ -18,10 +18,12 @@ import org.json.JSONTokener;
 import com.dsinv.irefer.R;
 import com.dsinv.irefer.DbAdapter;
 
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -44,7 +46,7 @@ public class ItemChooseActivity extends Activity {
 	private ArrayAdapter<String> autoCompleteAdapter;
 	private SimpleAdapter simpleAdapter;
 	ListView itemListView;
-	
+	private String searchText = "";
 	Object idArr[] = new Object[]{"0"};
     Object nameArr[] =  new Object[]{"no match found"};
     Object addArr[] =  new Object[]{""};
@@ -58,7 +60,27 @@ public class ItemChooseActivity extends Activity {
     String userId = "";
     
     ProgressDialog dialog;
-    
+    protected Handler systemtaskHandler = new Handler();
+   	Runnable systemTaskRunner = new Runnable() {
+   		public void run()
+           {
+           	try
+       		{
+	           	 populateListData(searchText);
+		    	    textView.setFocusableInTouchMode(true);
+	             textView.requestFocus();
+	             InputMethodManager inputMethodManager = (InputMethodManager) ItemChooseActivity.this
+	                     .getSystemService(ItemChooseActivity.this.INPUT_METHOD_SERVICE);
+	             inputMethodManager.showSoftInput(textView, InputMethodManager.SHOW_IMPLICIT);
+       		}
+               catch(Exception ex)
+       		{
+               	ex.printStackTrace();
+       			
+       		}
+           }
+       };
+       
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,20 +138,17 @@ public class ItemChooseActivity extends Activity {
     	final TextWatcher textChecker = new TextWatcher() {
     		 
 	        public void afterTextChanged(Editable s) {
-	        	textView.setEnabled(true);
+	        	//textView.setEnabled(true);
 	        }
 	        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-	        	textView.setEnabled(false);
+	        	//textView.setEnabled(false);
 	        }
 	 
 	        public void onTextChanged(CharSequence s, int start, int before, int count) {
 	        	
-	    	    populateListData(s.toString());
-	    	    textView.setFocusableInTouchMode(true);
-                textView.requestFocus();
-                InputMethodManager inputMethodManager = (InputMethodManager) ItemChooseActivity.this
-                        .getSystemService(ItemChooseActivity.this.INPUT_METHOD_SERVICE);
-                inputMethodManager.showSoftInput(textView, InputMethodManager.SHOW_IMPLICIT);
+	        	searchText = s.toString();
+	        	systemtaskHandler.removeCallbacks( systemTaskRunner );
+                systemtaskHandler.postDelayed( systemTaskRunner, 1500 );
 //                
 	    	    
 	        }

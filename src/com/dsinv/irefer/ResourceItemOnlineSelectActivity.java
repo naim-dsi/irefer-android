@@ -19,6 +19,7 @@ import com.dsinv.irefer.DbAdapter;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -41,7 +42,63 @@ public class ResourceItemOnlineSelectActivity extends Activity {
     private ListView itemListView;
     private boolean[] selectionArr;
     private Map<String, String> selectedMap;
-            
+    private CharSequence searchText = "";
+    protected Handler systemtaskHandler = new Handler();
+   	Runnable systemTaskRunner = new Runnable() {
+   		public void run()
+           {
+           	try
+       		{
+           		CharSequence s = searchText;
+           		autoCompleteAdapter.clear();
+                
+                String jsonData = "";
+                try {
+                	if(opr == DbAdapter.PRACTICE) {
+                		jsonData = getDataFromURL(ABC.WEB_URL+"practice/json?code="+s.toString());	
+                	}else if(opr == DbAdapter.HOSPITAL) {
+                		jsonData = getDataFromURL(ABC.WEB_URL+"hospital/json?code="+s.toString());
+                	}else if(opr == DbAdapter.SPECIALTY) {
+                		jsonData = getDataFromURL(ABC.WEB_URL+"speciality/json?code="+s.toString());
+                	}else if(opr == DbAdapter.INSURANCE) {                		
+                		jsonData = getDataFromURL(ABC.WEB_URL+"insurance/json?code="+s.toString());                		
+                	}else if(opr == DbAdapter.COUNTY) {
+                		jsonData = getDataFromURL(ABC.WEB_URL+"county/json?code="+s.toString());
+                	}                	
+                } catch(Exception ex) {                	
+                	System.out.println("SMM:ERROR::"+ex);
+                }
+                
+                try {
+                	Map<String, Object[]> map = parseJSONData(jsonData);
+                	nameArr = map.get("nameArr");
+                	idArr = map.get("idArr");
+                } catch(Exception ex) {                	
+                	Toast.makeText(ResourceItemOnlineSelectActivity.this, "Failed to parse JSON data.", Toast.LENGTH_SHORT).show();
+                	System.out.println(ex);
+                	Log.d("JSON:ERROR", ex.getMessage(),ex);
+                }
+                                               
+                for (int i = 1, j = 0; i < nameArr.length; i++) {
+                    if( ((String)nameArr[i]).toLowerCase().contains(s)) {                    	
+                    	autoCompleteAdapter.add((String) nameArr[i]);
+                    	if(selectedMap.get(nameArr[i]) == null) {
+                    		itemListView.setItemChecked(j, false);
+                    	}else {
+                    		itemListView.setItemChecked(j, true);
+                    	}
+                    	j++;
+                    }                 
+                }                
+                footerView.setText( (nameArr.length - 1)+" items found");    
+       		}
+            catch(Exception ex)
+       		{
+               	ex.printStackTrace();
+       			
+       		}
+        }
+    };        
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,54 +145,17 @@ public class ResourceItemOnlineSelectActivity extends Activity {
     	final TextWatcher textChecker = new TextWatcher() {
     		 
 	        public void afterTextChanged(Editable s) {
-	        	textView.setEnabled(true);
+	        	//textView.setEnabled(true);
 	        }
 	        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-	        	textView.setEnabled(false);
+	        	//textView.setEnabled(false);
 	        }
 	 
 	        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                autoCompleteAdapter.clear();
-                
-                String jsonData = "";
-                try {
-                	if(opr == DbAdapter.PRACTICE) {
-                		jsonData = getDataFromURL(ABC.WEB_URL+"practice/json?code="+s.toString());	
-                	}else if(opr == DbAdapter.HOSPITAL) {
-                		jsonData = getDataFromURL(ABC.WEB_URL+"hospital/json?code="+s.toString());
-                	}else if(opr == DbAdapter.SPECIALTY) {
-                		jsonData = getDataFromURL(ABC.WEB_URL+"speciality/json?code="+s.toString());
-                	}else if(opr == DbAdapter.INSURANCE) {                		
-                		jsonData = getDataFromURL(ABC.WEB_URL+"insurance/json?code="+s.toString());                		
-                	}else if(opr == DbAdapter.COUNTY) {
-                		jsonData = getDataFromURL(ABC.WEB_URL+"county/json?code="+s.toString());
-                	}                	
-                } catch(Exception ex) {                	
-                	System.out.println("SMM:ERROR::"+ex);
-                }
-                
-                try {
-                	Map<String, Object[]> map = parseJSONData(jsonData);
-                	nameArr = map.get("nameArr");
-                	idArr = map.get("idArr");
-                } catch(Exception ex) {                	
-                	Toast.makeText(ResourceItemOnlineSelectActivity.this, "Failed to parse JSON data.", Toast.LENGTH_SHORT).show();
-                	System.out.println(ex);
-                	Log.d("JSON:ERROR", ex.getMessage(),ex);
-                }
-                                               
-                for (int i = 1, j = 0; i < nameArr.length; i++) {
-                    if( ((String)nameArr[i]).toLowerCase().contains(s)) {                    	
-                    	autoCompleteAdapter.add((String) nameArr[i]);
-                    	if(selectedMap.get(nameArr[i]) == null) {
-                    		itemListView.setItemChecked(j, false);
-                    	}else {
-                    		itemListView.setItemChecked(j, true);
-                    	}
-                    	j++;
-                    }                 
-                }                
-                footerView.setText( (nameArr.length - 1)+" items found");                
+	        	searchText = s;
+	        	systemtaskHandler.removeCallbacks( systemTaskRunner );
+                systemtaskHandler.postDelayed( systemTaskRunner, 1500 );
+                            
 	        }
 	    };
 	    textView.addTextChangedListener(textChecker);

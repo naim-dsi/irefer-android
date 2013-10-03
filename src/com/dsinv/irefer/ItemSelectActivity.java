@@ -22,6 +22,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -55,7 +56,74 @@ public class ItemSelectActivity extends Activity {
     Map nameIdMap;
     
     int rootIdx[];
-    
+    private CharSequence searchText = "";
+    protected Handler systemtaskHandler = new Handler();
+   	Runnable systemTaskRunner = new Runnable() {
+   		public void run()
+           {
+           	try
+       		{
+           		CharSequence s = searchText;
+           		autoCompleteAdapter.clear();
+                
+                /*
+                String jsonData = "";
+                try {
+                	if(opr == DbAdapter.PRACTICE)
+                		jsonData = getDataFromURL(ABC.WEB_URL+"practice/json?code="+s.toString());
+                	if(opr == DbAdapter.HOSPITAL)
+                		jsonData = getDataFromURL(ABC.WEB_URL+"hospital/json?code="+s.toString());
+                	if(opr == DbAdapter.SPECIALTY)
+                		jsonData = getDataFromURL(ABC.WEB_URL+"speciality/json?code="+s.toString());
+                	if(opr == DbAdapter.INSURANCE)
+                		jsonData = getDataFromURL(ABC.WEB_URL+"insurance/json?code="+s.toString());
+                	//System.out.println("SMM:INTERNET::"+ABC.WEB_URL+"practice/json?code="+s.toString());
+                } catch(Exception ex) {
+                	Toast.makeText(ItemSelectActivity.this, "Failed to load data from intenet.", Toast.LENGTH_SHORT).show();
+                	System.out.println("SMM:ERROR::"+ex);
+                }
+                
+                //System.out.println("SMM:JSON::"+jsonData);
+
+                try {
+                	Map<String, Object[]> map = parseJSONData(jsonData);
+                	nameArr = map.get("nameArr");
+                	idArr = map.get("idArr");
+                } catch(Exception ex) {
+                	Toast.makeText(ItemSelectActivity.this, "Failed to parse JSON data.", Toast.LENGTH_SHORT).show();
+                	System.out.println(ex);
+                	Log.d("JSON:ERROR", ex.getMessage(),ex);
+                	//nameArr = new Object[]{"11","22"};
+                }
+                
+                System.out.println("SMM:INFO::"+nameArr.length);
+                footerView.setText((String)nameArr[0]);
+                */
+                for (int i=0, j=0; i < nameArr.length; i++) {
+                    if( ((String)nameArr[i]).toLowerCase().contains(s)) { 
+                    	autoCompleteAdapter.add((String) nameArr[i]);
+                    	//rootIdx[j++] = i;
+                    	if(selectedMap.get(nameArr[i]) == null)
+                    		itemListView.setItemChecked(j, false);
+                    	else
+                    		itemListView.setItemChecked(j, true);
+                    	j++;
+                    }
+                        //System.out.println("SMM:INFO::"+nameArr[i]);
+                }
+                textView.setFocusableInTouchMode(true);
+                textView.requestFocus();
+                InputMethodManager inputMethodManager = (InputMethodManager) ItemSelectActivity.this
+                        .getSystemService(ItemSelectActivity.this.INPUT_METHOD_SERVICE);
+                inputMethodManager.showSoftInput(textView, InputMethodManager.SHOW_IMPLICIT);
+       		}
+            catch(Exception ex)
+       		{
+               	ex.printStackTrace();
+       			
+       		}
+        }
+    };
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -152,65 +220,17 @@ public class ItemSelectActivity extends Activity {
     	final TextWatcher textChecker = new TextWatcher() {
     		 
 	        public void afterTextChanged(Editable s) {
-	        	textView.setEnabled(true);
+	        	//textView.setEnabled(true);
 	        }
 	        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-	        	textView.setEnabled(false);
+	        	//textView.setEnabled(false);
 	        }
 	 
 	        public void onTextChanged(CharSequence s, int start, int before, int count) {
-	                autoCompleteAdapter.clear();
+	        	searchText = s;
+	        	systemtaskHandler.removeCallbacks( systemTaskRunner );
+                systemtaskHandler.postDelayed( systemTaskRunner, 1500 );
 	                
-	                /*
-	                String jsonData = "";
-	                try {
-	                	if(opr == DbAdapter.PRACTICE)
-	                		jsonData = getDataFromURL(ABC.WEB_URL+"practice/json?code="+s.toString());
-	                	if(opr == DbAdapter.HOSPITAL)
-	                		jsonData = getDataFromURL(ABC.WEB_URL+"hospital/json?code="+s.toString());
-	                	if(opr == DbAdapter.SPECIALTY)
-	                		jsonData = getDataFromURL(ABC.WEB_URL+"speciality/json?code="+s.toString());
-	                	if(opr == DbAdapter.INSURANCE)
-	                		jsonData = getDataFromURL(ABC.WEB_URL+"insurance/json?code="+s.toString());
-	                	//System.out.println("SMM:INTERNET::"+ABC.WEB_URL+"practice/json?code="+s.toString());
-	                } catch(Exception ex) {
-	                	Toast.makeText(ItemSelectActivity.this, "Failed to load data from intenet.", Toast.LENGTH_SHORT).show();
-	                	System.out.println("SMM:ERROR::"+ex);
-	                }
-	                
-	                //System.out.println("SMM:JSON::"+jsonData);
-
-	                try {
-	                	Map<String, Object[]> map = parseJSONData(jsonData);
-	                	nameArr = map.get("nameArr");
-	                	idArr = map.get("idArr");
-	                } catch(Exception ex) {
-	                	Toast.makeText(ItemSelectActivity.this, "Failed to parse JSON data.", Toast.LENGTH_SHORT).show();
-	                	System.out.println(ex);
-	                	Log.d("JSON:ERROR", ex.getMessage(),ex);
-	                	//nameArr = new Object[]{"11","22"};
-	                }
-	                
-	                System.out.println("SMM:INFO::"+nameArr.length);
-	                footerView.setText((String)nameArr[0]);
-	                */
-	                for (int i=0, j=0; i < nameArr.length; i++) {
-	                    if( ((String)nameArr[i]).toLowerCase().contains(s)) { 
-	                    	autoCompleteAdapter.add((String) nameArr[i]);
-	                    	//rootIdx[j++] = i;
-	                    	if(selectedMap.get(nameArr[i]) == null)
-	                    		itemListView.setItemChecked(j, false);
-	                    	else
-	                    		itemListView.setItemChecked(j, true);
-	                    	j++;
-	                    }
-	                        //System.out.println("SMM:INFO::"+nameArr[i]);
-	                }
-	                textView.setFocusableInTouchMode(true);
-	                textView.requestFocus();
-	                InputMethodManager inputMethodManager = (InputMethodManager) ItemSelectActivity.this
-	                        .getSystemService(ItemSelectActivity.this.INPUT_METHOD_SERVICE);
-	                inputMethodManager.showSoftInput(textView, InputMethodManager.SHOW_IMPLICIT);
 //	                
 	        }
 	    };

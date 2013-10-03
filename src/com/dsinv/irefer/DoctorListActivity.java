@@ -64,6 +64,33 @@ public class DoctorListActivity extends Activity {
 	private TextView footerView;
 	private TextView filterView;
 	
+	protected Handler systemtaskHandler = new Handler();
+	Runnable systemTaskRunner = new Runnable() {
+		public void run()
+        {
+        	try
+    		{
+        		
+                actualRowCount = 0;
+                docList.clear();
+                textView.setFocusableInTouchMode(true);
+                textView.requestFocus();
+                InputMethodManager inputMethodManager = (InputMethodManager) DoctorListActivity.this
+                        .getSystemService(DoctorListActivity.this.INPUT_METHOD_SERVICE);
+                inputMethodManager.showSoftInput(textView, InputMethodManager.SHOW_IMPLICIT);
+                if(isOnlineSearch)
+            		new DoctorDownloadTask().execute(new String[]{""+showMore});
+            	else
+            		new DoctorSearchTask().execute(new String[]{"0, "+showMore});
+        		
+    		}
+            catch(Exception ex)
+    		{
+            	ex.printStackTrace();
+    			
+    		}
+        }
+    };
 	String insuranceIds;
 	String specialityIds;
 	String hospitalIds;
@@ -240,23 +267,22 @@ public class DoctorListActivity extends Activity {
 	    	final TextWatcher textChecker = new TextWatcher() {
 	    		 
 		        public void afterTextChanged(Editable s) {
-		        	textView.setEnabled(true);
+		        	//Log.d("NI","afterTextChanged - filer textbox : "+s.toString());
+		        	//textView.setEnabled(true);
+		        	docName = s.toString();
+		        	systemtaskHandler.removeCallbacks( systemTaskRunner );
+	                systemtaskHandler.postDelayed( systemTaskRunner, 1500 );
+	                
+		        	
 		        }
 		        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-		        	textView.setEnabled(false);
+		        	//textView.setEnabled(false);
 		        }
 		 
 		        public void onTextChanged(CharSequence s, int start, int before, int count) {
 		                //autoCompleteAdapter.clear();
-		                docName = s.toString();
-		                actualRowCount = 0;
-		                docList.clear();
-		                if(isOnlineSearch)
-		            		new DoctorDownloadTask().execute(new String[]{""+showMore});
-		            	else
-		            		new DoctorSearchTask().execute(new String[]{"0, "+showMore});
-		                
-		               
+		                //super.onTextChanged(s,start,before,count);
+		               return;
 		                //Cursor cr = dba.fetchAll(dba.PRACTICE);
 		                //Cursor cr = dba.fetchDoctorByName(s.toString());
 		                /*

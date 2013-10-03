@@ -20,9 +20,11 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -53,7 +55,25 @@ public class ResourceOnlineListActivity extends Activity {
 	List<Map<String,String>> data;
 	
 	private Integer ONLINE_LIST_REQUEST_CODE = 1100;
-        		         
+	private CharSequence searchText = "";
+    protected Handler systemtaskHandler = new Handler();
+    
+   	Runnable systemTaskRunner = new Runnable() {
+   		public void run()
+           {
+           	try
+       		{
+           		CharSequence s = searchText;
+           		autoCompleteAdapter.clear();	                
+                new DownloadDoctorTask().execute(s);
+       		}
+            catch(Exception ex)
+       		{
+               	ex.printStackTrace();
+       			
+       		}
+        }
+    };       		         
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,15 +139,17 @@ public class ResourceOnlineListActivity extends Activity {
     	final TextWatcher textChecker = new TextWatcher() {
     		
 	        public void afterTextChanged(Editable s) {
-	        	textView.setEnabled(true);
+	        	//textView.setEnabled(true);
 	        }
 	        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-	        	textView.setEnabled(false);
+	        	//textView.setEnabled(false);
 	        }
 	 
 	        public void onTextChanged(CharSequence s, int start, int before, int count) {
-	                autoCompleteAdapter.clear();	                
-	                new DownloadDoctorTask().execute(s);
+	        	searchText = s;
+	        	systemtaskHandler.removeCallbacks( systemTaskRunner );
+                systemtaskHandler.postDelayed( systemTaskRunner, 1500 );  
+	                
 	        }
 	    };
 	    textView.addTextChangedListener(textChecker);
