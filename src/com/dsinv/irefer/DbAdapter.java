@@ -1594,7 +1594,7 @@ public class DbAdapter {
 	    		s.append(" REFERENCES " + tname[tcref[id][i]] + "(" + PK + ")");
 	    	}
         	s.append(")");
-        	
+        	//Log.d("NI-SQL",new String(s));
         	return new String(s);
         }
         
