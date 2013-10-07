@@ -230,7 +230,6 @@ public class FilterPageActivity extends Activity {
 				onlineBtn.setBackgroundResource(R.drawable.segment_button_right);
 				offlineBtn.setTextColor(Color.rgb(255,255,255));
 				onlineBtn.setTextColor(Color.rgb(128,128,128));
-				
 			}
 		});
         
@@ -394,16 +393,16 @@ public class FilterPageActivity extends Activity {
         acoBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				if( onlineFlag == 1 ) {
-					Intent intent = new Intent(FilterPageActivity.this, ItemSelectActivity.class);;
+					Intent intent = new Intent(FilterPageActivity.this, ItemSelectActivity.class);
 					
 					if( onlineFlag == 1 ) {
 						System.out.println("online select activity ...");
 						intent = new Intent(FilterPageActivity.this, ItemOnlineSelectActivity.class);
 					}
 					intent.putExtra("opr", DbAdapter.ACO);
-					intent.putExtra("nameArr",(String[])hospitalNameArr);				
-					intent.putExtra("idArr",hospitalIdArr);				
-					intent.putExtra("selectionArr",hospitalSelection);				
+					intent.putExtra("nameArr",(String[])acoArr);				
+					intent.putExtra("idArr",acoIdArr);				
+					intent.putExtra("selectionArr",acoSelection);				
 					startActivityForResult(intent, 106);					
 				}else {
 					AlertDialog.Builder builder = getDialogBuilder(DbAdapter.ACO);
@@ -569,7 +568,7 @@ public class FilterPageActivity extends Activity {
 		} else {
 			Intent intent = new Intent(FilterPageActivity.this, SetupActivity.class);
 			intent.putExtra(Utils.pageId, Utils.FILTER_PAGE);
-			startActivityForResult(intent, 1100);				
+			startActivityForResult(intent, 1100);
 		}
     }
     
@@ -741,27 +740,22 @@ public class FilterPageActivity extends Activity {
     }
     
     private void loadACO() {
-    	Cursor cr = dba.fetchAll(DbAdapter.ACO);
+    	
+        Cursor cr = dba.fetchAll(DbAdapter.ACO);
         if(cr != null && cr.getCount() > 0) {
         	cr.moveToFirst();
         	acoArr = new String[cr.getCount()];
 			acoSelection = new boolean[cr.getCount()];
 			acoIdArr = new int[cr.getCount()];
 			for(int i=0; i<cr.getCount(); i++) {
-				if(i == 0) {
-					acoName = cr.getString(2);
-					acoId = cr.getString(1);
-				} else {
-					acoName = acoName+","+cr.getString(2);
-					acoId = acoId+","+cr.getString(1);
-				}
 				acoArr[i] = cr.getString(2);
-				acoSelection[i] = true;
+				acoSelection[i] = false;
 				acoIdArr[i] = cr.getInt(1);
         		cr.moveToNext();
         	}
+			
+			
 			cr.close();
-			acoValue.setText(acoName);
         }
     }
 
@@ -775,7 +769,7 @@ public class FilterPageActivity extends Activity {
 		for(int i=0; i<count; i++) {
 			languageArr[i] = arr[i].name;
 			if(languageValue.getText().toString().equals(arr[i].name))
-				languageSelection[i] = true;
+				languageSelection[i] = false;
 			else	
 				languageSelection[i] = false;
 			languageIdArr[i] = arr[i].id;

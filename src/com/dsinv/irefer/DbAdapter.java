@@ -1305,13 +1305,19 @@ public class DbAdapter {
         return -1;
     }
     public Cursor searchDoctor(String insuIds, String specIds, String hospIds, String cntyIds, String docName, 
-    		String zipCode, String languages, String limit, int searchOrder) {
+    		String zipCode, String languages, String limit, int searchOrder,String acoIds) {
     	/*
     	System.out.println("SMM::SEARCH-SQL::(last_name LIKE '%"+docName+"%'"+" OR first_name LIKE '%"+docName+"%'"+" OR mid_name LIKE '%"+docName+"%' )"+
         		(Utils.isEmpty(specIds) ? "" : "AND spec_id IN ("+specIds+") ")+
         		(Utils.isEmpty(hospIds) ? "" : "AND hosp_id IN ("+hospIds+") ")+
         		(Utils.isEmpty(insuIds) ? "" : "AND insu_id IN ("+insuIds+") "));
     	*/
+    	String langStr = "";
+    	String acoStr = "";
+    	String specStr = "";
+    	String hospStr = "";
+    	String insuStr = "";
+    	
     	if(showCount() > -1){
     		db.execSQL("UPDATE t_statistics set count = count+1");
     		//System.out.println("SMM::::::::::::::INCSREASING COUNT");
@@ -1320,19 +1326,79 @@ public class DbAdapter {
     		insert(STATISTICS, new String[]{"1","1"});
     		//System.out.println("SMM::::::::::::::INSERTING COUNT");
     	}
-    	//showCount();
-		
-    	String arr[] = languages.split(",");
-    	String langStr = "";
-    	for(int i=0, j=arr.length; i<j; i++) {
-    		if(i == 0)
-    			langStr = "AND ( language LIKE '%"+arr[i]+"%'";
-    		else
-    			langStr = langStr + " OR language LIKE '%"+arr[i]+"%'";
+		Log.d("NR::", "DNAME : "+docName);
+		if(!Utils.isEmpty(languages))
+    	{
+			String arr[] = languages.split(",");
+	    	
+	    	for(int i=0, j=arr.length; i<j; i++) {
+	    		if(i == 0)
+	    			langStr = " AND ( language LIKE '%"+arr[i]+"%'";
+	    		else
+	    			langStr = langStr + " OR language LIKE '%"+arr[i]+"%'";
+	    	}
+	    	if(!Utils.isEmpty(langStr))
+	    		langStr = langStr +")";
+	    	Log.d("NR::", "DLANG : "+languages);
     	}
-    	if(!Utils.isEmpty(langStr))
-    		langStr = langStr +")";
+    	if(!Utils.isEmpty(acoIds))
+    	{
+	    	String acoarr[] = acoIds.split(",");
+	    	
+	    	for(int i=0, j=acoarr.length; i<j; i++) {
+	    		if(i == 0)
+	    			acoStr = " AND ( aco_ids LIKE '%"+acoarr[i]+"%'";
+	    		else
+	    			acoStr = acoStr + " OR aco_ids LIKE '%"+acoarr[i]+"%'";
+	    	}
+	    	if(!Utils.isEmpty(acoStr))
+	    		acoStr = acoStr +")";
+    	}
+    	Log.d("NR::", "DACO : "+acoIds);
+    	if(!Utils.isEmpty(specIds))
+    	{
+	    	String specarr[] = specIds.split(",");
+	    	
+	    	for(int i=0, j=specarr.length; i<j; i++) {
+	    		if(i == 0)
+	    			specStr = " AND ( spec_ids LIKE '%"+specarr[i]+"%'";
+	    		else
+	    			specStr = specStr + " OR spec_ids LIKE '%"+specarr[i]+"%'";
+	    	}
+	    	if(!Utils.isEmpty(specStr))
+	    		specStr = specStr +")";
+	    	Log.d("NR::", "DSPECIALITY : "+specIds);
+    	}
+    	if(!Utils.isEmpty(hospIds))
+    	{
+	    	String hosparr[] = hospIds.split(",");
+	    	
+	    	for(int i=0, j=hosparr.length; i<j; i++) {
+	    		if(i == 0)
+	    			hospStr = " AND ( hosp_ids LIKE '%"+hosparr[i]+"%'";
+	    		else
+	    			hospStr = hospStr + " OR hosp_ids LIKE '%"+hosparr[i]+"%'";
+	    	}
+	    	if(!Utils.isEmpty(hospStr))
+	    		hospStr = hospStr +")";
+	    	Log.d("NR::", "DHOSPITALS : "+hospIds);
+    	}
+    	if(!Utils.isEmpty(insuIds))
+    	{
+	    	String insuarr[] = insuIds.split(",");
+	    	
+	    	for(int i=0, j=insuarr.length; i<j; i++) {
+	    		if(i == 0)
+	    			insuStr = " AND ( insu_ids LIKE '%"+insuarr[i]+"%'";
+	    		else
+	    			insuStr = insuStr + " OR insu_ids LIKE '%"+insuarr[i]+"%'";
+	    	}
+	    	if(!Utils.isEmpty(insuStr))
+	    		insuStr = insuStr +")";
+	    	Log.d("NR::", "DINSURANCES : "+insuIds);
+    	}
     	
+    	//Log.d("NR::", "LANG :"+langStr+" \nACO"+acoStr+" \nInsurances"+insuStr+" \nHospitals"+hospStr+" \nSpecialities"+specStr);
     	String orderStr = "u_rank DESC, grade DESC, first_name, last_name";
     	
     	if(searchOrder == 1)
@@ -1341,15 +1407,23 @@ public class DbAdapter {
     		orderStr = "first_name, u_rank DESC, grade DESC, last_name";
     	else if(searchOrder == 3)
     		orderStr = "last_name, u_rank DESC, grade DESC, first_name";
-    	
+    	String qq = "_id IS NOT NULL"+
+    			(Utils.isEmpty(docName) ? "" : " AND (last_name LIKE '%"+docName+"%'"+" OR first_name LIKE '%"+docName+"%'"+" OR mid_name LIKE '%"+docName+"%' )")+
+        		(Utils.isEmpty(specIds) ? "" : specStr)+
+        		(Utils.isEmpty(hospStr) ? "" : hospStr)+
+        		(Utils.isEmpty(acoStr) ? "" : acoStr)+
+        		(Utils.isEmpty(insuStr) ? "" : insuStr)+
+        		(Utils.isEmpty(zipCode) ? "" : " AND zip_code = '"+zipCode+"')")+
+        		(Utils.isEmpty(langStr) ? "" : langStr);
     	Cursor cur = dbr.query(true, tname[DOCTOR], tcols[DOCTOR], 
-        		"(last_name LIKE '%"+docName+"%'"+" OR first_name LIKE '%"+docName+"%'"+" OR mid_name LIKE '%"+docName+"%' )"+
-        		(Utils.isEmptyNumber(specIds) ? "" : "AND spec_id IN ("+specIds+") ")+
-        		(Utils.isEmptyNumber(hospIds) ? "" : "AND hosp_id IN ("+hospIds+") ")+
-        		(Utils.isEmptyNumber(insuIds) ? "" : "AND insu_id IN ("+insuIds+") ")+
-        		(Utils.isEmpty(zipCode) ? "" : "AND zip_code = '"+zipCode+"')")+
-        		(Utils.isEmpty(langStr) ? "" : langStr),
+    			qq,
         		null, null, null, orderStr, limit == null ? "50" : limit);
+    	
+    	String q = "SELECT * FROM "+tname[DOCTOR]+" WHERE "+qq+" ORDER BY "+orderStr +" LIMIT "+ limit;
+    	Log.d("NR::", "TOTAL QUERY---------------\n"+q+"\n------------------------------");
+//    	Cursor cur = dbr.query(true, tname[DOCTOR], tcols[DOCTOR], 
+//        		"(first_name LIKE '%"+docName+"%' OR last_name LIKE '%"+docName+"%' OR mid_name LIKE '%"+docName+"%' OR first_name = '"+docName+"' OR last_name = '"+docName+"' OR mid_name = '"+docName+"')",
+//        		null, null, null, null, "50");
         if(cur!=null)
         	cur.moveToFirst();
         return cur;

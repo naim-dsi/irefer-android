@@ -94,6 +94,7 @@ public class DoctorListActivity extends Activity {
 	String insuranceIds;
 	String specialityIds;
 	String hospitalIds;
+	String acoIds;
 	String countyIds;
 	String zipCode;
 	String languages;
@@ -169,6 +170,9 @@ public class DoctorListActivity extends Activity {
 	    	
 	    	countyIds = getIntent().getStringExtra("countyId");
 	    	if(Utils.isEmpty(countyIds) || "null".equals(countyIds)) countyIds = null;
+	    	
+	    	acoIds = getIntent().getStringExtra("acoId");
+	    	if(Utils.isEmpty(acoIds) || "null".equals(acoIds)) countyIds = null;
 	    	
 	    	userId = getIntent().getStringExtra("userId");
 	    	isOnlineSearch = getIntent().getBooleanExtra("is_online_search", false);
@@ -386,12 +390,14 @@ public class DoctorListActivity extends Activity {
 			idArr = new Object[cr.getCount()+1];
 			Map idMap = new HashMap();
 	    	//System.out.println("SMM::DOCTOR::COUNT="+cr.getCount());
+			Log.d("NR::", "AISE");
 	    	cr.moveToFirst();
-	    	for(int i=0; i<cr.getCount(); i++,cr.moveToNext()) {
-	    		actualRowCount++;
-	    		if(!docIdSet.add(new Integer(cr.getInt(1))))
-	    		//if(idMap.get(cr.getInt(1)+"") != null)
-	        		continue;
+	    	for(int i=0; i<cr.getCount(); i++) {
+	    		Log.d("NR::", "AISE2");
+	    		actualRowCount = actualRowCount +1;
+//	    		if(!docIdSet.add(new Integer(cr.getInt(1))))
+//	    		//if(idMap.get(cr.getInt(1)+"") != null)
+//	        		continue;
 	        	//idMap.put(cr.getInt(1)+"", new Integer(cr.getInt(1)));
 	        	
 	    		HashMap<String,String> temp = new HashMap<String,String>();
@@ -416,6 +422,8 @@ public class DoctorListActivity extends Activity {
 	        	docList.add(temp);
 	        	if((docList.size() % showMore) == 0)
 	        		break;
+	        	
+	        	cr.moveToNext();
 	    	}
 		}
 		catch(Exception ex)
@@ -660,9 +668,11 @@ public class DoctorListActivity extends Activity {
 			
 			if(actualRowCount == 0)
 				docList.clear();
-			for(int i=0, j=0; i<showMore && j<5; j++) {
+			for(int i=0, j=0; i<showMore && j<1; j++,i++) {
 				Cursor cr = dba.searchDoctor(insuranceIds,specialityIds,hospitalIds,countyIds, docName, zipCode, languages, 
-						actualRowCount+", 100", searchOrder);
+						actualRowCount+", 100", searchOrder, acoIds);
+				
+				Log.d("NR::", ""+j+" - "+actualRowCount);
 				if(cr != null) {
 					if(docList.size() > 0)
 						docList.remove(docList.size()-1);
@@ -674,14 +684,13 @@ public class DoctorListActivity extends Activity {
 						e.printStackTrace();
 					}
 					addDoctorToList(cr);
-					i += docList.size() - prevSize;
+					i = docList.size() - prevSize;
 					//adapter.notifyDataSetChanged();
 					cr.close();
-				} else {
-					break;
-				}
+				} 
 			}
 	    	//System.out.println("ASYNC TASK ALMOST DONE...");
+			Log.d("NR::", "** "+actualRowCount);
 			addDoctorListFooterItem();
 			return response;
 		}

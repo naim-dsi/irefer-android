@@ -177,6 +177,9 @@ public class DoctorListAdvanceActivity extends Activity {
     	String insuranceIds = getIntent().getStringExtra("insuranceId");
     	if(insuranceIds == null || "null".equals(insuranceIds)) insuranceIds = null;
     	
+    	String acoIds = getIntent().getStringExtra("acoId");
+    	if(acoIds == null || "null".equals(acoIds)) acoIds = null;
+    	
     	String specialityIds = getIntent().getStringExtra("specialityId");
     	if(specialityIds == null || "null".equals(specialityIds)) specialityIds = null;
     	
@@ -206,7 +209,7 @@ public class DoctorListAdvanceActivity extends Activity {
     	itemListView = (ListView)findViewById(R.id.doctor_list_adv);
     	//itemListView.setOverScrollMode(View.OVER_SCROLL_ALWAYS); 
     	
-    	Cursor cr = dba.searchDoctor(insuranceIds,specialityIds,hospitalIds,countyIds, docName, zipCode, "", "0, 100", 0);
+    	Cursor cr = dba.searchDoctor(insuranceIds,specialityIds,hospitalIds,countyIds, docName, zipCode, "", "0, 100", 0,acoIds);
     	//Cursor cr = dba.fetchAll(DbAdapter.DOCTOR);
     	if(cr != null) {
     		Map idMap = new HashMap();

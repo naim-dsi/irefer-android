@@ -134,6 +134,9 @@ public class ResourceListActivity extends Activity {
     	String insuranceIds = getIntent().getStringExtra("insuranceId");
     	if(insuranceIds == null || "null".equals(insuranceIds)) insuranceIds = null;
     	
+    	String acoIds = getIntent().getStringExtra("acoId");
+    	if(acoIds == null || "null".equals(acoIds)) acoIds = null;
+    	
     	String specialityIds = getIntent().getStringExtra("specialityId");
     	if(specialityIds == null || "null".equals(specialityIds)) specialityIds = null;
     	
@@ -157,7 +160,7 @@ public class ResourceListActivity extends Activity {
     	//faisal > modify (made the variable final to be used inside inner class)
     	itemListView = (ListView)findViewById(R.id.doctor_list);
     	
-    	Cursor cr = dba.searchDoctor(insuranceIds,specialityIds,hospitalIds,countyIds, docName, zipCode, "", null, 0);
+    	Cursor cr = dba.searchDoctor(insuranceIds,specialityIds,hospitalIds,countyIds, docName, zipCode, "", null, 0,acoIds);
     	//Cursor cr = dba.fetchAll(DbAdapter.DOCTOR);
     	if(cr != null) {
         	idArr = new Object[cr.getCount()];
