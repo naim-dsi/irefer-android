@@ -932,7 +932,9 @@ public class SetupActivity extends Activity {
         protected Long doInBackground(URL... urls) {
         	try {
                 // Log.d(TAG, "downloading database");
-                 URL url = new URL("http://103.4.147.139/irefer-dsi/index.php/services/doctor/get_demo_db");
+        		String urlString = ABC.WEB_URL+"doctor/get_sync_data?prac_ids=1&cnty_ids="+cntyIds+"&user_id="+userId+"&slimit=1000&limit=150&dlimit=0,"+Utils.docSyncLimit;
+                Log.d("NI","URL :: "+urlString); 
+        		URL url = new URL(urlString);
                  Log.d("NR::", ""+url);
                  /* Open a connection to that URL. */
                  URLConnection ucon = url.openConnection();
@@ -984,10 +986,10 @@ public class SetupActivity extends Activity {
                 OutputStream os = null;
                 InputStream is = null;
                 try {
-                	Log.d("NR::", "Copy starting to /data/data/com.dsinv.irefer/databases/");
+                	Log.d("NR::", "Copy starting to /data/data/"+Utils.packageName+"/databases/");
                       // Log.d(TAG, "Copying DB from server version into app");
                         is = SetupActivity.this.openFileInput("irefer_db");
-                        os = new FileOutputStream("/data/data/com.dsinv.irefer/databases/irefer_db"); // XXX change this
+                        os = new FileOutputStream("/data/data/"+Utils.packageName+"/databases/irefer_db"); // XXX change this
 
                         copyFile(os, is);
                 } catch (Exception e) {
