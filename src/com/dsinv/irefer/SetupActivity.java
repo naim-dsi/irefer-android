@@ -931,9 +931,9 @@ public class SetupActivity extends Activity {
     	
         protected Long doInBackground(URL... urls) {
         	try {
-                // Log.d(TAG, "downloading database");
-        		//String urlString = ABC.WEB_URL+"doctor/get_sync_data?prac_ids=1&cnty_ids="+cntyIds+"&user_id="+userId+"&slimit=1000&limit=150&dlimit=0,"+Utils.docSyncLimit;
-        		String urlString = ABC.WEB_URL+"doctor/get_demo_db_m";
+                 Log.d("NI::", "downloading database");
+        		String urlString = ABC.WEB_URL+"doctor/get_sync_data?prac_ids=1&cnty_ids="+cntyIds+"&user_id="+userId+"&slimit=1000&limit=150&dlimit=0,"+Utils.docSyncLimit;
+        		//String urlString = ABC.WEB_URL+"doctor/get_demo_db_m";
         		//String urlString = ABC.WEB_URL+"doctor/get_demo_db_j";
         		Log.d("NI","URL :: "+urlString); 
         		URL url = new URL(urlString);
