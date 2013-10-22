@@ -9,6 +9,18 @@
      android:textSize="24dp" android:layout_marginTop="10dp"
      android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center"/>
      
+     <TextView android:text="Rank the doctors your office uses." android:id="@+id/rank_dialog_text2"
+     android:textSize="14dp" android:layout_marginTop="10dp" android:textColor="#97C9ED"
+     android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center"/>
+     
+     <TextView android:text="Rank your favorite doctors with a 5." android:id="@+id/rank_dialog_text3"
+     android:textSize="14dp" android:textColor="#97C9ED"
+     android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center"/>
+     
+     <TextView android:text=" Doctors you have not ranked remain 0." android:id="@+id/rank_dialog_text4"
+     android:textSize="14dp" android:textColor="#97C9ED"
+     android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center"/>
+     
      <RatingBar 
      	android:layout_marginTop="10dp" android:layout_marginBottom="10dp"
    		android:layout_width="wrap_content"

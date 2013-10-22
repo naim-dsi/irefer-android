@@ -30,6 +30,7 @@ public class Utils {
 	public static int HOME_PAGE   = 11;
 	public static int SETUP_PAGE  = 12;
 	public static int FILTER_PAGE = 13;
+	public static int COUNTY_LIMIT = 4;
 	private static Random randomGenerator = new Random();
     
 	public static int docSyncLimit = 15000;

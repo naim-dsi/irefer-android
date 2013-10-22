@@ -143,6 +143,7 @@ public class ItemOnlineSelectActivity extends Activity {
     	
     	selectionArr = this.getIntent().getBooleanArrayExtra("selectionArr");
     	
+    	
     	selectedMap = new HashMap<String, String>();
     	itemListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 	    	
@@ -181,6 +182,10 @@ public class ItemOnlineSelectActivity extends Activity {
 				finish();	
 			}
 		});
+        
+        searchText = "";
+    	systemtaskHandler.removeCallbacks( systemTaskRunner );
+        systemtaskHandler.postDelayed( systemTaskRunner, 1 );
     }
 	
 	private void setResult(){

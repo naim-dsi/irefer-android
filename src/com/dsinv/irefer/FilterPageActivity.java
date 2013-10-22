@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -424,12 +425,12 @@ public class FilterPageActivity extends Activity {
 			public void onClick(View v) {
 				if(officeHourBtn.getVisibility() == View.GONE){
 					languageBtn.setVisibility(View.VISIBLE);
-					acoBtn.setVisibility(View.VISIBLE);
+					//acoBtn.setVisibility(View.VISIBLE);
 					officeHourBtn.setVisibility(View.VISIBLE);
 					showAdvBtn.setText("Hide Advance Options");	
 				} else {
 					languageBtn.setVisibility(View.GONE);
-					acoBtn.setVisibility(View.GONE);
+					//acoBtn.setVisibility(View.GONE);
 					officeHourBtn.setVisibility(View.GONE);
 					showAdvBtn.setText("Show Advance Options");
 				}
@@ -722,15 +723,16 @@ public class FilterPageActivity extends Activity {
 			countySelection = new boolean[cr.getCount()];
 			countyIdArr = new int[cr.getCount()];
 			for(int i=0; i<cr.getCount(); i++) {
-				if(i == 0) {
-					countyName = cr.getString(2);
-					countyId = cr.getString(1);
-				} else {
-					countyName = countyName+","+cr.getString(2);
-					countyId = countyId+","+cr.getString(1);
-				}
+//				if(i == 0) {
+//					countyName = cr.getString(2);
+//					countyId = cr.getString(1);
+//				} else {
+//					countyName = countyName+","+cr.getString(2);
+//					countyId = countyId+","+cr.getString(1);
+//				}
 				countyNameArr[i] = cr.getString(2);
-				countySelection[i] = true;
+				//countySelection[i] = true;
+				countySelection[i] = false;
 				countyIdArr[i] = cr.getInt(1);
         		cr.moveToNext();
         	}
@@ -906,20 +908,48 @@ public class FilterPageActivity extends Activity {
 					public void onClick(DialogInterface dialog, int which,
 							boolean isChecked) {
 						// TODO Auto-generated method stub
-						countyName = "All";
-						countyId   = "";			
-						for(int i=0; i<countySelection.length; i++) {
-							if(countySelection[i]) {
-								if(!countyName.equals("All")){  
-									countyName = countyName +","+countyNameArr[i].toString();
-									countyId   = countyId +","+ new Integer(countyIdArr[i]).toString();
-								} else {
-									countyName = countyNameArr[i].toString();
-									countyId   = new Integer(countyIdArr[i]).toString();
+						Log.d("NI::","Selected Item No. "+which);
+						Log.d("NI::","Is checked : "+isChecked);
+						if(isChecked){
+							String totalCounty[] = countyId.split(","); 
+							if(totalCounty.length<Utils.COUNTY_LIMIT){
+								countyName = "All";
+								countyId   = "";
+								for(int i=0; i<countySelection.length; i++) {
+									if(countySelection[i]) {
+										if(!countyName.equals("All")){  
+											countyName = countyName +","+countyNameArr[i].toString();
+											countyId   = countyId +","+ new Integer(countyIdArr[i]).toString();
+										} else {
+											countyName = countyNameArr[i].toString();
+											countyId   = new Integer(countyIdArr[i]).toString();
+										}
+									}
 								}
+								countyValue.setText(countyName);
+							}
+							else{
+								countySelection[which]=false;
+								((AlertDialog) dialog).getListView().setItemChecked(which, false); 
+								Toast.makeText(FilterPageActivity.this, "Maximum "+Utils.COUNTY_LIMIT+" county can be seleted", Toast.LENGTH_LONG).show();
 							}
 						}
-						countyValue.setText(countyName);
+						else{
+							countyName = "All";
+							countyId   = "";
+							for(int i=0; i<countySelection.length; i++) {
+								if(countySelection[i]) {
+									if(!countyName.equals("All")){  
+										countyName = countyName +","+countyNameArr[i].toString();
+										countyId   = countyId +","+ new Integer(countyIdArr[i]).toString();
+									} else {
+										countyName = countyNameArr[i].toString();
+										countyId   = new Integer(countyIdArr[i]).toString();
+									}
+								}
+							}
+							countyValue.setText(countyName);
+						}
 					}
 				});
 				break;
