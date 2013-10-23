@@ -6,7 +6,8 @@
     android:background="@drawable/t7_480x720"
     >
 	
-	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	<!--  <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" -->
+	<LinearLayout 
        android:id="@+id/item_select_top_wrapper" android:background="#991A1111"
        android:paddingLeft="2dip" android:paddingRight="2dip"
        android:layout_height="wrap_content"
@@ -30,8 +31,8 @@
         android:background="#55E0FFFF"
         android:cacheColorHint="#00000000"
     	/>
-    
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <!--  <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" -->
+	<LinearLayout 
        android:id="@+id/item_select_bottom_wrapper2" android:orientation="vertical"
        android:layout_height="wrap_content" android:background="#DDA1A1A1"
                 

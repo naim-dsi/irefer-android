@@ -109,7 +109,7 @@ public class DoctorListActivity extends Activity {
     ListView itemListView;
     DoctorListAdapter adapter;
     int selectedItemIdx = 0;
-    
+    int onlineFlag = 0;
 	private int showMore = 50;
 	
 	private int rowCount = 0;
@@ -176,7 +176,12 @@ public class DoctorListActivity extends Activity {
 	    	
 	    	userId = getIntent().getStringExtra("userId");
 	    	isOnlineSearch = getIntent().getBooleanExtra("is_online_search", false);
-	        
+	        if(isOnlineSearch){
+	        	onlineFlag = 1;
+	        }
+	        else{
+	        	onlineFlag = 0;
+	        }
 	    	/*
 	    	filterView = (TextView)findViewById(R.id.filter_selected_values);
 	    	filterView.setMovementMethod(ScrollingMovementMethod.getInstance());
@@ -215,7 +220,8 @@ public class DoctorListActivity extends Activity {
 	        		R.layout.doctor_row,
 	        		new String[] {"docId", "docTitile1","docTitile2","docTitile3", "u_rank"},
 	        		new int[] {R.id.doc_row_doc_id, R.id.doc_title1, R.id.doc_title2, R.id.doc_title3,
-	        				R.id.list_ratingbar_small}
+	        		R.id.list_ratingbar_small},
+	        		onlineFlag
 	        		);
 	    	itemListView.setAdapter(adapter);
 	    	

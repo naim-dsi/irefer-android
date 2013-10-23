@@ -110,7 +110,8 @@ public class DoctorListAdvanceActivity extends Activity {
 	                    		data,
 	                    		R.layout.doctor_row,
 	                    		new String[] {"docId", "docTitile1","docTitile2","docTitile3"},
-	                    		new int[] {R.id.doc_row_doc_id, R.id.doc_title1, R.id.doc_title2, R.id.doc_title3}
+	                    		new int[] {R.id.doc_row_doc_id, R.id.doc_title1, R.id.doc_title2, R.id.doc_title3},
+	                			0
 	                    		);
 	                	
 	                	itemListView.setAdapter(adapter);
@@ -253,7 +254,8 @@ public class DoctorListAdvanceActivity extends Activity {
         		docList,
         		R.layout.doctor_row,
         		new String[] {"docId", "docTitile1","docTitile2","docTitile3"},
-        		new int[] {R.id.doc_row_doc_id, R.id.doc_title1, R.id.doc_title2, R.id.doc_title3}
+        		new int[] {R.id.doc_row_doc_id, R.id.doc_title1, R.id.doc_title2, R.id.doc_title3},
+        		0
         		);
     	
         itemListView.setAdapter(adapter);

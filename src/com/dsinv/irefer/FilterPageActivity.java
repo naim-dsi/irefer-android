@@ -8,12 +8,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -119,7 +123,7 @@ public class FilterPageActivity extends Activity {
         
         fromPageId = this.getIntent().getIntExtra(Utils.pageId, -1);
         
-       
+        
         //faisal > added
         //onlineSearch = (CheckBox) findViewById(R.id.online_search_checkbox);
         //goOnline   = (ToggleButton) findViewById(R.id.online_search_toggle);
@@ -143,6 +147,26 @@ public class FilterPageActivity extends Activity {
         	setContentView(R.layout.filter_page);
         else
         	setContentView(R.layout.filter_page_hosp);
+        
+//        Display display = getWindowManager().getDefaultDisplay();
+//        int windowWidth = display.getWidth();
+//        int windowHeight = display.getHeight();
+//        LinearLayout l1 = (LinearLayout) findViewById(R.id.setup_bottom_wrapper1);
+//        LinearLayout l2 = (LinearLayout) findViewById(R.id.setup_bottom_wrapper2);
+//        try{
+//        	l1.setLayoutParams(new android.view.ViewGroup.LayoutParams(
+//        			new Integer(windowWidth/2),
+//                    android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
+//        	l2.setLayoutParams(new android.view.ViewGroup.LayoutParams(
+//        			new Integer(windowWidth/2),
+//                    android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
+//	        //l1.setLayoutParams(new LinearLayout.LayoutParams(new Integer(windowWidth/2), LinearLayout.LayoutParams.FILL_PARENT));
+//	        //l2.setLayoutParams(new LinearLayout.LayoutParams(new Integer(windowWidth/2), LinearLayout.LayoutParams.FILL_PARENT));
+//        }
+//        catch(Exception ex)
+//        {
+//        	ex.fillInStackTrace();
+//        }
         headline1       = (TextView) findViewById(R.id.filterHeadline1);
         headline2       = (TextView) findViewById(R.id.filterHeadline2);
         insuranceValue  = (TextView) findViewById(R.id.filterInsuranceValue);

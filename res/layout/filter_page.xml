@@ -353,37 +353,79 @@ android:layout_height="fill_parent">
        android:layout_width="fill_parent" android:background="#DD101010"  android:padding="0dp"
        android:layout_alignParentBottom="true" android:baselineAligned="true" android:gravity="center">
        
-        <Button android:id="@+id/bottomInfoBtn" 
-		android:layout_height="48dp" android:layout_width="52dp"
-		android:text="" android:textColor="#FFF8C6"	android:singleLine="true"
-		android:background="@drawable/action_bar_help"
-		android:layout_marginLeft="2dp" android:layout_marginRight="2dp" android:layout_marginTop="4dp" android:layout_marginBottom="4dp">
-		</Button>
-        
-        <LinearLayout
-        android:id="@+id/filter_bottom_button1" 
-		android:layout_height="48dp" android:layout_width="52dp" 
-		android:background="@drawable/action_bar_setup"
-		android:onClick="setupClicked"
-		android:paddingTop="0dp"
-		android:layout_marginLeft="2dp" android:layout_marginRight="2dp" android:layout_marginTop="4dp" android:layout_marginBottom="4dp">
+    	<RelativeLayout
+		     android:layout_width="fill_parent"
+		     android:layout_height="wrap_content"
+		     android:background="@android:color/black"
+		     android:gravity="bottom"
+		     android:orientation="horizontal" >
 		
-		</LinearLayout>
-        
-		<Button android:id="@+id/filter_bottom_button2" 
-		android:layout_height="48dp" android:layout_width="52dp"
-		android:text="" android:textColor="#33AA00"
-		android:singleLine="true"
-		android:background="@drawable/action_bar_text_search"
-		android:layout_marginLeft="2dp" android:layout_marginRight="2dp" android:layout_marginTop="4dp" android:layout_marginBottom="4dp">
-		</Button>
-        
-       <Button android:id="@+id/getDoctorBtn" 
-		android:layout_height="48dp" android:layout_width="52dp"
-		android:text="" android:textColor="#FFF8C6"	android:singleLine="true"
-		android:background="@drawable/action_bar_search"
-		android:layout_marginLeft="2dp" android:layout_marginRight="2dp" android:layout_marginTop="4dp" android:layout_marginBottom="4dp">
-		</Button>
+		     <Button android:id="@+id/bottomInfoBtn" 
+				android:layout_height="48dp" 
+				android:layout_width="52dp"
+				android:text="" 
+				android:textColor="#FFF8C6"	
+				android:singleLine="true"
+				android:background="@drawable/action_bar_help"
+				android:layout_marginLeft="2dp" 
+				android:layout_marginRight="2dp" 
+				android:layout_marginTop="4dp" 
+				android:layout_marginBottom="4dp"  
+				android:layout_alignParentLeft="true">
+			</Button>
+			<Button
+		        android:id="@+id/filter_bottom_button1" 
+				android:layout_height="48dp" 
+				android:layout_width="52dp" 
+				android:background="@drawable/action_bar_setup"
+				android:onClick="setupClicked"
+				android:paddingTop="0dp"
+				android:layout_marginLeft="2dp" 
+				android:layout_marginRight="2dp" 
+				android:layout_marginTop="4dp" 
+				android:layout_marginBottom="4dp"  
+				
+				android:layout_toRightOf="@+id/bottomInfoBtn"
+				>
+				
+			</Button>
+		   		
+			<Button 
+			    android:id="@+id/filter_bottom_button2" 
+				android:layout_height="48dp" 
+				android:layout_width="52dp"
+				android:text="" 
+				android:textColor="#33AA00"
+				android:singleLine="true"
+				android:background="@drawable/action_bar_text_search"
+				android:layout_marginLeft="2dp" 
+				android:layout_marginRight="2dp" 
+				android:layout_marginTop="4dp" 
+				android:layout_marginBottom="4dp"  
+				android:layout_toLeftOf="@+id/getDoctorBtn">
+			</Button>
+			        
+			<Button 
+			    android:id="@+id/getDoctorBtn" 
+				android:layout_height="48dp" 
+				android:layout_width="52dp"
+				android:text="" 
+				android:textColor="#FFF8C6"	
+				android:singleLine="true"
+				android:background="@drawable/action_bar_search"
+				android:layout_marginLeft="2dp"
+				android:layout_marginRight="2dp"
+				android:layout_marginTop="4dp"
+				android:layout_marginBottom="4dp"
+				android:layout_alignParentRight="true">
+			</Button>
+		</RelativeLayout>
+    
+    
+    
+    
+    
+    
         		 
     </LinearLayout> 
 </RelativeLayout>

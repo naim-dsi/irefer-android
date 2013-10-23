@@ -49,10 +49,11 @@ public class DoctorListAdapter extends SimpleAdapter {
 				R.id.doc_rank_dialog_btn_5};
 	
     public DoctorListAdapter(Context context, DbAdapter	dba,List<? extends Map<String, ?>> data,
-            int resource, String[] from, int[] to) {
+            int resource, String[] from, int[] to,int onlineFlag) {
         super(context, data, resource, from, to);
         this.ctx = context;
         this.dba = dba;
+        this.onlineFlag=onlineFlag;
     }
     
     public DoctorListAdapter(Context context,List<? extends Map<String, ?>> data,
@@ -211,6 +212,7 @@ public class DoctorListAdapter extends SimpleAdapter {
 	                try {
 	                	if(!Utils.isEmpty((String)data.get("u_rank"))) {
 	                		int rankV = Integer.parseInt((String)data.get("u_rank"));
+	                		rankValue = rankV;
 	                		ratingBar.setRating(rankV);
 	                		for(int i=0; i<rankV; i++) {
 	                			Button btn = (Button)dialog.findViewById(rankIdArr[i]);
@@ -235,12 +237,16 @@ public class DoctorListAdapter extends SimpleAdapter {
 	                		//int rankValue = Math.round(ratingBar.getRating());
 	                		try {
 	                			String res = "";
-	                			if(onlineFlag == 1) {
-	                				res = getDataFromURL(ABC.WEB_URL+"userDocRank/rank?user_id="+
-	                					data.get("userId")+"&doc_id="+data.get("docId")+"&rank="+rankValue );
+	                			dba.rankDoctor(Integer.parseInt((String)data.get("docId")), rankValue);
+	                			//if(onlineFlag == 1) {
+	                			if(true){//naim
+	                				String stringUrl = ABC.WEB_URL+"userDocRank/rank?user_id="+
+		                					data.get("userId")+"&doc_id="+data.get("docId")+"&rank="+rankValue  ;
+	                				res = getDataFromURL(stringUrl);
+	                				Log.d("NI::",stringUrl);
 	                				Toast.makeText(ctx, " "+res, Toast.LENGTH_SHORT).show();
 	                			} else {
-	                				dba.rankDoctor(Integer.parseInt((String)data.get("docId")), rankValue);
+	                				
 	                				Log.d("NR::", ""+Integer.parseInt((String)data.get("docId"))+rankValue);
 	                				Toast.makeText(ctx, "Rank Updated to "+rankValue, Toast.LENGTH_SHORT).show();
 	                			}

@@ -28,6 +28,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +45,7 @@ public class ItemOnlineSelectActivity extends Activity {
     private boolean[] selectionArr;
     private Map<String, String> selectedMap;
     Map nameIdMap;
+    private Button doneBtn;
     private CharSequence searchText = "";
     protected Handler systemtaskHandler = new Handler();
    	Runnable systemTaskRunner = new Runnable() {
@@ -66,7 +68,10 @@ public class ItemOnlineSelectActivity extends Activity {
                 		jsonData = getDataFromURL(ABC.WEB_URL+"insurance/json?code="+s.toString());                		
                 	}else if(opr == DbAdapter.COUNTY) {
                 		jsonData = getDataFromURL(ABC.WEB_URL+"county/json?code="+s.toString());
-                	}                	
+                	}else if(opr == DbAdapter.ACO) {
+                		jsonData = getDataFromURL(ABC.WEB_URL+"aco/json?code="+s.toString());
+                	}     
+                	
                 } catch(Exception ex) {                	
                 	System.out.println("SMM:ERROR::"+ex);
                 }
@@ -101,7 +106,7 @@ public class ItemOnlineSelectActivity extends Activity {
                         .getSystemService(ItemOnlineSelectActivity.this.INPUT_METHOD_SERVICE);
                 inputMethodManager.showSoftInput(textView, InputMethodManager.SHOW_IMPLICIT);
        		}
-               catch(Exception ex)
+            catch(Exception ex)
        		{
                	ex.printStackTrace();
        			
@@ -125,8 +130,9 @@ public class ItemOnlineSelectActivity extends Activity {
         	setTitle( getString( R.string.app_name ) + " - Type to Add Speciality");
         }else if(opr ==  DbAdapter.INSURANCE) {
         	setTitle( getString( R.string.app_name ) + " - Type to Add Insurance");
-        }
-                                        
+        }else if(opr ==  DbAdapter.ACO){
+        	setTitle( getString( R.string.app_name ) + " - Type to Add ACO"); 
+        }                                
         autoCompleteAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice);
         autoCompleteAdapter.setNotifyOnChange(true);
     	textView = (TextView)findViewById(R.id.item_select_text_edit);
@@ -142,17 +148,48 @@ public class ItemOnlineSelectActivity extends Activity {
     	itemListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
     	
     	selectionArr = this.getIntent().getBooleanArrayExtra("selectionArr");
-    	
-    	
+    	doneBtn = (Button) findViewById(R.id.itemSelectBtn);
+    	doneBtn.setText("Choose All");
+    	if(opr == DbAdapter.COUNTY){
+    		doneBtn.setText("Done");
+    	}
+    	doneBtn.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				finishActivity();
+				//Intent intent = new Intent(SetupActivity.this, ItemAddActivity.class);
+				//SetupActivity.this.intent.putExtra("opr", DbAdapter.PRACTICE);
+	            //startActivityForResult(intent, 1100);				
+			}
+		});
     	selectedMap = new HashMap<String, String>();
     	itemListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 	    	
     		public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+    			
+    			
     			String key = parent.getAdapter().getItem(position).toString();
     			if(selectedMap.get(key) == null) {
+    				if(opr == DbAdapter.COUNTY){
+    	    			int i = selectedMap.size();
+    	    			
+    	    			if(i>Utils.COUNTY_LIMIT||i==Utils.COUNTY_LIMIT){
+    	    				Toast.makeText(ItemOnlineSelectActivity.this, "Maximum "+Utils.COUNTY_LIMIT+" county can be seleted", Toast.LENGTH_LONG).show();
+    	    				//CheckBox cBox = (CheckBox) v.findViewById(id);
+    	                    //cBox.toggle();
+    	    				itemListView.setItemChecked(position, false);
+    	    				return;
+    	    			}
+        			}
     				selectedMap.put(key, "true");
     			}else {
     				selectedMap.remove(key);
+    			}
+    			if(selectedMap.isEmpty()) {
+    				doneBtn.setText("Choose All");
+    			} else {
+    				doneBtn.setText("Done");
+    				if(opr ==  DbAdapter.SPECIALTY || opr ==  DbAdapter.INSURANCE || opr == DbAdapter.PRACTICE || opr == DbAdapter.ACO)
+    					finishActivity();
     			}
     		}
     	});
@@ -175,19 +212,24 @@ public class ItemOnlineSelectActivity extends Activity {
 	        }
 	    };
 	    textView.addTextChangedListener(textChecker);
-	    Button doneBtn = (Button) findViewById(R.id.itemSelectBtn);
-        doneBtn.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				setResult();
-				finish();	
-			}
-		});
+//	    Button doneBtn = (Button) findViewById(R.id.itemSelectBtn);
+//		doneBtn.setOnClickListener(new View.OnClickListener() {
+//			public void onClick(View v) {
+//				setResult();
+//				finish();	
+//			}
+//		});
         
         searchText = "";
     	systemtaskHandler.removeCallbacks( systemTaskRunner );
         systemtaskHandler.postDelayed( systemTaskRunner, 1 );
     }
-	
+	private void finishActivity(){
+		//System.out.println("SMM:INFO::FINSHING....");
+		setResult();
+		finish();
+		overridePendingTransition(R.anim.drop_leave, R.anim.drop_back);
+	}
 	private void setResult(){
 		this.setResult(RESULT_OK, this.getIntent());		
 		String keyArr[] = new String[selectedMap.keySet().size()];

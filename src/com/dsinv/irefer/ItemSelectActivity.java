@@ -140,7 +140,8 @@ public class ItemSelectActivity extends Activity {
         	setTitle( getString( R.string.app_name ) + " - Type to Add Speciality");
         if(opr ==  DbAdapter.INSURANCE)
         	setTitle( getString( R.string.app_name ) + " - Type to Add Insurance");
-                
+        if(opr ==  DbAdapter.ACO)
+        	setTitle( getString( R.string.app_name ) + " - Type to Add ACO");        
         dba = new DbAdapter(this);
         dba.open();
         /*
@@ -203,7 +204,7 @@ public class ItemSelectActivity extends Activity {
     				doneBtn.setText("Choose All");
     			} else {
     				doneBtn.setText("Done");
-    				if(opr ==  DbAdapter.SPECIALTY || opr ==  DbAdapter.INSURANCE || opr == DbAdapter.PRACTICE)
+    				if(opr ==  DbAdapter.SPECIALTY || opr ==  DbAdapter.INSURANCE || opr == DbAdapter.PRACTICE || opr == DbAdapter.ACO)
     					finishActivity();
     			}
     			/* only one speciality can be selected */

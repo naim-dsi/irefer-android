@@ -714,8 +714,10 @@ public class DoctorDetailActivity extends Activity {
     }
    
     private JSONObject downloadDoctors(Integer docId) throws Exception {
-        String jsonData = "";       
-        jsonData = getDataFromURL(ABC.WEB_URL+"doctor/docJson?doc_id=" + docId+"&user_id="+userId);
+        String jsonData = "";
+        String stringURL = ABC.WEB_URL+"doctor/docJson?doc_id=" + docId+"&user_id="+userId;
+        Log.d("NI::",stringURL);
+        jsonData = getDataFromURL(stringURL);
         JSONTokener jsonTokener = new JSONTokener(jsonData);
         JSONArray arr = (JSONArray) jsonTokener.nextValue();
         return arr.getJSONObject(0);
@@ -793,6 +795,7 @@ public class DoctorDetailActivity extends Activity {
                 			hName = hName+"(Y)";
                 	}
                     data.put("hospital_name", hName);
+                    data.put("acos", jsonObject.getString("aco_name"));
                     data.put("speciality", jsonObject.getString("spec_name"));
                     data.put("insurance", jsonObject.getString("insu_name"));
                     data.put("u_rank", jsonObject.getString("u_rank"));

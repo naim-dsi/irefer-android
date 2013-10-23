@@ -683,11 +683,11 @@ public class SetupActivity extends Activity {
 			label5b.setVisibility(View.GONE);
 			label5c.setVisibility(View.GONE);
 		} else {
-			label5a.setText("�"+myCounty+"� is your default county.  If you would like to search for providers from other counties, please select additional counties now (Max is 4).");
+			label5a.setText("'"+myCounty+"' is your default county.  If you would like to search for providers from other counties, please select additional counties now (Max is 4).");
 			label5b.setVisibility(View.VISIBLE);
 			label5c.setVisibility(View.VISIBLE);
-			label5b.setText("Then Select �Download the doctor database�");
-			label5c.setText("To clear the database and start over, �Reset All�.");
+			label5b.setText("Then Select 'Download the doctor database'");
+			label5c.setText("To clear the database and start over, 'Reset All'.");
 		}
 		
 		/*
