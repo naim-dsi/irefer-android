@@ -11,7 +11,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.channels.Selector;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -930,9 +932,13 @@ public class SetupActivity extends Activity {
     	
     	
         protected Long doInBackground(URL... urls) {
+        	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+    		String currentDateandTime = sdf.format(new Date());
+    		String serverBDFileName = userId+currentDateandTime;
         	try {
-                 Log.d("NI::", "downloading database");
-        		String urlString = ABC.WEB_URL+"doctor/get_sync_data?prac_ids=1&cnty_ids="+cntyIds+"&user_id="+userId+"&slimit=1000&limit=150&dlimit=0,"+Utils.docSyncLimit;
+        		Log.d("NI::", "downloading database");
+        		
+        		String urlString = ABC.WEB_URL+"doctor/get_sync_data?prac_ids=1&cnty_ids="+cntyIds+"&user_id="+userId+"&slimit=1000&limit=150&dlimit=0,"+Utils.docSyncLimit+"&serverBDFileName="+serverBDFileName;
         		//String urlString = ABC.WEB_URL+"doctor/get_demo_db_m";
         		//String urlString = ABC.WEB_URL+"doctor/get_demo_db_j";
         		Log.d("NI","URL :: "+urlString); 
@@ -944,6 +950,7 @@ public class SetupActivity extends Activity {
                  /*
                   * Define InputStreams to read from the URLConnection.
                   */
+                 
                  InputStream is = ucon.getInputStream();
                  BufferedInputStream bis = new BufferedInputStream(is);
                  /*
@@ -960,11 +967,20 @@ public class SetupActivity extends Activity {
                  /* Convert the Bytes read to a String. */
                  FileOutputStream fos = null;
                  // Select storage location
-                 fos = SetupActivity.this.openFileOutput("irefer_db", Context.MODE_PRIVATE); 
+                 fos = SetupActivity.this.openFileOutput("irefer_db.zip", Context.MODE_PRIVATE); 
 
                  fos.write(baf.toByteArray());
                  fos.close();
                  Log.d("NR::", "Download Completed 2");
+                 Log.d("NI::", "UNZIP Start");
+                 
+                 String zipFile = "/data/data/"+Utils.packageName+"/files/irefer_db.zip"; 
+                 String unzipLocation = "/data/data/"+Utils.packageName+"/files/"; 
+                  
+                 Decompress d = new Decompress(zipFile, unzipLocation); 
+                 d.unzip(); 
+                 
+                 Log.d("NI::", "UNZIP Finished");
 	         } catch (IOException e) {
 	                 Log.e("NR::", "downloadDatabase Error: " , e);
 	                 return 0L;
@@ -978,9 +994,33 @@ public class SetupActivity extends Activity {
         	copyServerDatabase();
         	Log.d("NR::", "YAY!! SYNC COMPLETED...");
         	dba.open();
+        	String stringUrl = ABC.WEB_URL+"doctor/deletedbfiles?serverBDFileName="+serverBDFileName;
+			try {
+				String res = getDataFromURL(stringUrl);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			Log.d("NI::",stringUrl);
+        	
            return 0L;
         }
-        
+        public String getDataFromURL(String urlStr) throws Exception {
+        	System.out.println(urlStr);
+        	URL url = new URL(urlStr);
+    	    URLConnection urlCon = url.openConnection();
+    	    BufferedReader in = new BufferedReader(
+    	                            new InputStreamReader(
+    	                            urlCon.getInputStream()));
+    	    String data = "";
+    	    String line = "";
+    	    
+            while ((line = in.readLine()) != null)
+            	data += line;
+                //System.out.println(inputLine);
+    	    in.close();
+    	    return data;
+        }
         private void copyServerDatabase() {
            dba.close();
 

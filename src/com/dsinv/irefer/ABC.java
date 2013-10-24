@@ -5,6 +5,7 @@ public class ABC {
 	//final static String WEB_URL = HOST_URL+"index.php?r="; 
 	//final static String PIC_URL = HOST_URL+"pics/";
 	final static String WEB_URL = "http://103.4.147.139/irefer-dsi/index.php/services/"; 
+//	final static String WEB_URL = "http://10.0.0.252:8081/irefer-dsi/index.php/services/"; 
 
 	enum Language {
 		ENGLISH(1, "English"),
