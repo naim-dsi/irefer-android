@@ -1305,7 +1305,7 @@ public class DbAdapter {
         return -1;
     }
     public Cursor searchDoctor(String insuIds, String specIds, String hospIds, String cntyIds, String docName, 
-    		String zipCode, String languages, String limit, int searchOrder,String acoIds) {
+    		String zipCode, String languages, String limit, int searchOrder,String acoIds,int resourceFlag) {
     	/*
     	System.out.println("SMM::SEARCH-SQL::(last_name LIKE '%"+docName+"%'"+" OR first_name LIKE '%"+docName+"%'"+" OR mid_name LIKE '%"+docName+"%' )"+
         		(Utils.isEmpty(specIds) ? "" : "AND spec_id IN ("+specIds+") ")+
@@ -1414,6 +1414,7 @@ public class DbAdapter {
         		(Utils.isEmpty(acoStr) ? "" : acoStr)+
         		(Utils.isEmpty(insuStr) ? "" : insuStr)+
         		(Utils.isEmpty(zipCode) ? "" : " AND zip_code = '"+zipCode+"')")+
+        		((resourceFlag==-1) ? "" : " AND res_flag = '"+resourceFlag+"'")+
         		(Utils.isEmpty(langStr) ? "" : langStr);
     	Cursor cur = dbr.query(true, tname[DOCTOR], tcols[DOCTOR], 
     			qq,

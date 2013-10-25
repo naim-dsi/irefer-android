@@ -135,23 +135,32 @@ public class DoctorListAdapter extends SimpleAdapter {
 	        Button callBtn = (Button) itemView.findViewById(R.id.list_call_button);
 	        callBtn.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
-					DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int which) {
-		    		        switch (which){
-		    		            case DialogInterface.BUTTON_POSITIVE:
-		    		            	Intent sIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"+(String) data.get("docPhone")));
-		    		            	ctx.startActivity(sIntent);
-		    		            	break;
-	
-		    		            case DialogInterface.BUTTON_NEGATIVE:
-		    		                //No button clicked
-		    		                break;
-		    		        }
-		    		    }
-					};
-					AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
-	    		    builder.setMessage((String) data.get("docPhone")).setPositiveButton("Call", dialogClickListener)
-	    		        .setNegativeButton("Cancel", dialogClickListener).show();
+					Log.d("NI::",data.get("docPhone").toString());
+	            	if(!data.get("docPhone").toString().equals("")){
+						DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int which) {
+			    		        switch (which){
+			    		            case DialogInterface.BUTTON_POSITIVE:
+			    		            	
+				    		            	Intent sIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"+(String) data.get("docPhone")));
+				    		            	ctx.startActivity(sIntent);
+			    		            	
+			    		            	break;
+		
+			    		            case DialogInterface.BUTTON_NEGATIVE:
+			    		                //No button clicked
+			    		                break;
+			    		        }
+			    		    }
+						};
+						AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
+		    		    builder.setMessage((String) data.get("docPhone")).setPositiveButton("Call", dialogClickListener)
+		    		        .setNegativeButton("Cancel", dialogClickListener).show();
+	            	}
+	            	else
+	            	{
+	            		Toast.makeText(ctx, "No phone number given.", Toast.LENGTH_SHORT).show(); 
+	            	}
 					
 				}
 			});

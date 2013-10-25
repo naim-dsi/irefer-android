@@ -694,7 +694,10 @@ public class DoctorDetailActivity extends Activity {
 			public void onClick(View v) {				
 				if(data.get("phone") != null && !data.get("phone").equals("")) {
 					startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + data.get("phone"))));	
-				}				            	
+				}
+				else{
+            		Toast.makeText(ctx, "No phone number given.", Toast.LENGTH_SHORT).show(); 
+            	}
 			}
 		});
 	}
@@ -754,24 +757,27 @@ public class DoctorDetailActivity extends Activity {
                     //System.out.println(jsonObject.getString("first_name") + "::::::");
                     data.put("first_name", jsonObject.getString("first_name"));
                     data.put("last_name", jsonObject.getString("last_name"));
-                    data.put("mid_name", jsonObject.getString("mid_name"));
-                    data.put("degree", jsonObject.getString("degree"));
-                    data.put("phone", jsonObject.getString("doc_phone"));
-                    data.put("fax", jsonObject.getString("doc_fax"));
-                    data.put("language", jsonObject.getString("language"));
-                    data.put("grade", jsonObject.getString("grade"));
-                    data.put("office_hour", jsonObject.getString("office_hour"));
-                    data.put("npi", jsonObject.getString("npi"));
-                    data.put("image_url", jsonObject.getString("image_url"));
-                    data.put("see_patient", jsonObject.getString("see_patient"));
+                    data.put("mid_name", ((Utils.isEmpty(jsonObject.getString("mid_name"))||jsonObject.getString("mid_name").equals("null")) ? "" : jsonObject.getString("mid_name")));
+                    data.put("degree", ((Utils.isEmpty(jsonObject.getString("degree"))||jsonObject.getString("degree").equals("null")) ? "" : jsonObject.getString("degree")));
+                    data.put("phone", ((Utils.isEmpty(jsonObject.getString("doc_phone"))||jsonObject.getString("doc_phone").equals("null")) ? "" : jsonObject.getString("doc_phone")));
+                    data.put("fax", ((Utils.isEmpty(jsonObject.getString("doc_fax"))||jsonObject.getString("doc_fax").equals("null")) ? "" : jsonObject.getString("doc_fax")));
+                    data.put("language", ((Utils.isEmpty(jsonObject.getString("language"))||jsonObject.getString("language").equals("null")) ? "" : jsonObject.getString("language")));
+                    data.put("grade", ((Utils.isEmpty(jsonObject.getString("grade"))||jsonObject.getString("grade").equals("null")) ? "" : jsonObject.getString("grade")));
+                    data.put("office_hour", ((Utils.isEmpty(jsonObject.getString("office_hour"))||jsonObject.getString("office_hour").equals("null")) ? "" : jsonObject.getString("office_hour")));
+                    data.put("npi", ((Utils.isEmpty(jsonObject.getString("npi"))||jsonObject.getString("npi").equals("null")) ? "" : jsonObject.getString("npi")));
+                    data.put("image_url", ((Utils.isEmpty(jsonObject.getString("image_url"))||jsonObject.getString("image_url").equals("null")) ? "" : jsonObject.getString("image_url")));
+                    data.put("see_patient", ((Utils.isEmpty(jsonObject.getString("see_patient"))||jsonObject.getString("see_patient").equals("null")) ? "" : jsonObject.getString("see_patient")));
                     if(jsonObject.getString("gender") != null && "1".equals(jsonObject.getString("gender")))
                     	data.put("gender", "Male");
-                    else
+                    else if(jsonObject.getString("gender") != null && "0".equals(jsonObject.getString("gender")))
                     	data.put("gender", "Female");
-                    
-                    String pNameArr[] = (jsonObject.getString("prac_name")).split("\\|");
+                    else
+                    	data.put("gender", "");
+                    String prac_name = ((Utils.isEmpty(jsonObject.getString("prac_name"))||jsonObject.getString("prac_name").equals("null")) ? "" : jsonObject.getString("prac_name"));
+                    String pNameArr[] = (prac_name).split("\\|");
                     //String pNameArr[] = "abc|hi5| hello".split("|");
-                    String pAddArr[]  = (jsonObject.getString("add_line_1")).split("\\|");
+                    String add_line_1 = ((Utils.isEmpty(jsonObject.getString("add_line_1"))||jsonObject.getString("add_line_1").equals("null")) ? "" : jsonObject.getString("add_line_1"));
+                    String pAddArr[]  = (add_line_1).split("\\|");
                     System.out.println("prac_name="+jsonObject.getString("prac_name"));
                     String pName = "";
                     for(int i=0; i<pNameArr.length && i<pAddArr.length; i++) {
@@ -783,27 +789,32 @@ public class DoctorDetailActivity extends Activity {
                     
                     data.put("practice_name", pName);
                     data.put("practice_add", "");
-                    
-                    String hNameArr[] = (jsonObject.getString("hosp_name")).split("\\|");
-                    String seePArr[]  = (jsonObject.getString("see_patient")).split("\\|");
+                    String hosp_name = ((Utils.isEmpty(jsonObject.getString("hosp_name"))||jsonObject.getString("hosp_name").equals("null")) ? "" : jsonObject.getString("hosp_name"));
+                    String hNameArr[] = (hosp_name).split("\\|");
+                    String see_patient = ((Utils.isEmpty(jsonObject.getString("see_patient"))||jsonObject.getString("see_patient").equals("null")) ? "" : jsonObject.getString("see_patient"));
+                    String seePArr[]  = (see_patient).split("\\|");
                     String hName = "";
                 	for(int i=0; i<hNameArr.length && i<seePArr.length; i++) {
                 		hName = Utils.isEmpty(hName) ? hNameArr[i] : hName+"\n"+hNameArr[i];
-                		if(seePArr[i].equals("0"))
-                			hName = hName+"(N)";
-                		else
-                			hName = hName+"(Y)";
+                		if(seePArr[i].equals("0")){
+                			if(!hName.equals(""))
+                				hName = hName+"(N)";
+                		}
+                		else{
+                			if(!hName.equals(""))
+                				hName = hName+"(Y)";
+                		}
                 	}
                     data.put("hospital_name", hName);
-                    data.put("acos", jsonObject.getString("aco_name"));
-                    data.put("speciality", jsonObject.getString("spec_name"));
-                    data.put("insurance", jsonObject.getString("insu_name"));
-                    data.put("u_rank", jsonObject.getString("u_rank"));
-                    data.put("up_rank", jsonObject.getString("up_rank"));
-                    data.put("quality", jsonObject.getString("quality"));
-                    data.put("cost", jsonObject.getString("cost"));
-                    data.put("rank_user_number", jsonObject.getString("rank_user_number"));                    
-                    data.put("avg_rank", jsonObject.getString("avg_rank"));
+                    data.put("acos", ((Utils.isEmpty(jsonObject.getString("aco_name"))||jsonObject.getString("aco_name").equals("null")) ? "" : jsonObject.getString("aco_name")));
+                    data.put("speciality", ((Utils.isEmpty(jsonObject.getString("spec_name"))||jsonObject.getString("spec_name").equals("null")) ? "" : jsonObject.getString("spec_name")));
+                    data.put("insurance", ((Utils.isEmpty(jsonObject.getString("insu_name"))||jsonObject.getString("insu_name").equals("null")) ? "" : jsonObject.getString("insu_name")));
+                    data.put("u_rank", ((Utils.isEmpty(jsonObject.getString("u_rank"))||jsonObject.getString("u_rank").equals("null")) ? "" : jsonObject.getString("u_rank")));
+                    data.put("up_rank", ((Utils.isEmpty(jsonObject.getString("up_rank"))||jsonObject.getString("up_rank").equals("null")) ? "" : jsonObject.getString("up_rank")));
+                    data.put("quality", ((Utils.isEmpty(jsonObject.getString("quality"))||jsonObject.getString("quality").equals("null")) ? "" : jsonObject.getString("quality")));
+                    data.put("cost", ((Utils.isEmpty(jsonObject.getString("cost"))||jsonObject.getString("cost").equals("null")) ? "" : jsonObject.getString("cost")));
+                    data.put("rank_user_number", ((Utils.isEmpty(jsonObject.getString("rank_user_number"))||jsonObject.getString("rank_user_number").equals("null")) ? "" : jsonObject.getString("rank_user_number")));                    
+                    data.put("avg_rank", ((Utils.isEmpty(jsonObject.getString("avg_rank"))||jsonObject.getString("avg_rank").equals("null")) ? "" : jsonObject.getString("avg_rank")));
                     populateData(data);
                 }catch (Exception e) {
                     System.out.println(e);

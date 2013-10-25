@@ -2,6 +2,7 @@ package com.dsinv.irefer;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -585,7 +586,8 @@ public class SetupActivity extends Activity {
 				(jsonObj.getString("c16").equals("null") ? "0": jsonObj.getString("c16")),
 				(jsonObj.getString("c15").equals("null") ? "0": jsonObj.getString("c15")),
 				(jsonObj.getString("c17").equals("null") ? "0" : jsonObj.getString("c17")),
-				jsonObj.getString("c19"), "0", "0",
+				jsonObj.getString("c19"), "0",
+				(jsonObj.getString("c25").equals("null") ? "0": jsonObj.getString("c25")),//naim
 				(jsonObj.getString("c13").equals("1") ? "1" : "0"),
 				jsonObj.getString("c11"),jsonObj.getString("c10"),
 				jsonObj.getString("c12"),
@@ -937,7 +939,7 @@ public class SetupActivity extends Activity {
     		String serverBDFileName = userId+currentDateandTime;
         	try {
         		Log.d("NI::", "downloading database");
-        		
+        		publishProgress(2);
         		String urlString = ABC.WEB_URL+"doctor/get_sync_data?prac_ids=1&cnty_ids="+cntyIds+"&user_id="+userId+"&slimit=1000&limit=150&dlimit=0,"+Utils.docSyncLimit+"&serverBDFileName="+serverBDFileName;
         		//String urlString = ABC.WEB_URL+"doctor/get_demo_db_m";
         		//String urlString = ABC.WEB_URL+"doctor/get_demo_db_j";
@@ -958,7 +960,7 @@ public class SetupActivity extends Activity {
                   */
                  ByteArrayBuffer baf = new ByteArrayBuffer(50);
                  int current = 0;
-                 
+                 publishProgress(3);
                  Log.d("NR::", "Download Starting");
                  while ((current = bis.read()) != -1) {
                          baf.append((byte) current);
@@ -973,7 +975,7 @@ public class SetupActivity extends Activity {
                  fos.close();
                  Log.d("NR::", "Download Completed 2");
                  Log.d("NI::", "UNZIP Start");
-                 
+                 publishProgress(4);
                  String zipFile = "/data/data/"+Utils.packageName+"/files/irefer_db.zip"; 
                  String unzipLocation = "/data/data/"+Utils.packageName+"/files/"; 
                   
@@ -992,6 +994,7 @@ public class SetupActivity extends Activity {
 	                 return 0L;
 	         }
         	copyServerDatabase();
+        	publishProgress(5);
         	Log.d("NR::", "YAY!! SYNC COMPLETED...");
         	dba.open();
         	String stringUrl = ABC.WEB_URL+"doctor/deletedbfiles?serverBDFileName="+serverBDFileName;
@@ -1034,6 +1037,26 @@ public class SetupActivity extends Activity {
                         os = new FileOutputStream("/data/data/"+Utils.packageName+"/databases/irefer_db"); // XXX change this
 
                         copyFile(os, is);
+                        
+                        File file = new File("/data/data/"+Utils.packageName+"/files/irefer_db.zip");
+                        if(file.exists())
+						{ 
+                        	boolean deletedZip = file.delete();
+                        	if(deletedZip){
+                        		Log.d("NI::","ZIP file Deleted");
+                        	}
+						}
+                        
+                        file = new File("/data/data/"+Utils.packageName+"/files/irefer_db");
+                        if(file.exists())
+						{ 
+                        	boolean deletedDB = file.delete();
+                        	if(deletedDB){
+                        		Log.d("NI::","DB file Has Deleted");
+                        	}
+						}
+                        
+                        
                 } catch (Exception e) {
                         Log.e("NR::", "Server Database was not found - did it download correctly?", e);                          
                 } finally {
@@ -1222,6 +1245,14 @@ public class SetupActivity extends Activity {
         		dialog.setMessage("Preparing Doctor Database.");
         	else if(progress[0] == 0)
         		dialog.setMessage("Analyzing data...");
+        	else if(progress[0] == 2)
+        		dialog.setMessage("Preparing database...");
+        	else if(progress[0] == 3)
+        		dialog.setMessage("Downloading database...");
+        	else if(progress[0] == 4)
+        		dialog.setMessage("Unzipping database...");
+        	else if(progress[0] == 5)
+        		dialog.setMessage("Reloading database...");
         	else if(progress[0] > 0)
         		dialog.setMessage("Indexing data...("+progress[0]+"/"+docReceived+")");
             //setProgressPercent(progress[0]);

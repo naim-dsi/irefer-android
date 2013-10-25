@@ -482,6 +482,10 @@ public class FilterPageActivity extends Activity {
 					intent.putExtra("is_online_search", true);
 					//intent = new Intent(FilterPageActivity.this, DoctorOnlineListActivity.class);
 				}
+				if( resourceFlag == 1 ) {
+					intent.putExtra("resourceFlag", true);
+					//intent = new Intent(FilterPageActivity.this, DoctorOnlineListActivity.class);
+				}
 				//faisal > ends
 				intent.putExtra("insu",insuranceValue.getText());
 				intent.putExtra("spec",specialityValue.getText());
@@ -489,6 +493,7 @@ public class FilterPageActivity extends Activity {
 				intent.putExtra("cnty",countyValue.getText());
 				intent.putExtra("docName",docNameValue.getText().toString());
 				intent.putExtra("zipCode",zipCodeValue.getText().toString());
+				
 				intent.putExtra("languages",languageValue.getText().toString());
 				
 				intent.putExtra("insuranceName", insuranceName);
@@ -536,6 +541,10 @@ public class FilterPageActivity extends Activity {
 				Intent intent = new Intent(FilterPageActivity.this, DoctorListAdvanceActivity.class);
 		//faisal > starts
 				if( onlineFlag == 1) {
+					//intent = new Intent(FilterPageActivity.this, DoctorOnlineListActivity.class);
+				}
+				if( resourceFlag == 1 ) {
+					intent.putExtra("resourceFlag", true);
 					//intent = new Intent(FilterPageActivity.this, DoctorOnlineListActivity.class);
 				}
 				startActivityForResult(intent, 1200);

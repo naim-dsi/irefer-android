@@ -160,7 +160,7 @@ public class ResourceListActivity extends Activity {
     	//faisal > modify (made the variable final to be used inside inner class)
     	itemListView = (ListView)findViewById(R.id.doctor_list);
     	
-    	Cursor cr = dba.searchDoctor(insuranceIds,specialityIds,hospitalIds,countyIds, docName, zipCode, "", null, 0,acoIds);
+    	Cursor cr = dba.searchDoctor(insuranceIds,specialityIds,hospitalIds,countyIds, docName, zipCode, "", null, 0,acoIds,1);
     	//Cursor cr = dba.fetchAll(DbAdapter.DOCTOR);
     	if(cr != null) {
         	idArr = new Object[cr.getCount()];

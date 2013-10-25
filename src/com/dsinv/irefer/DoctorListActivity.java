@@ -100,7 +100,7 @@ public class DoctorListActivity extends Activity {
 	String languages;
 	String docName;
 	int searchOrder = 0;
-	
+	private int resourceFlag = 0;
 	private ArrayAdapter<String> autoCompleteAdapter;
     Object idArr[] = null;
     Object nameArr[] =  new Object[]{"no match found"};
@@ -119,7 +119,7 @@ public class DoctorListActivity extends Activity {
 	ProgressDialog dialogP;
 	Set docIdSet = new HashSet();
 	boolean isOnlineSearch = false;
-	
+	boolean isResourceFlag = false;
 	@Override
     public void onCreate(Bundle savedInstanceState) {
 			try{
@@ -176,11 +176,19 @@ public class DoctorListActivity extends Activity {
 	    	
 	    	userId = getIntent().getStringExtra("userId");
 	    	isOnlineSearch = getIntent().getBooleanExtra("is_online_search", false);
-	        if(isOnlineSearch){
-	        	onlineFlag = 1;
+	    	isResourceFlag = getIntent().getBooleanExtra("resourceFlag", false);
+	    	if(isOnlineSearch){
+	    		onlineFlag = 1;
+	    	}
+	    	else{
+	    		onlineFlag = 0;
+	    	}
+	        if(isResourceFlag){
+	        	resourceFlag = 1;
+	        	setTitle( getString( R.string.app_name ) + " - Resources Search");
 	        }
 	        else{
-	        	onlineFlag = 0;
+	        	resourceFlag = 0;
 	        }
 	    	/*
 	    	filterView = (TextView)findViewById(R.id.filter_selected_values);
@@ -367,15 +375,20 @@ public class DoctorListActivity extends Activity {
     		//cr1.close();
     	//}
     	//m.put("docId", obj.getString("id"));
+        Log.d("NI::","c3="+obj.getString("c3"));
 		m.put("docTitile1", obj.getString("c2") +" " + 
-				(Utils.isEmpty(obj.getString("c3")) ? "" : obj.getString("c3")+" ") + obj.getString("c1")+
-				", "+obj.getString("c4"));
-		m.put("docTitile2", "Phone:" + obj.getString("c5"));
-		m.put("docTitile3", obj.getString("c8"));  // TODO
-		m.put("docPhone", obj.getString("c5"));
+				((Utils.isEmpty(obj.getString("c3"))||obj.getString("c3").equals("null")) ? "" : obj.getString("c3")+" ") + obj.getString("c1")+
+				", "+((Utils.isEmpty(obj.getString("c4"))||obj.getString("c4").equals("null")) ? "" : obj.getString("c4")));
+		//m.put("docTitile2", "Phone:" + obj.getString("c5"));
+		m.put("docTitile2", "Phone:" + ((Utils.isEmpty(obj.getString("c5"))||obj.getString("c5").equals("null")) ? "" : obj.getString("c5")));
+		//m.put("docTitile3", obj.getString("c8"));  // TODO
+		m.put("docTitile3", ((Utils.isEmpty(obj.getString("c8"))||obj.getString("c8").equals("null")) ? "" : obj.getString("c8")));  // TODO
+		//m.put("docPhone", obj.getString("c5"));
+		m.put("docPhone", ((Utils.isEmpty(obj.getString("c5"))||obj.getString("c5").equals("null")) ? "" : obj.getString("c5")));
+		//m.put("docId", obj.getString("id"));
     	m.put("docId", obj.getString("id"));
     	m.put("userId", userId);
-    	m.put("grade", obj.getString("c7"));
+    	m.put("grade", ((Utils.isEmpty(obj.getString("c7"))||obj.getString("c7").equals("null")) ? "0" : obj.getString("c7")));
     	m.put("u_rank", Utils.isEmpty(obj.getString("u_rank")) ? "0" : obj.getString("u_rank"));
         //temp.put("docTitile1", cr.getString(3)+" "+cr.getString(4)+" "+cr.getString(2)+", "+cr.getString(5));
         //temp.put("docTitile2", "Phone: "+cr.getString(6));
@@ -598,10 +611,12 @@ public class DoctorListActivity extends Activity {
 		JSONTokener jsonTokener = new JSONTokener(jsonData);
     	//JSONObject object = (JSONObject) jsonTokener.nextValue();
     	JSONArray arr = (JSONArray) jsonTokener.nextValue();
-    	for(int i=1; i < arr.length()-1; i++) { 
+    	Log.d("NI::",""+arr.length());
+    	for(int i=1; i < arr.length(); i++) { 
     		JSONObject object = arr.getJSONObject(i);
     		try {
     			addDoctorToList(object);
+    			
     			actualRowCount++;
     		}catch(Exception ex){
     			ex.printStackTrace();
@@ -676,7 +691,7 @@ public class DoctorListActivity extends Activity {
 				docList.clear();
 			for(int i=0, j=0; i<showMore && j<1; j++,i++) {
 				Cursor cr = dba.searchDoctor(insuranceIds,specialityIds,hospitalIds,countyIds, docName, zipCode, languages, 
-						actualRowCount+", 100", searchOrder, acoIds);
+						actualRowCount+", 100", searchOrder, acoIds, resourceFlag);
 				
 				Log.d("NR::", ""+j+" - "+actualRowCount);
 				if(cr != null) {
@@ -731,6 +746,7 @@ public class DoctorListActivity extends Activity {
 						(Utils.isEmpty(countyIds) ? "" : "&cnty_ids="+countyIds) +
 						(Utils.isEmpty(specialityIds) ? "" : "&spec_ids=" + specialityIds) + 
 						(Utils.isEmpty(hospitalIds) ? "" : "&hosp_ids=" + hospitalIds) +
+						"&resourceFlag="+resourceFlag+
 						"&user_id="+userId+
 						(Utils.isEmpty(zipCode) ? "" :"&zip="+zipCode)+
 						(Utils.isEmpty(docName) ? "" : "&doc_name=" +docName));		

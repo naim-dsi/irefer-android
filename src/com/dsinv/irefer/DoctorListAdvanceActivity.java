@@ -210,7 +210,7 @@ public class DoctorListAdvanceActivity extends Activity {
     	itemListView = (ListView)findViewById(R.id.doctor_list_adv);
     	//itemListView.setOverScrollMode(View.OVER_SCROLL_ALWAYS); 
     	
-    	Cursor cr = dba.searchDoctor(insuranceIds,specialityIds,hospitalIds,countyIds, docName, zipCode, "", "0, 100", 0,acoIds);
+    	Cursor cr = dba.searchDoctor(insuranceIds,specialityIds,hospitalIds,countyIds, docName, zipCode, "", "0, 100", 0,acoIds,-1);
     	//Cursor cr = dba.fetchAll(DbAdapter.DOCTOR);
     	if(cr != null) {
     		Map idMap = new HashMap();
