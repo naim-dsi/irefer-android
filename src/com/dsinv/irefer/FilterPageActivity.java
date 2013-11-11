@@ -1,5 +1,7 @@
 package com.dsinv.irefer;
 
+import java.util.Arrays;
+
 import com.dsinv.irefer.R;
 
 import android.app.Activity;
@@ -752,9 +754,13 @@ public class FilterPageActivity extends Activity {
     	Cursor cr = dba.fetchAll(DbAdapter.COUNTY);
         if(cr != null && cr.getCount() > 0) {
         	cr.moveToFirst();
-        	countyNameArr = new String[cr.getCount()];
-			countySelection = new boolean[cr.getCount()];
-			countyIdArr = new int[cr.getCount()];
+        	countyNameArr = null;
+        	countySelection = null;
+        	countyIdArr = null;
+        	String[] countyNameArrN = new String[cr.getCount()];
+        	boolean[] countySelectionN = new boolean[cr.getCount()];
+        	int[] countyIdArrN = new int[cr.getCount()];
+        	int j=0;
 			for(int i=0; i<cr.getCount(); i++) {
 //				if(i == 0) {
 //					countyName = cr.getString(2);
@@ -763,12 +769,23 @@ public class FilterPageActivity extends Activity {
 //					countyName = countyName+","+cr.getString(2);
 //					countyId = countyId+","+cr.getString(1);
 //				}
-				countyNameArr[i] = cr.getString(2);
-				//countySelection[i] = true;
-				countySelection[i] = false;
-				countyIdArr[i] = cr.getInt(1);
+				
+				if(!cr.getString(2).equals("no match found"))
+    			{
+					
+					countyNameArrN[j] = cr.getString(2);
+					//countySelection[i] = true;
+					countySelectionN[j] = false;
+					countyIdArrN[j] = cr.getInt(1);
+					j++;
+    			}
+				
         		cr.moveToNext();
         	}
+			countyNameArr = new String[j];
+        	countySelection = new boolean[j];
+        	countyIdArr = new int[j];
+			System.arraycopy(countyNameArrN, 0, countyNameArr, 0, j);
 			cr.close();
 			countyValue.setText(countyName);
         }

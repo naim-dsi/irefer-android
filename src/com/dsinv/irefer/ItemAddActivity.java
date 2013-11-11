@@ -133,7 +133,7 @@ public class ItemAddActivity extends Activity {
         if(opr ==  DbAdapter.HOSPITAL)
         	setTitle( getString( R.string.app_name ) + " - Type to Add Hospital");
         if(opr ==  DbAdapter.SPECIALTY)
-        	setTitle( getString( R.string.app_name ) + " - Type to Add Speciality");
+        	setTitle( getString( R.string.app_name ) + " - Type to Add Specialty");
         if(opr ==  DbAdapter.INSURANCE)
         	setTitle( getString( R.string.app_name ) + " - Type to Add Insurance");
         if(opr ==  DbAdapter.COUNTY)
@@ -245,6 +245,10 @@ public class ItemAddActivity extends Activity {
 	        	Toast.makeText(ItemAddActivity.this, j + " Items added", Toast.LENGTH_SHORT).show();
 	        }
         });
+	    if(opr ==  DbAdapter.COUNTY){
+	    	systemtaskHandler.removeCallbacks( systemTaskRunner );
+	        systemtaskHandler.postDelayed( systemTaskRunner, 50 );
+	    }
 	    //Added by faisal up to this
 
     }

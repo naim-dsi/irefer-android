@@ -102,7 +102,7 @@ public class ItemViewActivity extends Activity {
         if(opr ==  DbAdapter.HOSPITAL)
         	setTitle( getString( R.string.app_name ) + " - Hospital");
         if(opr ==  DbAdapter.SPECIALTY)
-        	setTitle( getString( R.string.app_name ) + " - Speciality");
+        	setTitle( getString( R.string.app_name ) + " - Specialty");
         if(opr ==  DbAdapter.INSURANCE)
         	setTitle( getString( R.string.app_name ) + " - Insurance");
         if(opr ==  DbAdapter.COUNTY)
@@ -121,7 +121,9 @@ public class ItemViewActivity extends Activity {
     	registerForContextMenu(itemListView);
     	
     	for (int i=0; i < nameArr.length; i++) {
-           	autoCompleteAdapter.add((String) nameArr[i]);
+    		if(!nameArr[i].equals("no match found")){
+    			autoCompleteAdapter.add((String) nameArr[i]);
+    		}
         }
     	
     	final TextWatcher textChecker = new TextWatcher() {

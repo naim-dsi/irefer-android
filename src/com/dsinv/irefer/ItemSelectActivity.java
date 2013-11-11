@@ -137,7 +137,7 @@ public class ItemSelectActivity extends Activity {
         if(opr ==  DbAdapter.HOSPITAL)
         	setTitle( getString( R.string.app_name ) + " - Type to Add Hospital");
         if(opr ==  DbAdapter.SPECIALTY)
-        	setTitle( getString( R.string.app_name ) + " - Type to Add Speciality");
+        	setTitle( getString( R.string.app_name ) + " - Type to Add Specialty");
         if(opr ==  DbAdapter.INSURANCE)
         	setTitle( getString( R.string.app_name ) + " - Type to Add Insurance");
         if(opr ==  DbAdapter.ACO)

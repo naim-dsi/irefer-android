@@ -113,7 +113,7 @@ public class ResourceItemOnlineSelectActivity extends Activity {
         }else if(opr ==  DbAdapter.HOSPITAL) { 
         	setTitle( getString( R.string.app_name ) + " - Type to Add Hospital");
         }else if(opr ==  DbAdapter.SPECIALTY) {
-        	setTitle( getString( R.string.app_name ) + " - Type to Add Speciality");
+        	setTitle( getString( R.string.app_name ) + " - Type to Add Specialty");
         }else if(opr ==  DbAdapter.INSURANCE) {
         	setTitle( getString( R.string.app_name ) + " - Type to Add Insurance");
         }

@@ -310,7 +310,7 @@ public class SetupActivity extends Activity {
     		            		label2.setText("1 Hospital");
     		            	else
     		            		label2.setText("0 Hospital");
-    		            	label3.setText("0 Speciality");
+    		            	label3.setText("0 Specialty");
     		            	label4.setText("0 insurance");
     		            	label5.setText("1 county");
     		            	label6.setText("Download the doctor database");
@@ -663,7 +663,7 @@ public class SetupActivity extends Activity {
 		
 		label1.setText(dba.getCount(DbAdapter.PRACTICE)+" Practices");
 		label2.setText(dba.getCount(DbAdapter.HOSPITAL)+" Hospital");
-		label3.setText(dba.getCount(DbAdapter.SPECIALTY)+" Speciality");
+		label3.setText(dba.getCount(DbAdapter.SPECIALTY)+" Specialty");
 		label4.setText(dba.getCount(DbAdapter.INSURANCE)+" Insurance");
 		long cntyCount = dba.getCount(DbAdapter.COUNTY);
 		if(cntyCount == 1)
@@ -1234,7 +1234,7 @@ public class SetupActivity extends Activity {
         	else if(progress[0] == -3)
         		dialog.setMessage("Syncing Insurance...");
         	else if(progress[0] == -4)
-        		dialog.setMessage("Syncing Speciality...");
+        		dialog.setMessage("Syncing Specialty...");
         	else if(progress[0] == -7)
         		dialog.setMessage("Syncing Plan...");
         	else if(progress[0] == -8)
@@ -1271,7 +1271,7 @@ public class SetupActivity extends Activity {
        		*/
        		label1.setText(dba.getCount(DbAdapter.PRACTICE)+" Practices");
     		label2.setText(dba.getCount(DbAdapter.HOSPITAL)+" Hospital");
-    		label3.setText(dba.getCount(DbAdapter.SPECIALTY)+" Speciality");
+    		label3.setText(dba.getCount(DbAdapter.SPECIALTY)+" Specialty");
     		label4.setText(dba.getCount(DbAdapter.INSURANCE)+" Insurance");
     		label5.setText(dba.getCount(DbAdapter.COUNTY)+" Counties");
     		label6.setText(dba.getDoctorCount()+" Doctors Synced");

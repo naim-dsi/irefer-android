@@ -104,7 +104,7 @@ public class ItemChooseActivity extends Activity {
         	setTitle( getString( R.string.app_name ) + " - Choose your Hospital");
         	newBtn.setVisibility(View.GONE);
         } else if(opr ==  DbAdapter.SPECIALTY) {
-        	setTitle( getString( R.string.app_name ) + " - Choose your Speciality");
+        	setTitle( getString( R.string.app_name ) + " - Choose your Specialty");
         	newBtn.setVisibility(View.GONE);
         } else if(opr ==  DbAdapter.DOCTOR) {
         	setTitle("Choose your Name");

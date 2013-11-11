@@ -1062,7 +1062,24 @@ public class DbAdapter {
 
     public long getCount(int tableId){
     	//System.out.println("SMM:::::"+DatabaseUtils.longForQuery(db, "SELECT count(DISTINCT doc_id) from t_doctor", null));
+    	if(tableId==COUNTY){
+    		int j=0;
+    		Cursor cr = dbr.query(true,tname[tableId], tcols[tableId], null, null, tcols[tableId][1], null, "name", null);
+    		if(cr.getCount() > 0) {
+				cr.moveToFirst();
+				for(int i=0; i<cr.getCount(); i++) {
+	    			if(!cr.getString(2).equals("no match found"))
+	    			{
+	    				j++;
+	    			}
+					cr.moveToNext();
+				}
+    		}
+    		return j;
+    		//return DatabaseUtils.queryNumEntries(db, tname[tableId]);
+    	}
     	return DatabaseUtils.queryNumEntries(db, tname[tableId]);
+    	
     }
     
     public long getDoctorCount(){
@@ -1132,13 +1149,13 @@ public class DbAdapter {
     public Cursor fetchAll(int tableId) throws RuntimeException {
     	
     	if(tableId == 0) {
-    		return dbr.query(tname[tableId], tcols[tableId], null, null, null, null, "last_name");
+    		return dbr.query(true,tname[tableId], tcols[tableId], null, null, tcols[tableId][1], null, "last_name", null);
     	} else if(tableId == 6) {
-    		return dbr.query(tname[tableId], tcols[tableId], null, null, null, null, "u_rank, grade, first_name");
+    		return dbr.query(true,tname[tableId], tcols[tableId], null, null, tcols[tableId][1], null, "u_rank, grade, first_name", null);
     	} else if(tableId >= 8) {
-    		return dbr.query(tname[tableId], tcols[tableId], null, null, null, null, null);
+    		return dbr.query(true,tname[tableId], tcols[tableId], null, null, tcols[tableId][1], null, null, null);
     	} else {
-    		return dbr.query(tname[tableId], tcols[tableId], null, null, null, null, "name");
+    		return dbr.query(true,tname[tableId], tcols[tableId], null, null, tcols[tableId][1], null, "name", null);
     	}
     }
 

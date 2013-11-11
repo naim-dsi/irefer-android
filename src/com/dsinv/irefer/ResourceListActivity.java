@@ -147,7 +147,7 @@ public class ResourceListActivity extends Activity {
     	if(countyIds == null || "null".equals(countyIds)) countyIds = null;
     	
     	filterView = (TextView)findViewById(R.id.filter_selected_values);
-    	filterView.setText("Speciality:"+getIntent().getStringExtra("spec")+
+    	filterView.setText("Specialty:"+getIntent().getStringExtra("spec")+
     			" | Insurance:"+getIntent().getStringExtra("insu")+
     			" | Hospital:"+getIntent().getStringExtra("hosp")+
     			" | County:"+getIntent().getStringExtra("cnty")+
