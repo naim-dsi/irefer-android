@@ -149,7 +149,8 @@ public class FilterPageActivity extends Activity {
         	setContentView(R.layout.filter_page);
         else
         	setContentView(R.layout.filter_page_hosp);
-        
+
+	
 //        Display display = getWindowManager().getDefaultDisplay();
 //        int windowWidth = display.getWidth();
 //        int windowHeight = display.getHeight();
@@ -579,19 +580,19 @@ public class FilterPageActivity extends Activity {
         }
         */
         //insuranceValue= (TextView) findViewById(R.id.headLabel1);   
-    }
-    
-    @Override
-    public void onStart(){   
-		super.onStart();
-    
-		loadHospital();
+    	loadHospital();
         loadInsurance();
         loadSpeciality();
         loadCounty();
         loadLanguage();
         loadACO();
         loadOfficeHour();
+    }
+    
+    @Override
+    public void onStart(){   
+		super.onStart();
+    
     }
     
     public void scrollUpView(View view){
@@ -616,7 +617,7 @@ public class FilterPageActivity extends Activity {
     	String[] arr = (String[])data.getStringArrayExtra("selectedNameArr");
     	String[] resultIdArr = (String[])data.getStringArrayExtra("selectedIdArr");
     	System.out.println("SMM::SELECTION-ON-RESULT::"+arr);
-    	
+    	int position = 0;
     	String str1 = "All";
     	String str2 = "0";
     	
@@ -631,26 +632,104 @@ public class FilterPageActivity extends Activity {
     	}
     	//faisal > modified
     	if(requestCode == 101) {
+    		for(int i=0; i<arr.length; i++) {
+        		if(i == 0) { 
+        			str1 = arr[i];
+            		str2 = resultIdArr[i];
+        		} else {
+        			str1 = str1+","+arr[i];
+            		str2 = str2+","+resultIdArr[i];
+        		}
+        		position = find(insuranceIdArr,Integer.parseInt(resultIdArr[i]));
+        		if(position != -1){
+        			insuranceSelection[position] = true;
+        		}
+        	}
     		insuranceValue.setText(str1);
     		insuranceName = str1;
     		insuranceId = str2;
     	}else if(requestCode == 102) {
+    		for(int i=0; i<arr.length; i++) {
+        		if(i == 0) { 
+        			str1 = arr[i];
+            		str2 = resultIdArr[i];
+        		} else {
+        			str1 = str1+","+arr[i];
+            		str2 = str2+","+resultIdArr[i];
+        		}
+        		position = find(specialityIdArr,Integer.parseInt(resultIdArr[i]));
+        		if(position != -1){
+        			specialitySelection[position] = true;
+        		}
+        	}
     		specialityValue.setText(str1);
     		specialityName = str1;
     		specialityId = str2;
     	}else if(requestCode == 103) {
+    		for(int i=0; i<arr.length; i++) {
+        		if(i == 0) { 
+        			str1 = arr[i];
+            		str2 = resultIdArr[i];
+        		} else {
+        			str1 = str1+","+arr[i];
+            		str2 = str2+","+resultIdArr[i];
+        		}
+        		position = find(hospitalIdArr,Integer.parseInt(resultIdArr[i]));
+        		if(position != -1){
+        			hospitalSelection[position] = true;
+        		}
+        	}
     		hospitalValue.setText(str1);
     		hospitalName = str1;
     		hospitalId = str2;
     	}else if(requestCode == 105) {
+    		for(int i=0; i<arr.length; i++) {
+        		if(i == 0) { 
+        			str1 = arr[i];
+            		str2 = resultIdArr[i];
+        		} else {
+        			str1 = str1+","+arr[i];
+            		str2 = str2+","+resultIdArr[i];
+        		}
+        		position = find(practiceIdArr,Integer.parseInt(resultIdArr[i]));
+        		if(position != -1){
+        			practiceSelection[position] = true;
+        		}
+        	}
     		practiceValue.setText(str1);
     		practiceName = str1;
     		practiceId = str2;
     	}else if(requestCode == 104) {
+    		for(int i=0; i<arr.length; i++) {
+        		if(i == 0) { 
+        			str1 = arr[i];
+            		str2 = resultIdArr[i];
+        		} else {
+        			str1 = str1+","+arr[i];
+            		str2 = str2+","+resultIdArr[i];
+        		}
+        		position = find(countyIdArr,Integer.parseInt(resultIdArr[i]));
+        		if(position != -1){
+        			countySelection[position] = true;
+        		}
+        	}
     		countyValue.setText(str1);
     		countyName = str1;
     		countyId = str2;
     	}else if(requestCode == 106) {
+    		for(int i=0; i<arr.length; i++) {
+        		if(i == 0) { 
+        			str1 = arr[i];
+            		str2 = resultIdArr[i];
+        		} else {
+        			str1 = str1+","+arr[i];
+            		str2 = str2+","+resultIdArr[i];
+        		}
+        		position = find(acoIdArr,Integer.parseInt(resultIdArr[i]));
+        		if(position != -1){
+        			acoSelection[position] = true;
+        		}
+        	}
     		acoValue.setText(str1);
     		acoName = str1;
     		acoId = str2;
@@ -658,7 +737,13 @@ public class FilterPageActivity extends Activity {
     	
     	//TODO handle here. 
     }
-
+    public int find(int[] array, int value) {
+    	int position = -1;
+        for(int i=0; i<array.length; i++) 
+             if(array[i] == value)
+                 position = i;
+        return position;
+    }
     private void loadHospital() {
     	Cursor cr = dba.fetchAll(DbAdapter.HOSPITAL);
         if(cr != null && cr.getCount() > 0) {
@@ -802,7 +887,7 @@ public class FilterPageActivity extends Activity {
 			for(int i=0; i<cr.getCount(); i++) {
 				acoArr[i] = cr.getString(2);
 				
-				acoSelection[i] = true;
+				acoSelection[i] = false;
 				acoIdArr[i] = cr.getInt(1);
         		cr.moveToNext();
         	}

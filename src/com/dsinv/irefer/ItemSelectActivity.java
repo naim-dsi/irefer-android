@@ -205,6 +205,7 @@ public class ItemSelectActivity extends Activity {
              //System.out.println("SMM:INFO::ID="+idArr1[i]);
         }
         
+    	
     	footerView.setText(nameArr.length+" items found");
         rootIdx = new int[nameArr.length];
         
@@ -219,6 +220,20 @@ public class ItemSelectActivity extends Activity {
     	//}
     	doneBtn = (Button) findViewById(R.id.itemSelectBtn);
     	doneBtn.setText("Choose All");
+    	int has = 0;
+		for (int i=0; i < nameArr.length; i++) {
+			
+    		if(selectedMap.get(nameArr[i].toString()).equals("true")){
+    			has = 1;
+    		}
+    		
+        }
+		if(has==0) {
+			doneBtn.setText("Choose All");
+		} else {
+			doneBtn.setText("Done");
+			
+		}
     	//selectedMap = new HashMap();
     	itemListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 	    	
@@ -233,13 +248,20 @@ public class ItemSelectActivity extends Activity {
     				selectedMap.put(key, "false");
     				itemListView.setItemChecked(position, false);
     			}
-    			
-    			if(selectedMap.isEmpty()) {
+    			int has = 0;
+    			for (int i=0; i < nameArr.length; i++) {
+    				
+    	    		if(selectedMap.get(nameArr[i].toString()).equals("true")){
+    	    			has = 1;
+    	    		}
+    	    		
+    	        }
+    			if(has==0) {
     				doneBtn.setText("Choose All");
     			} else {
     				doneBtn.setText("Done");
-    				if(opr ==  DbAdapter.SPECIALTY || opr ==  DbAdapter.INSURANCE || opr == DbAdapter.PRACTICE || opr == DbAdapter.ACO)
-    					finishActivity();
+    				//if(opr ==  DbAdapter.SPECIALTY || opr ==  DbAdapter.INSURANCE || opr == DbAdapter.PRACTICE || opr == DbAdapter.ACO)
+    					//finishActivity();
     			}
     			/* only one speciality can be selected */
     			//if(opr ==  DbAdapter.SPECIALTY)
@@ -300,6 +322,13 @@ public class ItemSelectActivity extends Activity {
     }
 
 	private void setResult(){
+		for (int i=0; i < nameArr.length; i++) {
+			
+    		if(!selectedMap.get(nameArr[i].toString()).equals("true")){
+    			selectedMap.remove(nameArr[i]);
+    		}
+    		
+        }
 		this.setResult(RESULT_OK, this.getIntent());
 		List<String> list = new ArrayList<String>();
 		String keyArr[] = new String[selectedMap.keySet().size()];
