@@ -801,7 +801,8 @@ public class FilterPageActivity extends Activity {
 			acoIdArr = new int[cr.getCount()];
 			for(int i=0; i<cr.getCount(); i++) {
 				acoArr[i] = cr.getString(2);
-				acoSelection[i] = false;
+				
+				acoSelection[i] = true;
 				acoIdArr[i] = cr.getInt(1);
         		cr.moveToNext();
         	}
@@ -821,7 +822,7 @@ public class FilterPageActivity extends Activity {
 		for(int i=0; i<count; i++) {
 			languageArr[i] = arr[i].name;
 			if(languageValue.getText().toString().equals(arr[i].name))
-				languageSelection[i] = false;
+				languageSelection[i] = true;
 			else	
 				languageSelection[i] = false;
 			languageIdArr[i] = arr[i].id;

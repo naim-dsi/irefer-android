@@ -17,6 +17,7 @@ import org.json.JSONTokener;
 import com.dsinv.irefer.R;
 import com.dsinv.irefer.DbAdapter;
 
+import android.R.bool;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -52,7 +53,8 @@ public class ItemSelectActivity extends Activity {
     int opr = 0;
     ListView itemListView;
     boolean[] selectionArr;
-    Map selectedMap;
+    
+    Map<String, String> selectedMap = new HashMap<String, String>();
     Map nameIdMap;
     
     int rootIdx[];
@@ -100,15 +102,26 @@ public class ItemSelectActivity extends Activity {
                 footerView.setText((String)nameArr[0]);
                 */
                 for (int i=0, j=0; i < nameArr.length; i++) {
-                    if( ((String)nameArr[i]).toLowerCase().contains(s)) { 
-                    	autoCompleteAdapter.add((String) nameArr[i]);
+                	if(!s.equals("")){
+	                    if( ((String)nameArr[i]).toLowerCase().contains(s)||selectedMap.get(nameArr[i].toString()).equals("true")) { 
+	                    	autoCompleteAdapter.add((String) nameArr[i]);
+	                    	//rootIdx[j++] = i;
+	                    	if(selectedMap.get(nameArr[i].toString()).equals("false"))
+	                    		itemListView.setItemChecked(j, false);
+	                    	else
+	                    		itemListView.setItemChecked(j, true);
+	                    	j++;
+	                    }
+                	}
+                	else{
+                		autoCompleteAdapter.add((String) nameArr[i]);
                     	//rootIdx[j++] = i;
-                    	if(selectedMap.get(nameArr[i]) == null)
+                    	if(selectedMap.get(nameArr[i].toString()).equals("false"))
                     		itemListView.setItemChecked(j, false);
                     	else
                     		itemListView.setItemChecked(j, true);
                     	j++;
-                    }
+                	}
                         //System.out.println("SMM:INFO::"+nameArr[i]);
                 }
                 textView.setFocusableInTouchMode(true);
@@ -165,41 +178,62 @@ public class ItemSelectActivity extends Activity {
     	textView = (TextView)findViewById(R.id.item_select_text_edit);
     	footerView = (TextView)findViewById(R.id.item_select_footer);
     	//EditText.setAdapter(autoCompleteAdapter);
-    	
+    	itemListView = (ListView)findViewById(R.id.itemSelectList);
+    	itemListView.setAdapter(autoCompleteAdapter);
+    	itemListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
     	nameArr = this.getIntent().getStringArrayExtra("nameArr");
     	int idArr1[] = this.getIntent().getIntArrayExtra("idArr");
+    	boolean[] selectionArr = this.getIntent().getBooleanArrayExtra("selectionArr");
     	nameIdMap = new HashMap();
+    	
     	for (int i=0; i < nameArr.length; i++) {
-             autoCompleteAdapter.add((String) nameArr[i]);
+			 //selectedMap.put(nameArr[i],""+idArr1[i]);
+    		autoCompleteAdapter.add((String) nameArr[i]);
+    		if(selectionArr[i]==true){
+    			selectedMap.put(nameArr[i].toString(), "true");
+    			itemListView.setItemChecked(i, true);
+    		}
+    		else{
+    			selectedMap.put(nameArr[i].toString(), "false");
+    			itemListView.setItemChecked(i, false);
+    		}
+//    		else{
+//    			selectedMap.put(nameArr[i].toString(), "false");
+//    		}
+             
              nameIdMap.put((String) nameArr[i], ""+idArr1[i]);
              //System.out.println("SMM:INFO::ID="+idArr1[i]);
         }
-        footerView.setText(nameArr.length+" items found");
+        
+    	footerView.setText(nameArr.length+" items found");
         rootIdx = new int[nameArr.length];
         
         
     	//autoCompleteAdapter.add("Shamim");
     	
-    	itemListView = (ListView)findViewById(R.id.itemSelectList);
-    	itemListView.setAdapter(autoCompleteAdapter);
-    	itemListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
     	
-    	selectionArr = this.getIntent().getBooleanArrayExtra("selectionArr");
+    	
+    	//selectionArr = this.getIntent().getBooleanArrayExtra("selectionArr");
     	//for (int i=1; i < selectionArr.length; i++) {
     		//itemListView.setItemChecked(i, selectionArr[i]);
     	//}
     	doneBtn = (Button) findViewById(R.id.itemSelectBtn);
     	doneBtn.setText("Choose All");
-    	selectedMap = new HashMap();
+    	//selectedMap = new HashMap();
     	itemListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 	    	
     		public void onItemClick(AdapterView<?> parent, View v, int position, long id){
     			//System.out.println("SMM::["+opr+"]view.text="+parent.getAdapter().getItem(position));
     			String key = parent.getAdapter().getItem(position).toString();
-    			if(selectedMap.get(key) == null)
-    				selectedMap.put(key, "true");//idArr[position]);
-    			else
-    				selectedMap.remove(key);
+    			if(selectedMap.get(key).equals("false")){
+    				selectedMap.put(key, "true");
+    				itemListView.setItemChecked(position, true);
+    			}
+    			else{
+    				selectedMap.put(key, "false");
+    				itemListView.setItemChecked(position, false);
+    			}
+    			
     			if(selectedMap.isEmpty()) {
     				doneBtn.setText("Choose All");
     			} else {
