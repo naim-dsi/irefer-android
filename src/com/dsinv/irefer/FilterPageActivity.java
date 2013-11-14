@@ -621,6 +621,12 @@ public class FilterPageActivity extends Activity {
     	String str1 = "All";
     	String str2 = "0";
     	
+        
+        
+        
+        //loadLanguage();
+        
+        //loadOfficeHour();
     	for(int i=0; i<arr.length; i++) {
     		if(i == 0) { 
     			str1 = arr[i];
@@ -632,6 +638,7 @@ public class FilterPageActivity extends Activity {
     	}
     	//faisal > modified
     	if(requestCode == 101) {
+    		loadInsurance();
     		for(int i=0; i<arr.length; i++) {
         		if(i == 0) { 
         			str1 = arr[i];
@@ -649,6 +656,7 @@ public class FilterPageActivity extends Activity {
     		insuranceName = str1;
     		insuranceId = str2;
     	}else if(requestCode == 102) {
+    		loadSpeciality();
     		for(int i=0; i<arr.length; i++) {
         		if(i == 0) { 
         			str1 = arr[i];
@@ -666,6 +674,7 @@ public class FilterPageActivity extends Activity {
     		specialityName = str1;
     		specialityId = str2;
     	}else if(requestCode == 103) {
+    		loadHospital();
     		for(int i=0; i<arr.length; i++) {
         		if(i == 0) { 
         			str1 = arr[i];
@@ -700,6 +709,7 @@ public class FilterPageActivity extends Activity {
     		practiceName = str1;
     		practiceId = str2;
     	}else if(requestCode == 104) {
+    		loadCounty();
     		for(int i=0; i<arr.length; i++) {
         		if(i == 0) { 
         			str1 = arr[i];
@@ -717,6 +727,7 @@ public class FilterPageActivity extends Activity {
     		countyName = str1;
     		countyId = str2;
     	}else if(requestCode == 106) {
+    		loadACO();
     		for(int i=0; i<arr.length; i++) {
         		if(i == 0) { 
         			str1 = arr[i];
