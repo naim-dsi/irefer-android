@@ -41,32 +41,32 @@ import android.widget.Toast;
 
 public class ItemSelectActivity extends Activity {
 
-	private DbAdapter	dba;
-	private TextView textView; 
-	private TextView footerView;
-	private Button doneBtn;
-	
-	private ArrayAdapter<String> autoCompleteAdapter;
+    private DbAdapter	dba;
+    private TextView textView;
+    private TextView footerView;
+    private Button doneBtn;
+
+    private ArrayAdapter<String> autoCompleteAdapter;
     Object idArr[] = new Object[]{"0"};
     Object nameArr[] =  new Object[]{"no match found"};
     int selectedItemIdx = -1;
     int opr = 0;
     ListView itemListView;
     boolean[] selectionArr;
-    
+
     Map<String, String> selectedMap = new HashMap<String, String>();
     Map nameIdMap;
-    
+
     int rootIdx[];
     private CharSequence searchText = "";
     protected Handler systemtaskHandler = new Handler();
-   	Runnable systemTaskRunner = new Runnable() {
-   		public void run()
-           {
-           	try
-       		{
-           		CharSequence s = searchText;
-           		autoCompleteAdapter.clear();
+    Runnable systemTaskRunner = new Runnable() {
+        public void run()
+        {
+            try
+            {
+                CharSequence s = searchText;
+                autoCompleteAdapter.clear();
                 
                 /*
                 String jsonData = "";
@@ -102,59 +102,59 @@ public class ItemSelectActivity extends Activity {
                 footerView.setText((String)nameArr[0]);
                 */
                 for (int i=0, j=0; i < nameArr.length; i++) {
-                	if(!s.equals("")){
-	                    if( ((String)nameArr[i]).toLowerCase().contains(s)||selectedMap.get(nameArr[i].toString()).equals("true")) { 
-	                    	autoCompleteAdapter.add((String) nameArr[i]);
-	                    	//rootIdx[j++] = i;
-	                    	if(selectedMap.get(nameArr[i].toString()).equals("false"))
-	                    		itemListView.setItemChecked(j, false);
-	                    	else
-	                    		itemListView.setItemChecked(j, true);
-	                    	j++;
-	                    }
-                	}
-                	else{
-                		autoCompleteAdapter.add((String) nameArr[i]);
-                    	//rootIdx[j++] = i;
-                    	if(selectedMap.get(nameArr[i].toString()).equals("false"))
-                    		itemListView.setItemChecked(j, false);
-                    	else
-                    		itemListView.setItemChecked(j, true);
-                    	j++;
-                	}
-                        //System.out.println("SMM:INFO::"+nameArr[i]);
+                    if(!s.equals("")){
+                        if( ((String)nameArr[i]).toLowerCase().contains(s)||selectedMap.get(nameArr[i].toString()).equals("true")) {
+                            autoCompleteAdapter.add((String) nameArr[i]);
+                            //rootIdx[j++] = i;
+                            if(selectedMap.get(nameArr[i].toString()).equals("false"))
+                                itemListView.setItemChecked(j, false);
+                            else
+                                itemListView.setItemChecked(j, true);
+                            j++;
+                        }
+                    }
+                    else{
+                        autoCompleteAdapter.add((String) nameArr[i]);
+                        //rootIdx[j++] = i;
+                        if(selectedMap.get(nameArr[i].toString()).equals("false"))
+                            itemListView.setItemChecked(j, false);
+                        else
+                            itemListView.setItemChecked(j, true);
+                        j++;
+                    }
+                    //System.out.println("SMM:INFO::"+nameArr[i]);
                 }
                 textView.setFocusableInTouchMode(true);
                 textView.requestFocus();
                 InputMethodManager inputMethodManager = (InputMethodManager) ItemSelectActivity.this
                         .getSystemService(ItemSelectActivity.this.INPUT_METHOD_SERVICE);
                 inputMethodManager.showSoftInput(textView, InputMethodManager.SHOW_IMPLICIT);
-       		}
+            }
             catch(Exception ex)
-       		{
-               	ex.printStackTrace();
-       			
-       		}
+            {
+                ex.printStackTrace();
+
+            }
         }
     };
-	@Override
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.item_select_list);
         overridePendingTransition(R.anim.drop_enter, R.anim.drop_leave);
         Intent intent = getIntent();
         opr = this.getIntent().getIntExtra("opr", 0);
-        
+
         if(opr ==  DbAdapter.PRACTICE)
-        	setTitle( getString( R.string.app_name ) + " - Type to Add Practice");
+            setTitle( getString( R.string.app_name ) + " - Type to Add Practice");
         if(opr ==  DbAdapter.HOSPITAL)
-        	setTitle( getString( R.string.app_name ) + " - Type to Add Hospital");
+            setTitle( getString( R.string.app_name ) + " - Type to Add Hospital");
         if(opr ==  DbAdapter.SPECIALTY)
-        	setTitle( getString( R.string.app_name ) + " - Type to Add Specialty");
+            setTitle( getString( R.string.app_name ) + " - Type to Add Specialty");
         if(opr ==  DbAdapter.INSURANCE)
-        	setTitle( getString( R.string.app_name ) + " - Type to Add Insurance");
+            setTitle( getString( R.string.app_name ) + " - Type to Add Insurance");
         if(opr ==  DbAdapter.ACO)
-        	setTitle( getString( R.string.app_name ) + " - Type to Add ACO");        
+            setTitle( getString( R.string.app_name ) + " - Type to Add ACO");
         dba = new DbAdapter(this);
         dba.open();
         /*
@@ -172,213 +172,220 @@ public class ItemSelectActivity extends Activity {
 			}
 		});
         */
-        
-        autoCompleteAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice); 
-    	//autoCompleteAdapter.setNotifyOnChange(true); // This is so I don't have to manually sync whenever changed 
-    	textView = (TextView)findViewById(R.id.item_select_text_edit);
-    	footerView = (TextView)findViewById(R.id.item_select_footer);
-    	//EditText.setAdapter(autoCompleteAdapter);
-    	itemListView = (ListView)findViewById(R.id.itemSelectList);
-    	itemListView.setAdapter(autoCompleteAdapter);
-    	itemListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-    	nameArr = this.getIntent().getStringArrayExtra("nameArr");
-    	int idArr1[] = this.getIntent().getIntArrayExtra("idArr");
-    	boolean[] selectionArr = this.getIntent().getBooleanArrayExtra("selectionArr");
-    	nameIdMap = new HashMap();
-    	
-    	for (int i=0; i < nameArr.length; i++) {
-			 //selectedMap.put(nameArr[i],""+idArr1[i]);
-    		autoCompleteAdapter.add((String) nameArr[i]);
-    		if(selectionArr[i]==true){
-    			selectedMap.put(nameArr[i].toString(), "true");
-    			itemListView.setItemChecked(i, true);
-    		}
-    		else{
-    			selectedMap.put(nameArr[i].toString(), "false");
-    			itemListView.setItemChecked(i, false);
-    		}
+
+        autoCompleteAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice);
+        //autoCompleteAdapter.setNotifyOnChange(true); // This is so I don't have to manually sync whenever changed
+        textView = (TextView)findViewById(R.id.item_select_text_edit);
+        footerView = (TextView)findViewById(R.id.item_select_footer);
+        //EditText.setAdapter(autoCompleteAdapter);
+        itemListView = (ListView)findViewById(R.id.itemSelectList);
+        itemListView.setAdapter(autoCompleteAdapter);
+        itemListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        nameArr = this.getIntent().getStringArrayExtra("nameArr");
+        int idArr1[] = this.getIntent().getIntArrayExtra("idArr");
+        boolean[] selectionArr = this.getIntent().getBooleanArrayExtra("selectionArr");
+        nameIdMap = new HashMap();
+
+        for (int i=0; i < nameArr.length; i++) {
+            //selectedMap.put(nameArr[i],""+idArr1[i]);
+            autoCompleteAdapter.add((String) nameArr[i]);
+            if(selectionArr[i]==true){
+                selectedMap.put(nameArr[i].toString(), "true");
+                itemListView.setItemChecked(i, true);
+            }
+            else{
+                selectedMap.put(nameArr[i].toString(), "false");
+                itemListView.setItemChecked(i, false);
+            }
 //    		else{
 //    			selectedMap.put(nameArr[i].toString(), "false");
 //    		}
-             
-             nameIdMap.put((String) nameArr[i], ""+idArr1[i]);
-             //System.out.println("SMM:INFO::ID="+idArr1[i]);
+
+            nameIdMap.put((String) nameArr[i], ""+idArr1[i]);
+            //System.out.println("SMM:INFO::ID="+idArr1[i]);
         }
-        
-    	
-    	footerView.setText(nameArr.length+" items found");
+
+
+        footerView.setText(nameArr.length+" items found");
         rootIdx = new int[nameArr.length];
-        
-        
-    	//autoCompleteAdapter.add("Shamim");
-    	
-    	
-    	
-    	//selectionArr = this.getIntent().getBooleanArrayExtra("selectionArr");
-    	//for (int i=1; i < selectionArr.length; i++) {
-    		//itemListView.setItemChecked(i, selectionArr[i]);
-    	//}
-    	doneBtn = (Button) findViewById(R.id.itemSelectBtn);
-    	doneBtn.setText("Choose All");
-    	int has = 0;
-		for (int i=0; i < nameArr.length; i++) {
-			
-    		if(selectedMap.get(nameArr[i].toString()).equals("true")){
-    			has = 1;
-    		}
-    		
+
+
+        //autoCompleteAdapter.add("Shamim");
+
+
+
+        //selectionArr = this.getIntent().getBooleanArrayExtra("selectionArr");
+        //for (int i=1; i < selectionArr.length; i++) {
+        //itemListView.setItemChecked(i, selectionArr[i]);
+        //}
+        doneBtn = (Button) findViewById(R.id.itemSelectBtn);
+        doneBtn.setText("Choose All");
+        int has = 0;
+        for (int i=0; i < nameArr.length; i++) {
+
+            if(selectedMap.get(nameArr[i].toString()).equals("true")){
+                has = 1;
+            }
+
         }
-		if(has==0) {
-			doneBtn.setText("Choose All");
-		} else {
-			doneBtn.setText("Done");
-			
-		}
-    	//selectedMap = new HashMap();
-    	itemListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-	    	
-    		public void onItemClick(AdapterView<?> parent, View v, int position, long id){
-    			//System.out.println("SMM::["+opr+"]view.text="+parent.getAdapter().getItem(position));
-    			String key = parent.getAdapter().getItem(position).toString();
-    			if(selectedMap.get(key).equals("false")){
-    				selectedMap.put(key, "true");
-    				itemListView.setItemChecked(position, true);
-    			}
-    			else{
-    				selectedMap.put(key, "false");
-    				itemListView.setItemChecked(position, false);
-    			}
-    			int has = 0;
-    			for (int i=0; i < nameArr.length; i++) {
-    				
-    	    		if(selectedMap.get(nameArr[i].toString()).equals("true")){
-    	    			has = 1;
-    	    		}
-    	    		
-    	        }
-    			if(has==0) {
-    				doneBtn.setText("Choose All");
-    			} else {
-    				doneBtn.setText("Done");
-    				//if(opr ==  DbAdapter.SPECIALTY || opr ==  DbAdapter.INSURANCE || opr == DbAdapter.PRACTICE || opr == DbAdapter.ACO)
-    					//finishActivity();
-    			}
+        if(has==0) {
+            doneBtn.setText("Choose All");
+            if(opr ==  DbAdapter.PRACTICE){
+                doneBtn.setText("None");
+            }
+
+        } else {
+            doneBtn.setText("Done");
+
+        }
+        //selectedMap = new HashMap();
+        itemListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id){
+                //System.out.println("SMM::["+opr+"]view.text="+parent.getAdapter().getItem(position));
+                String key = parent.getAdapter().getItem(position).toString();
+                if(selectedMap.get(key).equals("false")){
+                    selectedMap.put(key, "true");
+                    itemListView.setItemChecked(position, true);
+                }
+                else{
+                    selectedMap.put(key, "false");
+                    itemListView.setItemChecked(position, false);
+                }
+                int has = 0;
+                for (int i=0; i < nameArr.length; i++) {
+
+                    if(selectedMap.get(nameArr[i].toString()).equals("true")){
+                        has = 1;
+                    }
+
+                }
+                if(has==0) {
+                    doneBtn.setText("Choose All");
+                    if(opr ==  DbAdapter.PRACTICE){
+                        doneBtn.setText("None");
+                    }
+                } else {
+                    doneBtn.setText("Done");
+                    //if(opr ==  DbAdapter.SPECIALTY || opr ==  DbAdapter.INSURANCE || opr == DbAdapter.PRACTICE || opr == DbAdapter.ACO)
+                    //finishActivity();
+                }
     			/* only one speciality can be selected */
-    			//if(opr ==  DbAdapter.SPECIALTY)
-    				//finishActivity();
-				
-    			//System.out.println("SMM::MAP->size="+selectedMap.size());
-    			
-    			//selectionArr[position] = !selectionArr[position];
-    			//System.out.println("SMM::List["+position+"] = "+selectionArr[position]);
-    		}
-    	});
-    	
-    	final TextWatcher textChecker = new TextWatcher() {
-    		 
-	        public void afterTextChanged(Editable s) {
-	        	//textView.setEnabled(true);
-	        }
-	        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-	        	//textView.setEnabled(false);
-	        }
-	 
-	        public void onTextChanged(CharSequence s, int start, int before, int count) {
-	        	searchText = s;
-	        	systemtaskHandler.removeCallbacks( systemTaskRunner );
+                //if(opr ==  DbAdapter.SPECIALTY)
+                //finishActivity();
+
+                //System.out.println("SMM::MAP->size="+selectedMap.size());
+
+                //selectionArr[position] = !selectionArr[position];
+                //System.out.println("SMM::List["+position+"] = "+selectionArr[position]);
+            }
+        });
+
+        final TextWatcher textChecker = new TextWatcher() {
+
+            public void afterTextChanged(Editable s) {
+                //textView.setEnabled(true);
+            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //textView.setEnabled(false);
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                searchText = s;
+                systemtaskHandler.removeCallbacks( systemTaskRunner );
                 systemtaskHandler.postDelayed( systemTaskRunner, 1500 );
-	                
+
 //	                
-	        }
-	    };
-	    textView.addTextChangedListener(textChecker);
-	    doneBtn.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				finishActivity();
-				//Intent intent = new Intent(SetupActivity.this, ItemAddActivity.class);
-				//SetupActivity.this.intent.putExtra("opr", DbAdapter.PRACTICE);
-	            //startActivityForResult(intent, 1100);				
-			}
-		});
+            }
+        };
+        textView.addTextChangedListener(textChecker);
+        doneBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                finishActivity();
+                //Intent intent = new Intent(SetupActivity.this, ItemAddActivity.class);
+                //SetupActivity.this.intent.putExtra("opr", DbAdapter.PRACTICE);
+                //startActivityForResult(intent, 1100);
+            }
+        });
     }
-	
-	private void finishActivity(){
-		//System.out.println("SMM:INFO::FINSHING....");
-		setResult();
-		finish();
-		overridePendingTransition(R.anim.drop_leave, R.anim.drop_back);
-	}
-	
-	@Override
+
+    private void finishActivity(){
+        //System.out.println("SMM:INFO::FINSHING....");
+        setResult();
+        finish();
+        overridePendingTransition(R.anim.drop_leave, R.anim.drop_back);
+    }
+
+    @Override
     public void onStop() {
         super.onStop ();
         dba.close();
     }
-	
-	@Override
+
+    @Override
     public void onBackPressed () {
         super.onBackPressed ();
         this.overridePendingTransition(R.anim.drop_leave, R.anim.drop_back);
     }
 
-	private void setResult(){
-		for (int i=0; i < nameArr.length; i++) {
-			
-    		if(!selectedMap.get(nameArr[i].toString()).equals("true")){
-    			selectedMap.remove(nameArr[i]);
-    		}
-    		
+    private void setResult(){
+        for (int i=0; i < nameArr.length; i++) {
+            if(!(selectedMap.get(nameArr[i].toString())==null)){
+                if(!selectedMap.get(nameArr[i].toString()).equals("true")){
+                    selectedMap.remove(nameArr[i]);
+                }
+            }
         }
-		this.setResult(RESULT_OK, this.getIntent());
-		List<String> list = new ArrayList<String>();
-		String keyArr[] = new String[selectedMap.keySet().size()];
-		String idArr1[] = new String[selectedMap.keySet().size()];
-		int i=0;
-		for (Iterator it=selectedMap.keySet().iterator(); it.hasNext(); i++) {
-		    keyArr[i] = (String)it.next();
-		    idArr1[i] = (String)nameIdMap.get(keyArr[i]);
-		}
+        this.setResult(RESULT_OK, this.getIntent());
+        List<String> list = new ArrayList<String>();
+        String keyArr[] = new String[selectedMap.keySet().size()];
+        String idArr1[] = new String[selectedMap.keySet().size()];
+        int i=0;
+        for (Iterator it=selectedMap.keySet().iterator(); it.hasNext(); i++) {
+            keyArr[i] = (String)it.next();
+            idArr1[i] = (String)nameIdMap.get(keyArr[i]);
+        }
 
-		System.out.println("SMM::SELECTED-MAP-TO-ARR::"+keyArr);
-		this.getIntent().putExtra("selectedNameArr", keyArr);
-		this.getIntent().putExtra("selectedIdArr", idArr1);
-	}
-	
-	public Map<String, Object[]> parseJSONData(String jsonData) throws Exception {
-		HashMap<String, Object[]> map = new HashMap<String, Object[]>();
-		List<String> idList = new ArrayList<String>();
-		List<String> nameList = new ArrayList<String>();
-		JSONTokener jsonTokener = new JSONTokener(jsonData);
-    	//JSONObject object = (JSONObject) jsonTokener.nextValue();
-    	JSONArray arr = (JSONArray) jsonTokener.nextValue();
-    	for(int i=0; i < arr.length(); i++) { 
-    		JSONObject object = arr.getJSONObject(i);
-    		String id   = object.getString("id");
-    		String name = object.getString("name");
-    		idList.add(id);
-    		nameList.add(name);
-    		//System.out.println("SMM:CODE::"+code);
-    	}
-    	map.put("idArr", idList.toArray());
-    	map.put("nameArr", nameList.toArray());
-    	return map;
-	}
-	
-	public String getDataFromURL(String urlStr) throws Exception {
-	    URL url = new URL(urlStr);
-	    URLConnection urlCon = url.openConnection();
-	    BufferedReader in = new BufferedReader(
-	                            new InputStreamReader(
-	                            urlCon.getInputStream()));
-	    String data = "";
-	    String line = "";
-	    
-        while ((line = in.readLine()) != null)
-        	data += line;
-            //System.out.println(inputLine);
-	    in.close();
-	    return data;
+        System.out.println("SMM::SELECTED-MAP-TO-ARR::"+keyArr);
+        this.getIntent().putExtra("selectedNameArr", keyArr);
+        this.getIntent().putExtra("selectedIdArr", idArr1);
     }
 
-	
+    public Map<String, Object[]> parseJSONData(String jsonData) throws Exception {
+        HashMap<String, Object[]> map = new HashMap<String, Object[]>();
+        List<String> idList = new ArrayList<String>();
+        List<String> nameList = new ArrayList<String>();
+        JSONTokener jsonTokener = new JSONTokener(jsonData);
+        //JSONObject object = (JSONObject) jsonTokener.nextValue();
+        JSONArray arr = (JSONArray) jsonTokener.nextValue();
+        for(int i=0; i < arr.length(); i++) {
+            JSONObject object = arr.getJSONObject(i);
+            String id   = object.getString("id");
+            String name = object.getString("name");
+            idList.add(id);
+            nameList.add(name);
+            //System.out.println("SMM:CODE::"+code);
+        }
+        map.put("idArr", idList.toArray());
+        map.put("nameArr", nameList.toArray());
+        return map;
+    }
+
+    public String getDataFromURL(String urlStr) throws Exception {
+        URL url = new URL(urlStr);
+        URLConnection urlCon = url.openConnection();
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(
+                        urlCon.getInputStream()));
+        String data = "";
+        String line = "";
+
+        while ((line = in.readLine()) != null)
+            data += line;
+        //System.out.println(inputLine);
+        in.close();
+        return data;
+    }
+
+
 }
