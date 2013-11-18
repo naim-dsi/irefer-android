@@ -179,7 +179,15 @@ public class DoctorDetailActivity extends Activity {
         //Insurance///////////////////////////////////////////////////////////////////
 //        Cursor cr3 = dba.fetchdocInsurance(DbAdapter.DOC_INSURANCE, doctorId);
         String insurances = "";
-        String docins = cr.getString(31);
+        String docins = "";
+        if(cr.getString(31).equals(",,")){
+        	docins = "0";
+        }
+        else{
+        	
+        	docins = "0"+cr.getString(31)+"0";
+        }
+        
 //        cr3.moveToFirst();
 //        for(int i=0; i<cr3.getCount(); i++) {
 //        	if(i == 0)
@@ -216,7 +224,13 @@ public class DoctorDetailActivity extends Activity {
         //Speciality///////////////////////////////////////////////////////////////
 //        cr3 = dba.fetchdocSpeciality(DbAdapter.DOC_SPECIALTY, doctorId);
         String specialities = "";
-        docins = cr.getString(30);
+        if(cr.getString(30).equals(",,")){
+        	docins = "0";
+        }
+        else{
+        	
+        	docins = "0"+cr.getString(30)+"0";
+        }
 //        cr3.moveToFirst();
 //        for(int i=0; i<cr3.getCount(); i++) {
 //        	if(i == 0)
@@ -253,7 +267,14 @@ public class DoctorDetailActivity extends Activity {
       //Hospitals///////////////////////////////////////////////////////////////
 //        cr3 = dba.fetchdocHospital(DbAdapter.DOC_HOSPITAL, doctorId);
         String hospitals = "";
-        docins = cr.getString(29);
+        if(cr.getString(29).equals(",,")){
+        	docins = "0";
+        }
+        else{
+        	
+        	docins = "0"+cr.getString(29)+"0";
+        }
+       
 //        cr3.moveToFirst();
 //        for(int i=0; i<cr3.getCount(); i++) {
 //        	if(i == 0)
@@ -296,7 +317,14 @@ public class DoctorDetailActivity extends Activity {
 ////////////////////ACO////////////////////////////////////////////        
 //        cr3 = dba.fetchdocAco(DbAdapter.DOC_ACO, doctorId);
         String acos = "";
-        docins = cr.getString(33);
+        //docins = "0"+cr.getString(33)+"0";
+        if(cr.getString(33).equals(",,")){
+        	docins = "0";
+        }
+        else{
+        	
+        	docins = "0"+cr.getString(33)+"0";
+        }
 //        cr3.moveToFirst();
 //        for(int i=0; i<cr3.getCount(); i++) {
 //        	if(i == 0)
@@ -334,7 +362,14 @@ public class DoctorDetailActivity extends Activity {
       //Practice///////////////////////////////////////////////////////////////
 //        cr3 = dba.fetchdocPractice(DbAdapter.DOC_PRACTICE, doctorId);
         String practices = "";
-        docins = cr.getString(28);
+        //docins = "0"+cr.getString(28)+"0";
+        if(cr.getString(28).equals(",,")){
+        	docins = "0";
+        }
+        else{
+        	
+        	docins = "0"+cr.getString(28)+"0";
+        }
 //        cr3.moveToFirst();
 //        for(int i=0; i<cr3.getCount(); i++) {
 //        	if(i == 0)

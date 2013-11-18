@@ -1441,7 +1441,7 @@ public class DbAdapter {
                 (Utils.isEmpty(hospStr) ? "" : hospStr)+
                 (Utils.isEmpty(acoStr) ? "" : acoStr)+
                 (Utils.isEmpty(insuStr) ? "" : insuStr)+
-                (Utils.isEmpty(zipCode) ? "" : " AND zip_code = '"+zipCode+"')")+
+                (Utils.isEmpty(zipCode) ? "" : " AND zip_code = '"+zipCode+"' ")+
                 ((resourceFlag==-1) ? "" : " AND res_flag = '"+resourceFlag+"'")+
                 (Utils.isEmpty(langStr) ? "" : langStr);
         Cursor cur = dbr.query(true, tname[DOCTOR], tcols[DOCTOR],

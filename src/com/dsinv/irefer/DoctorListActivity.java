@@ -99,7 +99,7 @@ public class DoctorListActivity extends Activity {
 	String zipCode;
 	String languages;
 	String docName;
-	int searchOrder = 0;
+	int searchOrder = 3;
 	private int resourceFlag = 0;
 	private ArrayAdapter<String> autoCompleteAdapter;
     Object idArr[] = null;
