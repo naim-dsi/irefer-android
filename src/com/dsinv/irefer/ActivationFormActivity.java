@@ -85,18 +85,24 @@ public class ActivationFormActivity extends Activity {
 				        	Log.d("NI","URL::"+urlString);
 							res = getDataFromURL(urlString);
 							Log.d("NI","JSONDATA::"+res);
-				        	try {
-				        		parseJSONDataAndSaveUser(res);
-				        		Toast.makeText(ActivationFormActivity.this, "Thank You for registering " + getString( R.string.app_name ) , Toast.LENGTH_SHORT).show();
-				        		System.out.println("SMM:REGISTERED::"+res);
-				        		setResult(RESULT_OK);
-				        		finish();
-				        	} catch(Exception ex) {
-				        		//Toast.makeText(ActivationFormActivity.this, res+"! Please try again with correct information.", Toast.LENGTH_SHORT).show();
-				        		Log.e("NI","ERROR::"+ex.getMessage());
-				        		//System.out.println("SMM:NOT REGISTERED::"+ex+res);
-					        	ex.printStackTrace();
-				        	}
+							if(!res.equals("failed")){
+					        	try {
+					        		parseJSONDataAndSaveUser(res);
+					        		
+					        		Toast.makeText(ActivationFormActivity.this, "Thank You for registering " + getString( R.string.app_name ) , Toast.LENGTH_SHORT).show();
+					        		System.out.println("SMM:REGISTERED::"+res);
+					        		setResult(RESULT_OK);
+					        		finish();
+					        	} catch(Exception ex) {
+					        		//Toast.makeText(ActivationFormActivity.this, res+"! Please try again with correct information.", Toast.LENGTH_SHORT).show();
+					        		Log.e("NI","ERROR::"+ex.getMessage());
+					        		//System.out.println("SMM:NOT REGISTERED::"+ex+res);
+						        	ex.printStackTrace();
+					        	}
+							}
+							else{
+								Toast.makeText(ActivationFormActivity.this, "Activation failed, Please check email address and activation code.", Toast.LENGTH_SHORT).show();
+							}
 				        } catch(Exception ex) {
 				        	Toast.makeText(ActivationFormActivity.this, "Failed to connect to server, Please check intenet setting.", Toast.LENGTH_SHORT).show();
 				        	System.out.println("SMM:ERROR::"+ex);
