@@ -1434,7 +1434,9 @@ public class DbAdapter {
         else if(searchOrder == 2)
             orderStr = "first_name, u_rank DESC, grade DESC, last_name";
         else if(searchOrder == 3)
-            orderStr = "last_name, u_rank DESC, grade DESC, first_name";
+        	orderStr = "last_name, u_rank DESC, grade DESC, first_name";
+        else if(searchOrder == 4)
+            orderStr = "u_rank DESC, last_name";
         String qq = "_id IS NOT NULL"+
                 (Utils.isEmpty(docName) ? "" : " AND (last_name LIKE '%"+docName+"%'"+" OR first_name LIKE '%"+docName+"%'"+" OR mid_name LIKE '%"+docName+"%' )")+
                 (Utils.isEmpty(specIds) ? "" : specStr)+
