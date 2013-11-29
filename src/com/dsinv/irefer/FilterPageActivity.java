@@ -479,6 +479,7 @@ public class FilterPageActivity extends Activity {
 					return;
 				}	
 				*/
+            	Log.d("NI::","Search Button Clicked");
                 Intent intent = new Intent(FilterPageActivity.this, DoctorListActivity.class);
                 //faisal > starts
                 if( onlineFlag == 1 ) {
@@ -505,6 +506,7 @@ public class FilterPageActivity extends Activity {
                 intent.putExtra("specialityId", specialityId);
                 intent.putExtra("hospitalName", hospitalName);
                 intent.putExtra("hospitalId", hospitalId);
+                intent.putExtra("practiceId", practiceId);
                 intent.putExtra("acoName", acoName);
                 intent.putExtra("acoId", acoId);
                 intent.putExtra("countyName", countyName);

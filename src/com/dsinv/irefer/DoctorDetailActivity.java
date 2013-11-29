@@ -8,6 +8,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -363,30 +364,95 @@ public class DoctorDetailActivity extends Activity {
 //        cr3 = dba.fetchdocPractice(DbAdapter.DOC_PRACTICE, doctorId);
         String practices = "";
         //docins = "0"+cr.getString(28)+"0";
-        if(cr.getString(28).equals(",,")){
-        	docins = "0";
+        if(cr.getString(34).equals("")){
+        	docins = "";
         }
         else{
         	
-        	docins = "0"+cr.getString(28)+"0";
+        	docins = cr.getString(34);
+        	//docins = docins.substring(0,docins.length()-1);
+        	//docins = docins.substring(1);
         }
-//        cr3.moveToFirst();
-//        for(int i=0; i<cr3.getCount(); i++) {
-//        	if(i == 0)
-//        	{
-//        		docins=cr3.getString(1);
-//        		cr3.moveToNext();
-//        	}
-//        	else
-//        	{
-//	        	docins = docins + " , " +cr3.getString(1);
-//	    		cr3.moveToNext();
-//        	}
-//    	}
-        if (docins.length() > 0 && docins.charAt(docins.length()-1)==',') {
-        	docins = docins.substring(0, docins.length()-1);
+        String prac_name = docins;
+        
+        if(cr.getString(28).equals("")){
+        	docins = "";
+        }
+        else{
+        	
+        	docins = cr.getString(28);
+        	docins = docins.substring(0,docins.length()-1);
+        	docins = docins.substring(1);
+        }
+        String prac_ids = docins;
+        
+        String up_rank = "";
+        if(cr.getString(23).equals("")){
+        	up_rank = "";
+        }
+        else{
+        	up_rank = cr.getString(23);
         }
         Log.d("NR::", docins);
+        String[] arr = new String[10];
+        Arrays.fill(arr, "");
+        if (!Utils.isEmpty(up_rank)) {
+			arr = up_rank.split(",");
+			//insuarr.length
+		}
+        
+        
+        String pNameArr[] = (prac_name).split(",");
+        String pIdArr[] = (prac_ids).split(",");
+        //String pName = "";
+        for(int i=0; i<pNameArr.length && i<arr.length && i<pIdArr.length; i++) {
+        	//System.out.println("PRAC="+pNameArr[i]);
+        	
+        	String name = "";
+    		String address= "";
+    		String rank = "";
+    		
+    		name = pNameArr[i];
+    		Log.e("NI::",""+new Integer(pIdArr[i]));
+    		cr2 = dba.fetchByPracId(new Integer(pIdArr[i]));
+    		try{
+	    		if(cr2!=null){
+	    			address = cr2.getString(3);
+	    		}
+	    		else{
+	    			address = "";
+	    		}
+    		}
+    		catch(Exception ex){
+    			Log.e("NI::",ex.getMessage());
+    			address = "";
+    		}
+    		rank = arr[i];
+        	
+        	if(i == 0)
+        	{
+        		practices = "- "+name+"\n"+address;
+        		practices = practices +"\nPA Rank: "+rank;
+        		
+        	}
+        	else if(pNameArr.length == i+1)
+        	{
+        		practices = practices + "\n\n- " +name+"\n"+address;	
+        		practices = practices +"\nPA Rank: "+rank;
+	    		
+        	}
+        	else
+        	{
+        		practices = practices + "\n\n- " +name+"\n"+address;	
+        		practices = practices +"\nPA Rank: "+rank;
+	    		
+        	}
+        	
+        	
+        	
+    	}
+        
+        /*
         cr2 = dba.fetchPractice(DbAdapter.PRACTICE, docins);
         cr2.moveToFirst();        
         for(int i=0; i<cr2.getCount(); i++) {
@@ -409,7 +475,7 @@ public class DoctorDetailActivity extends Activity {
 	    		cr2.moveToNext();
         	}
     	}
-        
+        */
         
         Map<String, String> data = new HashMap<String, String>();
         Long practiceId = 0L;
@@ -833,11 +899,11 @@ public class DoctorDetailActivity extends Activity {
                 		hName = Utils.isEmpty(hName) ? hNameArr[i] : hName+"\n"+hNameArr[i];
                 		if(seePArr[i].equals("0")){
                 			if(!hName.equals(""))
-                				hName = hName+"(N)";
+                				hName = hName+" (N)";
                 		}
                 		else{
                 			if(!hName.equals(""))
-                				hName = hName+"(Y)";
+                				hName = hName+" (Y)";
                 		}
                 	}
                     data.put("hospital_name", hName);

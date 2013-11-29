@@ -94,6 +94,7 @@ public class DoctorListActivity extends Activity {
 	String insuranceIds;
 	String specialityIds;
 	String hospitalIds;
+	String practiceIds;
 	String acoIds;
 	String countyIds;
 	String zipCode;
@@ -167,6 +168,9 @@ public class DoctorListActivity extends Activity {
 	    	
 	    	hospitalIds = getIntent().getStringExtra("hospitalId");
 	    	if(Utils.isEmpty(hospitalIds) || "null".equals(hospitalIds)) hospitalIds = null;
+	    	
+	    	practiceIds = getIntent().getStringExtra("practiceId");
+	    	if(Utils.isEmpty(practiceIds) || "null".equals(practiceIds)) practiceIds = null;
 	    	
 	    	countyIds = getIntent().getStringExtra("countyId");
 	    	if(Utils.isEmpty(countyIds) || "null".equals(countyIds)) countyIds = null;
@@ -691,7 +695,7 @@ public class DoctorListActivity extends Activity {
 				docList.clear();
 			for(int i=0, j=0; i<showMore && j<1; j++,i++) {
 				Cursor cr = dba.searchDoctor(insuranceIds,specialityIds,hospitalIds,countyIds, docName, zipCode, languages, 
-						actualRowCount+", 100", searchOrder, acoIds, resourceFlag);
+						actualRowCount+", 100", searchOrder, acoIds, resourceFlag,practiceIds);
 				
 				Log.d("NR::", ""+j+" - "+actualRowCount);
 				if(cr != null) {
