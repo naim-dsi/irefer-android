@@ -1283,7 +1283,9 @@ public class DbAdapter {
 	}
 	
 	public Cursor fetchByPracId(long netId) {
-		Cursor cur = dbr.rawQuery("SELECT * FROM "+tname[PRACTICE]+" WHERE prac_id = "+netId+" ", null);
+		String sql ="SELECT * FROM "+tname[PRACTICE]+" WHERE prac_id = "+netId+" ";
+		//Log.d("NI::",sql);
+		Cursor cur = dbr.rawQuery(sql, null);
 		
 		if (cur != null){
 			cur.moveToFirst();

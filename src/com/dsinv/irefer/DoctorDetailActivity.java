@@ -292,7 +292,30 @@ public class DoctorDetailActivity extends Activity {
         if (docins.length() > 0 && docins.charAt(docins.length()-1)==',') {
         	docins = docins.substring(0, docins.length()-1);
         }
+        
+        String hosp_name = ((Utils.isEmpty(cr.getString(35))||cr.getString(35).equals("null")) ? "" : cr.getString(35));
+        
+        String see_patient = ((Utils.isEmpty(cr.getString(18))||cr.getString(18).equals("null")||cr.getString(18).equals("0")) ? "" : cr.getString(18));
+        
+        if(!Utils.isEmpty(hosp_name)){
+        	String seePArr[]  = (see_patient).split(",");
+        	String hNameArr[] = (hosp_name).split(",");
+	        hospitals = "";
+	    	for(int i=0; i<hNameArr.length && i<seePArr.length; i++) {
+	    		hospitals = Utils.isEmpty(hospitals) ? hNameArr[i] : hospitals+"\n"+hNameArr[i];
+	    		if(seePArr[i].equals("0")){
+	    			if(!hospitals.equals(""))
+	    				hospitals = hospitals+" (N)";
+	    		}
+	    		else{
+	    			if(!hospitals.equals(""))
+	    				hospitals = hospitals+" (Y)";
+	    		}
+	    	}
+	    }
+        /*
         Log.d("NR::", docins);
+        
         cr2 = dba.fetchHospital(DbAdapter.HOSPITAL, docins);
         cr2.moveToFirst();        
         for(int i=0; i<cr2.getCount(); i++) {
@@ -315,6 +338,7 @@ public class DoctorDetailActivity extends Activity {
 	    		cr2.moveToNext();
         	}
     	}
+    	*/
 ////////////////////ACO////////////////////////////////////////////        
 //        cr3 = dba.fetchdocAco(DbAdapter.DOC_ACO, doctorId);
         String acos = "";
@@ -401,57 +425,58 @@ public class DoctorDetailActivity extends Activity {
 			//insuarr.length
 		}
         
-        
-        String pNameArr[] = (prac_name).split(",");
-        String pIdArr[] = (prac_ids).split(",");
-        //String pName = "";
-        for(int i=0; i<pNameArr.length && i<arr.length && i<pIdArr.length; i++) {
-        	//System.out.println("PRAC="+pNameArr[i]);
-        	
-        	String name = "";
-    		String address= "";
-    		String rank = "";
-    		
-    		name = pNameArr[i];
-    		Log.e("NI::",""+new Integer(pIdArr[i]));
-    		cr2 = dba.fetchByPracId(new Integer(pIdArr[i]));
-    		try{
-	    		if(cr2!=null){
-	    			address = cr2.getString(3);
+        Log.e("NI::","hello:"+prac_name);
+        Log.e("NI::","hello:"+prac_ids);
+        if(!Utils.isEmpty(prac_name)){
+	        String pNameArr[] = (prac_name).split(",");
+	        String pIdArr[] = (prac_ids).split(",");
+	        //String pName = "";
+	        for(int i=0; i<pNameArr.length && i<arr.length && i<pIdArr.length; i++) {
+	        	//System.out.println("PRAC="+pNameArr[i]);
+	        	
+	        	String name = "";
+	    		String address= "";
+	    		String rank = "";
+	    		
+	    		name = pNameArr[i];
+	    		Log.e("NI::",""+new Integer(pIdArr[i]));
+	    		cr2 = dba.fetchByPracId(new Integer(pIdArr[i]));
+	    		try{
+		    		if(cr2!=null){
+		    			//Log.e("NI::",""+cr2.getColumnIndex("address"));
+		    			//Log.e("NI::",""+cr2.getCount());
+		    			address = cr2.getString(cr2.getColumnIndex("address"));
+		    		}
+		    		else{
+		    			address = "";
+		    		}
 	    		}
-	    		else{
+	    		catch(Exception ex){
+	    			Log.e("NI::",ex.getMessage());
 	    			address = "";
 	    		}
-    		}
-    		catch(Exception ex){
-    			Log.e("NI::",ex.getMessage());
-    			address = "";
-    		}
-    		rank = arr[i];
-        	
-        	if(i == 0)
-        	{
-        		practices = "- "+name+"\n"+address;
-        		practices = practices +"\nPA Rank: "+rank;
-        		
-        	}
-        	else if(pNameArr.length == i+1)
-        	{
-        		practices = practices + "\n\n- " +name+"\n"+address;	
-        		practices = practices +"\nPA Rank: "+rank;
-	    		
-        	}
-        	else
-        	{
-        		practices = practices + "\n\n- " +name+"\n"+address;	
-        		practices = practices +"\nPA Rank: "+rank;
-	    		
-        	}
-        	
-        	
-        	
-    	}
-        
+	    		rank = arr[i];
+	        	
+	        	if(i == 0)
+	        	{
+	        		practices = "- "+name+"\n"+address;
+	        		practices = practices +"\nPA Rank: "+rank;
+	        		
+	        	}
+	        	else if(pNameArr.length == i+1)
+	        	{
+	        		practices = practices + "\n\n- " +name+"\n"+address;	
+	        		practices = practices +"\nPA Rank: "+rank;
+		    		
+	        	}
+	        	else
+	        	{
+	        		practices = practices + "\n\n- " +name+"\n"+address;	
+	        		practices = practices +"\nPA Rank: "+rank;
+		    		
+	        	}
+	    	}
+        }
         /*
         cr2 = dba.fetchPractice(DbAdapter.PRACTICE, docins);
         cr2.moveToFirst();        
@@ -547,7 +572,7 @@ public class DoctorDetailActivity extends Activity {
         	String hAdd = "";
         	for(int i=0; i<cr.getCount(); i++) {
         		hName = Utils.isEmpty(hName) ? cr.getString(2) : hName+"\n"+cr.getString(2);
-        		hName = hName+"(N)";
+        		hName = hName+" (N)";
         		cr.moveToNext();
         	}
         	data.put("hospital_name", hospitals);
