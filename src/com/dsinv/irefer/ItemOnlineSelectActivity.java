@@ -43,8 +43,8 @@ public class ItemOnlineSelectActivity extends Activity {
     private int opr = 0;
     private ListView itemListView;
     private boolean[] selectionArr;
-    private Map<String, String> selectedMap;
-    Map nameIdMap;
+    private Map<String, String> selectedMap = new HashMap<String, String>();
+    Map<String, String> nameIdMap;
     private Button doneBtn;
     private CharSequence searchText = "";
     protected Handler systemtaskHandler = new Handler();
@@ -56,22 +56,42 @@ public class ItemOnlineSelectActivity extends Activity {
            		CharSequence s = searchText;
            		autoCompleteAdapter.clear();
                 
+           		
+        		String idArr1 = "";
+//        		int ix=0;
+//        		for (Iterator<String> it = selectedMap.keySet().iterator(); it.hasNext(); ix++) {
+//        			if(idArr1.equals("")){
+//        				idArr1 = (String)nameIdMap.get((String)it.next());
+//        			}
+//        			else{
+//        				idArr1 = idArr1+","+(String)nameIdMap.get((String)it.next());
+//        			}
+//        		    
+//        		}		
+        		String serverUrl = "";
                 String jsonData = "";
                 try {
                 	if(opr == DbAdapter.PRACTICE) {
-                		jsonData = getDataFromURL(ABC.WEB_URL+"practice/json?code="+s.toString());	
+                		serverUrl = ABC.WEB_URL+"practice/json?code="+s.toString()+"&ids="+idArr1;
+                		//jsonData = getDataFromURL(ABC.WEB_URL+"practice/json?code="+s.toString()+"&ids="+idArr1);	
                 	}else if(opr == DbAdapter.HOSPITAL) {
-                		jsonData = getDataFromURL(ABC.WEB_URL+"hospital/json?code="+s.toString());
+                		serverUrl = ABC.WEB_URL+"hospital/json?code="+s.toString()+"&ids="+idArr1;
+                		//jsonData = getDataFromURL(ABC.WEB_URL+"hospital/json?code="+s.toString()+"&ids="+idArr1);
                 	}else if(opr == DbAdapter.SPECIALTY) {
-                		jsonData = getDataFromURL(ABC.WEB_URL+"speciality/json?code="+s.toString());
-                	}else if(opr == DbAdapter.INSURANCE) {                		
-                		jsonData = getDataFromURL(ABC.WEB_URL+"insurance/json?code="+s.toString());                		
+                		serverUrl = ABC.WEB_URL+"speciality/json?code="+s.toString()+"&ids="+idArr1;
+                		//jsonData = getDataFromURL(ABC.WEB_URL+"speciality/json?code="+s.toString()+"&ids="+idArr1);
+                	}else if(opr == DbAdapter.INSURANCE) { 
+                		serverUrl = ABC.WEB_URL+"insurance/json?code="+s.toString()+"&ids="+idArr1;
+                		//jsonData = getDataFromURL(ABC.WEB_URL+"insurance/json?code="+s.toString()+"&ids="+idArr1);                		
                 	}else if(opr == DbAdapter.COUNTY) {
-                		jsonData = getDataFromURL(ABC.WEB_URL+"county/json?code="+s.toString());
+                		serverUrl = ABC.WEB_URL+"county/json?code="+s.toString()+"&ids="+idArr1;
+                		//jsonData = getDataFromURL(ABC.WEB_URL+"county/json?code="+s.toString()+"&ids="+idArr1);
                 	}else if(opr == DbAdapter.ACO) {
-                		jsonData = getDataFromURL(ABC.WEB_URL+"aco/json?code="+s.toString());
+                		serverUrl = ABC.WEB_URL+"aco/json?code="+s.toString()+"&ids="+idArr1;
+                		//jsonData = getDataFromURL(ABC.WEB_URL+"aco/json?code="+s.toString()+"&ids="+idArr1);
                 	}     
-                	
+                	Log.d("NI::",serverUrl);
+                	jsonData = getDataFromURL(serverUrl);
                 } catch(Exception ex) {                	
                 	System.out.println("SMM:ERROR::"+ex);
                 }
@@ -146,8 +166,23 @@ public class ItemOnlineSelectActivity extends Activity {
     	itemListView = (ListView)findViewById(R.id.itemSelectList);
     	itemListView.setAdapter(autoCompleteAdapter);
     	itemListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+    	try{
+	    	nameArr = this.getIntent().getStringArrayExtra("nameArr");
+	    	//idArr = this.getIntent().getStringArrayExtra("idArr");
+	    	selectionArr = this.getIntent().getBooleanArrayExtra("selectionArr");
+	    	
+	    	for (int i=0; i < nameArr.length; i++) {
+	    		if(selectionArr[i]==true){
+	    			//nameIdMap.put((String) nameArr[i], ""+idArr[i]);
+	                selectedMap.put(nameArr[i].toString(), "true");
+	    		}
+	        }
+    	}
+    	catch(Exception ex){
+    		ex.printStackTrace();
+    	}
+    	Log.d("NI::Previously selected ",""+selectedMap.size());
     	
-    	selectionArr = this.getIntent().getBooleanArrayExtra("selectionArr");
     	doneBtn = (Button) findViewById(R.id.itemSelectBtn);
     	doneBtn.setText("Choose All");
     	if(opr == DbAdapter.COUNTY){
@@ -161,7 +196,7 @@ public class ItemOnlineSelectActivity extends Activity {
 	            //startActivityForResult(intent, 1100);				
 			}
 		});
-    	selectedMap = new HashMap<String, String>();
+    	//selectedMap = new HashMap<String, String>();
     	itemListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 	    	
     		public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -180,6 +215,17 @@ public class ItemOnlineSelectActivity extends Activity {
     	    				return;
     	    			}
         			}
+    				else{
+    					int i = selectedMap.size();
+    	    			
+    	    			if(i>1||i==1){
+    	    				Toast.makeText(ItemOnlineSelectActivity.this, "Maximum selection limit exceeded.", Toast.LENGTH_LONG).show();
+    	    				//CheckBox cBox = (CheckBox) v.findViewById(id);
+    	                    //cBox.toggle();
+    	    				itemListView.setItemChecked(position, false);
+    	    				return;
+    	    			}
+    				}
     				selectedMap.put(key, "true");
     			}else {
     				selectedMap.remove(key);
@@ -188,7 +234,7 @@ public class ItemOnlineSelectActivity extends Activity {
     				doneBtn.setText("Choose All");
     			} else {
     				doneBtn.setText("Done");
-    				if(opr ==  DbAdapter.SPECIALTY || opr ==  DbAdapter.INSURANCE || opr == DbAdapter.PRACTICE || opr == DbAdapter.ACO)
+    				if(opr ==  DbAdapter.SPECIALTY || opr ==  DbAdapter.INSURANCE || opr == DbAdapter.PRACTICE || opr == DbAdapter.ACO || opr == DbAdapter.HOSPITAL)
     					finishActivity();
     			}
     		}

@@ -235,7 +235,9 @@ public class ItemSelectActivity extends Activity {
             }
 
         } else {
+        	
             doneBtn.setText("Done");
+            
 
         }
         //selectedMap = new HashMap();
@@ -244,7 +246,22 @@ public class ItemSelectActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id){
                 //System.out.println("SMM::["+opr+"]view.text="+parent.getAdapter().getItem(position));
                 String key = parent.getAdapter().getItem(position).toString();
+                int has = 0;
+                
+                
                 if(selectedMap.get(key).equals("false")){
+                	for (int i=0; i < nameArr.length; i++) {
+
+                        if(selectedMap.get(nameArr[i].toString()).equals("true")){
+                            has = 1;
+                        }
+
+                    }
+                    if(has == 1){
+                    	Toast.makeText(ItemSelectActivity.this, "Maximum selection limit exceeded.", Toast.LENGTH_SHORT).show();
+                    	itemListView.setItemChecked(position, false);
+                    	return;
+                    }
                     selectedMap.put(key, "true");
                     itemListView.setItemChecked(position, true);
                 }
@@ -252,7 +269,7 @@ public class ItemSelectActivity extends Activity {
                     selectedMap.put(key, "false");
                     itemListView.setItemChecked(position, false);
                 }
-                int has = 0;
+                has = 0;
                 for (int i=0; i < nameArr.length; i++) {
 
                     if(selectedMap.get(nameArr[i].toString()).equals("true")){
@@ -267,8 +284,8 @@ public class ItemSelectActivity extends Activity {
                     }
                 } else {
                     doneBtn.setText("Done");
-                    //if(opr ==  DbAdapter.SPECIALTY || opr ==  DbAdapter.INSURANCE || opr == DbAdapter.PRACTICE || opr == DbAdapter.ACO)
-                    //finishActivity();
+                    if(opr ==  DbAdapter.SPECIALTY || opr ==  DbAdapter.INSURANCE || opr == DbAdapter.PRACTICE || opr == DbAdapter.ACO || opr == DbAdapter.HOSPITAL)
+        				finishActivity();
                 }
     			/* only one speciality can be selected */
                 //if(opr ==  DbAdapter.SPECIALTY)

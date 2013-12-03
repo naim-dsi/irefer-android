@@ -327,15 +327,15 @@ public class FilterPageActivity extends Activity {
                     System.out.println("online select activity ...");
                     intent = new Intent(FilterPageActivity.this, ItemOnlineSelectActivity.class);
                 }
-                if( resourceFlag == 1 ) {
-                    intent.putExtra("nameArr",(String[])specialityResNameArr);
-                    intent.putExtra("idArr",specialityResIdArr);
-                    intent.putExtra("selectionArr",specialityResSelection);
-                } else {
+                //if( resourceFlag == 1 ) {
+                    //intent.putExtra("nameArr",(String[])specialityResNameArr);
+                    //intent.putExtra("idArr",specialityResIdArr);
+                    //intent.putExtra("selectionArr",specialityResSelection);
+                //} else {
                     intent.putExtra("nameArr",(String[])specialityNameArr);
                     intent.putExtra("idArr",specialityIdArr);
                     intent.putExtra("selectionArr",specialitySelection);
-                }
+                //}
                 intent.putExtra("opr", DbAdapter.SPECIALTY);
                 startActivityForResult(intent, 102);
 
@@ -398,9 +398,9 @@ public class FilterPageActivity extends Activity {
                         intent = new Intent(FilterPageActivity.this, ItemOnlineSelectActivity.class);
                     }
                     intent.putExtra("opr", DbAdapter.COUNTY);
-                    intent.putExtra("nameArr",(String[])hospitalNameArr);
-                    intent.putExtra("idArr",hospitalIdArr);
-                    intent.putExtra("selectionArr",hospitalSelection);
+                    intent.putExtra("nameArr",(String[])countyNameArr);
+                    intent.putExtra("idArr",countyIdArr);
+                    intent.putExtra("selectionArr",countySelection);
                     startActivityForResult(intent, 104);
                 }else {
                     AlertDialog.Builder builder = getDialogBuilder(DbAdapter.COUNTY);
@@ -420,7 +420,7 @@ public class FilterPageActivity extends Activity {
         acoBtn = (View) findViewById(R.id.filterACOBtn);
         acoBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if( onlineFlag == 1 ) {
+                //if( onlineFlag == 1 ) {
                     Intent intent = new Intent(FilterPageActivity.this, ItemSelectActivity.class);
 
                     if( onlineFlag == 1 ) {
@@ -432,10 +432,11 @@ public class FilterPageActivity extends Activity {
                     intent.putExtra("idArr",acoIdArr);
                     intent.putExtra("selectionArr",acoSelection);
                     startActivityForResult(intent, 106);
-                }else {
-                    AlertDialog.Builder builder = getDialogBuilder(DbAdapter.ACO);
-                    builder.show();
-                }
+                //}
+                //else {
+                    //AlertDialog.Builder builder = getDialogBuilder(DbAdapter.ACO);
+                    //builder.show();
+                //}
             }
         });
 
@@ -624,7 +625,7 @@ public class FilterPageActivity extends Activity {
         System.out.println("SMM::SELECTION-ON-RESULT::"+arr);
         int position = 0;
         String str1 = "All";
-        String str2 = "0";
+        String str2 = "";
 
 
 
@@ -727,7 +728,12 @@ public class FilterPageActivity extends Activity {
                 }
                 position = find(countyIdArr,Integer.parseInt(resultIdArr[i]));
                 if(position != -1){
-                    countySelection[position] = true;
+                	try{
+                		countySelection[position] = true;
+                	}
+                	catch(Exception ex){
+                		Log.e("NI::", ex.getMessage());
+                	}
                 }
             }
             countyValue.setText(str1);
@@ -819,34 +825,17 @@ public class FilterPageActivity extends Activity {
             cr.moveToFirst();
             int docTypeCount = 0;
             int resTypeCount = 0;
-            for(int i=0; i<cr.getCount(); i++) {
-                if(cr.getInt(4) < 3)
-                    docTypeCount++;
-                else
-                    resTypeCount++;
-                cr.moveToNext();
-            }
-            specialityNameArr   = new String[docTypeCount];
-            specialitySelection = new boolean[docTypeCount];
-            specialityIdArr     = new int[docTypeCount];
 
-            specialityResNameArr   = new String[resTypeCount];
-            specialityResSelection = new boolean[resTypeCount];
-            specialityResIdArr     = new int[resTypeCount];
+            specialityNameArr   = new String[cr.getCount()];
+            specialitySelection = new boolean[cr.getCount()];
+            specialityIdArr     = new int[cr.getCount()];
 
             cr.moveToFirst();
             for(int i=0, j=0; i+j<cr.getCount();) {
-                if(cr.getInt(4) < 3) {
-                    specialityNameArr[i]   = cr.getString(2);
-                    specialitySelection[i] = false;
-                    specialityIdArr[i]     = cr.getInt(1);
-                    i++;
-                } else {
-                    specialityResNameArr[j]   = cr.getString(2);
-                    specialityResSelection[j] = false;
-                    specialityResIdArr[j]     = cr.getInt(1);
-                    j++;
-                }
+                specialityNameArr[i]   = cr.getString(2);
+                specialitySelection[i] = false;
+                specialityIdArr[i]     = cr.getInt(1);
+                i++;
                 cr.moveToNext();
             }
             cr.close();
@@ -856,6 +845,7 @@ public class FilterPageActivity extends Activity {
     private void loadCounty() {
         Cursor cr = dba.fetchAll(DbAdapter.COUNTY);
         if(cr != null && cr.getCount() > 0) {
+        	countyName= "All";
             cr.moveToFirst();
             countyNameArr = null;
             countySelection = null;
@@ -865,17 +855,18 @@ public class FilterPageActivity extends Activity {
             int[] countyIdArrN = new int[cr.getCount()];
             int j=0;
             for(int i=0; i<cr.getCount(); i++) {
-//				if(i == 0) {
-//					countyName = cr.getString(2);
-//					countyId = cr.getString(1);
-//				} else {
-//					countyName = countyName+","+cr.getString(2);
-//					countyId = countyId+","+cr.getString(1);
-//				}
+				
 
                 if(!cr.getString(2).equals("no match found"))
                 {
-
+//                	if(i == 0) {
+//    					countyName = cr.getString(2);
+//    					countyId = cr.getString(1);
+//    				} else {
+//    					countyName = countyName+","+cr.getString(2);
+//    					countyId = countyId+","+cr.getString(1);
+//    				}
+                	
                     countyNameArrN[j] = cr.getString(2);
                     //countySelection[i] = true;
                     countySelectionN[j] = false;
@@ -889,6 +880,8 @@ public class FilterPageActivity extends Activity {
             countySelection = new boolean[j];
             countyIdArr = new int[j];
             System.arraycopy(countyNameArrN, 0, countyNameArr, 0, j);
+            System.arraycopy(countySelectionN, 0, countySelection, 0, j);
+            System.arraycopy(countyIdArrN, 0, countyIdArr, 0, j);
             cr.close();
             countyValue.setText(countyName);
         }
@@ -1134,6 +1127,7 @@ public class FilterPageActivity extends Activity {
                     public void onClick(DialogInterface dialog, int which,
                                         boolean isChecked) {
                         // TODO Auto-generated method stub
+                    	
                         acoName = "All";
                         acoId   = "";
                         for(int i=0; i<acoSelection.length; i++) {

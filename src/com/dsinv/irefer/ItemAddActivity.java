@@ -179,7 +179,7 @@ public class ItemAddActivity extends Activity {
 	        public void onTextChanged(CharSequence s, int start, int before, int count) {
 	        	searchText = s.toString();
 	        	systemtaskHandler.removeCallbacks( systemTaskRunner );
-                systemtaskHandler.postDelayed( systemTaskRunner, 1500 );
+                systemtaskHandler.postDelayed( systemTaskRunner, 50 );
 	        	
 	                
 	        }
@@ -194,24 +194,47 @@ public class ItemAddActivity extends Activity {
     		        public void onClick(DialogInterface dialog, int which) {
     		            switch (which){
     		            case DialogInterface.BUTTON_POSITIVE:
-    		            	Cursor cr = dba.fetchByNetId(opr, Long.parseLong((String)idArr[selectedItemIdx]));
-    		            	if(cr != null ) {
-    		            		if(cr.getCount() > 0) {
-    		            			Toast.makeText(ItemAddActivity.this, "Already added.", Toast.LENGTH_SHORT).show();		
-    		            			break;
-    		            		}
-    		            		cr.close();
-    		            	}
-    		            	if(opr == dba.SPECIALTY) {
-    		            		dba.insert(opr, new String[]{(String)idArr[selectedItemIdx], (String)nameArr[selectedItemIdx],(String)addArr[selectedItemIdx], "0" });
-    		            		dba.needToSync();
-    		            	} else if(opr == dba.COUNTY){
-    		            		dba.insert(opr, new String[]{(String)idArr[selectedItemIdx], (String)nameArr[selectedItemIdx],(String)addArr[selectedItemIdx], (String)extraArr[selectedItemIdx] });
-    		            		dba.needToSync();
-    		            	}else
-    		            		dba.insert(opr, new String[]{(String)idArr[selectedItemIdx], (String)nameArr[selectedItemIdx],(String)addArr[selectedItemIdx] });
-    		            	Toast.makeText(ItemAddActivity.this, (String)nameArr[selectedItemIdx]+" added.", Toast.LENGTH_SHORT).show();
-    		            	//Yes button clicked
+	    		            if(opr !=  DbAdapter.COUNTY){
+	    		            	Cursor cr = dba.fetchByNetId(opr, Long.parseLong((String)idArr[selectedItemIdx]));
+	    		            	if(cr != null ) {
+	    		            		if(cr.getCount() > 0) {
+	    		            			Toast.makeText(ItemAddActivity.this, "Already added.", Toast.LENGTH_SHORT).show();		
+	    		            			break;
+	    		            		}
+	    		            		cr.close();
+	    		            	}
+	    		            	if(opr == dba.SPECIALTY) {
+	    		            		dba.insert(opr, new String[]{(String)idArr[selectedItemIdx], (String)nameArr[selectedItemIdx],(String)addArr[selectedItemIdx], "0" });
+	    		            		dba.needToSync();
+	    		            	} else if(opr == dba.COUNTY){
+	    		            		dba.insert(opr, new String[]{(String)idArr[selectedItemIdx], (String)nameArr[selectedItemIdx],(String)addArr[selectedItemIdx], (String)extraArr[selectedItemIdx] });
+	    		            		dba.needToSync();
+	    		            	}else
+	    		            		dba.insert(opr, new String[]{(String)idArr[selectedItemIdx], (String)nameArr[selectedItemIdx],(String)addArr[selectedItemIdx] });
+	    		            	Toast.makeText(ItemAddActivity.this, (String)nameArr[selectedItemIdx]+" added.", Toast.LENGTH_SHORT).show();
+	    		            	//Yes button clicked
+	    		            }
+	    		            else{
+	    		            	Cursor cr = dba.fetchByNetId(opr, Long.parseLong((String)idArr[selectedItemIdx]));
+	    		            	if(cr != null ) {
+	    		            		if(cr.getCount() > 0) {
+	    		            			Toast.makeText(ItemAddActivity.this, "Already added.", Toast.LENGTH_SHORT).show();		
+	    		            			cr.close();
+	    		            			break;
+	    		            		}
+	    		            		cr.close();
+	    		            		
+	    		            	}
+	    		            	if(dba.getCount(DbAdapter.COUNTY)>Utils.COUNTY_LIMIT||dba.getCount(DbAdapter.COUNTY)==Utils.COUNTY_LIMIT){
+	    		            		Toast.makeText(ItemAddActivity.this, "Maximum "+Utils.COUNTY_LIMIT+" county can be seleted", Toast.LENGTH_LONG).show();
+	    		            		break;
+	    		            	}
+	    		            	else{
+	    		            		dba.insert(opr, new String[]{(String)idArr[selectedItemIdx], (String)nameArr[selectedItemIdx],(String)addArr[selectedItemIdx], (String)extraArr[selectedItemIdx] });
+	    		            		dba.needToSync();
+	    		            		Toast.makeText(ItemAddActivity.this, (String)nameArr[selectedItemIdx]+" added.", Toast.LENGTH_SHORT).show();
+	    		            	}
+	    		            }
     		                break;
 
     		            case DialogInterface.BUTTON_NEGATIVE:
@@ -231,24 +254,33 @@ public class ItemAddActivity extends Activity {
 	  //Added by faisal
 	    Button allItemAddButton = (Button) findViewById(R.id.all_item_add_button);
 	    allItemAddButton.setOnClickListener(new View.OnClickListener() {        	
-	        public void onClick(View view) {	 
-	        	int j=0;
-	        	for(int i = 0;i<idArr.length;i++) {
-	        		Cursor cr = dba.fetchByNetId(opr, Long.parseLong((String)idArr[i]));
-	            	if(cr != null) {
-	            		if(cr.getCount() > 0)   continue;;
-	            		cr.close();
-	            	}
-	        		dba.insert(opr, new String[]{(String)idArr[i], (String)nameArr[i], "", "0" });
-	        		j++;
+	        public void onClick(View view) {
+	        	if(opr !=  DbAdapter.COUNTY){
+		        	int j=0;
+		        	for(int i = 0;i<idArr.length;i++) {
+		        		Cursor cr = dba.fetchByNetId(opr, Long.parseLong((String)idArr[i]));
+		            	if(cr != null) {
+		            		if(cr.getCount() > 0)   continue;;
+		            		cr.close();
+		            	}
+		        		dba.insert(opr, new String[]{(String)idArr[i], (String)nameArr[i], "", "0" });
+		        		j++;
+		        	}
+		        	Toast.makeText(ItemAddActivity.this, j + " Items added", Toast.LENGTH_SHORT).show();
+		        }
+	        	else{
+	        		finish();
 	        	}
-	        	Toast.makeText(ItemAddActivity.this, j + " Items added", Toast.LENGTH_SHORT).show();
 	        }
         });
 	    if(opr ==  DbAdapter.COUNTY){
-	    	systemtaskHandler.removeCallbacks( systemTaskRunner );
-	        systemtaskHandler.postDelayed( systemTaskRunner, 50 );
+	    	allItemAddButton.setText("Done");
+	    	//systemtaskHandler.removeCallbacks( systemTaskRunner );
+	        //systemtaskHandler.postDelayed( systemTaskRunner, 50 );
 	    }
+	    searchText = "";
+    	systemtaskHandler.removeCallbacks( systemTaskRunner );
+        systemtaskHandler.postDelayed( systemTaskRunner, 50 );
 	    //Added by faisal up to this
 
     }
