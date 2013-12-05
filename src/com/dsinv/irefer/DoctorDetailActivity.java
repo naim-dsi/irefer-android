@@ -49,14 +49,14 @@ public class DoctorDetailActivity extends Activity {
 	private DbAdapter dba;	
 	private Intent intent;
 	private ProgressDialog dialog;
-	private Dialog rankDialog;
-	private Dialog reportDialog;
-	private RatingBar ratingBar;
-	private EditText reportTextEdit;
+	public Dialog rankDialog;
+	public Dialog reportDialog;
+	public RatingBar ratingBar;
+	public EditText reportTextEdit;
 	public TextView rankTxt;
-	private LinearLayout reportLayout;
-	private Button reportBtn;
-	private Button reportDialogBtn;
+	public LinearLayout reportLayout;
+	public Button reportBtn;
+	public Button reportDialogBtn;
 	TextView reportTxt;
 	
 	Context ctx;
@@ -105,7 +105,7 @@ public class DoctorDetailActivity extends Activity {
         reportTextEdit = (EditText)findViewById(R.id.report_change_text_edit);
         reportBtn = (Button) findViewById(R.id.doc_detail_submit_report);
         reportTxt = (TextView) findViewById(R.id.doctor_detail_report_label);
-        
+        //TextView reportTxt = (TextView) findViewById(R.id.doctor_detail_report_label);
         if(reportFlag == 1){
         	reportLayout.setVisibility(View.VISIBLE);
         	reportBtn.setVisibility(View.VISIBLE);
@@ -699,7 +699,7 @@ public class DoctorDetailActivity extends Activity {
 		
 		if(data.get("report") != null) {
 			reportLayout.setVisibility(View.VISIBLE);
-			TextView reportTxt = (TextView) findViewById(R.id.doctor_detail_report_label);
+			//TextView reportTxt = (TextView) findViewById(R.id.doctor_detail_report_label);
 			reportTxt.setText(data.get("report_time")+"\n"+data.get("report"));
 			reportTxt.setVisibility(View.VISIBLE);
 		}

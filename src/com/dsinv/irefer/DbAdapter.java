@@ -1101,9 +1101,24 @@ public class DbAdapter {
 	public long insert(int tableId, String[] data) throws RuntimeException {
 		// return db.insert(tname[tableId], null, formatInstance(tableId,
 		// data));
-		long id = db
+		if(tableId!=DbAdapter.DOC_REPORT){
+			long id = db
 				.insert(tname[tableId], null, formatInstance(tableId, data));
-		return id;
+		
+			return id;
+		}
+		else{
+			Cursor cr = this.fetchReportByDocId(new Integer(data[0]));
+	        if(cr != null && cr.getCount() > 0) {
+	        	String reportId=cr.getString(0);
+	        	cr.close();
+	        	delete(tableId, new Integer(reportId));
+	        }
+	        long id = db
+					.insert(tname[tableId], null, formatInstance(tableId, data));
+			
+	        return id;
+		}
 	}
 
 	public void insert(int tableId, List dataArr) throws RuntimeException {
