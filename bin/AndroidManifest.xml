@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="com.dsinv.irefer" android:versionName="2.1" android:versionCode="3">
+      package="com.dsinv.irefer2" android:versionName="2.2" android:versionCode="3">
     <uses-sdk android:minSdkVersion="7" />
 
 	<uses-permission android:name="android.permission.INTERNET" />
@@ -8,7 +8,7 @@
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 	
     <application android:icon="@drawable/icon2" android:label="@string/app_name">
-        <activity android:name=".IreferActivity"
+        <activity android:name="com.dsinv.irefer2.IreferActivity"
                   android:label="@string/app_name"
                   android:screenOrientation="portrait" >
             <intent-filter>
@@ -17,27 +17,27 @@
             </intent-filter>
         </activity>
         
-		<activity android:name=".PCPRegFormActivity" android:label="@string/app_name" android:screenOrientation="portrait"></activity>
-		<activity android:name=".RegFormActivity" android:label="@string/app_name" android:screenOrientation="portrait"></activity>
-		<activity android:name=".ActivationFormActivity" android:label="@string/app_name" android:screenOrientation="portrait"></activity>
-		<activity android:name=".ActivatePracticeActivity" android:label="@string/app_name" android:screenOrientation="portrait"></activity>
-		<activity android:name=".SetupActivity" android:label="@string/app_name" android:screenOrientation="portrait"></activity>
-		<activity android:name=".FilterPageActivity" android:label="@string/app_name" android:screenOrientation="portrait"></activity>
-		<activity android:name=".ResourceFilterPageActivity" android:label="@string/app_name" android:screenOrientation="portrait"></activity>
-		<activity android:name=".DoctorListAdvanceActivity" android:label="@string/app_name" android:screenOrientation="portrait"></activity>
-		<activity android:name=".DoctorListActivity" android:label="@string/app_name" android:screenOrientation="portrait"></activity>
-		<activity android:name=".ResourceListActivity" android:label="@string/app_name" android:screenOrientation="portrait"></activity>
-		<activity android:name=".ItemAddActivity" android:label="@string/app_name" android:screenOrientation="portrait"></activity>		
-		<activity android:name=".ItemChooseActivity" android:label="@string/app_name" android:screenOrientation="portrait"></activity>		
-		<activity android:name=".ItemSelectActivity" android:theme="@style/ListFont" android:label="@string/app_name" android:screenOrientation="portrait"></activity>
-		<activity android:name=".ResourceItemSelectActivity" android:theme="@style/ListFont" android:label="@string/app_name" android:screenOrientation="portrait"></activity>		
-		<activity android:name=".ItemOnlineSelectActivity" android:theme="@style/ListFont" android:label="@string/app_name" android:screenOrientation="portrait"/>
-		<activity android:name=".ResourceItemOnlineSelectActivity" android:theme="@style/ListFont" android:label="@string/app_name" android:screenOrientation="portrait"/>
-		<activity android:name=".ItemViewActivity" android:label="@string/app_name" android:screenOrientation="portrait"></activity>		
-		<activity android:name=".DoctorOnlineListActivity" android:label="@string/app_name" android:screenOrientation="portrait"/>
-		<activity android:name=".ResourceOnlineListActivity" android:label="@string/app_name" android:screenOrientation="portrait"/>
-		<activity android:name=".AboutPageActivity" android:label="@string/app_name" android:screenOrientation="portrait"></activity>
-		<activity android:name=".DoctorDetailActivity" android:label="@string/app_name" android:screenOrientation="portrait"></activity>
+		<activity android:name="com.dsinv.irefer2.PCPRegFormActivity" android:label="@string/app_name" android:screenOrientation="portrait"></activity>
+		<activity android:name="com.dsinv.irefer2.RegFormActivity" android:label="@string/app_name" android:screenOrientation="portrait"></activity>
+		<activity android:name="com.dsinv.irefer2.ActivationFormActivity" android:label="@string/app_name" android:screenOrientation="portrait"></activity>
+		<activity android:name="com.dsinv.irefer2.ActivatePracticeActivity" android:label="@string/app_name" android:screenOrientation="portrait"></activity>
+		<activity android:name="com.dsinv.irefer2.SetupActivity" android:label="@string/app_name" android:screenOrientation="portrait"></activity>
+		<activity android:name="com.dsinv.irefer2.FilterPageActivity" android:label="@string/app_name" android:screenOrientation="portrait"></activity>
+		<activity android:name="com.dsinv.irefer2.ResourceFilterPageActivity" android:label="@string/app_name" android:screenOrientation="portrait"></activity>
+		<activity android:name="com.dsinv.irefer2.DoctorListAdvanceActivity" android:label="@string/app_name" android:screenOrientation="portrait"></activity>
+		<activity android:name="com.dsinv.irefer2.DoctorListActivity" android:label="@string/app_name" android:screenOrientation="portrait"></activity>
+		<activity android:name="com.dsinv.irefer2.ResourceListActivity" android:label="@string/app_name" android:screenOrientation="portrait"></activity>
+		<activity android:name="com.dsinv.irefer2.ItemAddActivity" android:label="@string/app_name" android:screenOrientation="portrait"></activity>		
+		<activity android:name="com.dsinv.irefer2.ItemChooseActivity" android:label="@string/app_name" android:screenOrientation="portrait"></activity>		
+		<activity android:name="com.dsinv.irefer2.ItemSelectActivity" android:theme="@style/ListFont" android:label="@string/app_name" android:screenOrientation="portrait"></activity>
+		<activity android:name="com.dsinv.irefer2.ResourceItemSelectActivity" android:theme="@style/ListFont" android:label="@string/app_name" android:screenOrientation="portrait"></activity>		
+		<activity android:name="com.dsinv.irefer2.ItemOnlineSelectActivity" android:theme="@style/ListFont" android:label="@string/app_name" android:screenOrientation="portrait"/>
+		<activity android:name="com.dsinv.irefer2.ResourceItemOnlineSelectActivity" android:theme="@style/ListFont" android:label="@string/app_name" android:screenOrientation="portrait"/>
+		<activity android:name="com.dsinv.irefer2.ItemViewActivity" android:label="@string/app_name" android:screenOrientation="portrait"></activity>		
+		<activity android:name="com.dsinv.irefer2.DoctorOnlineListActivity" android:label="@string/app_name" android:screenOrientation="portrait"/>
+		<activity android:name="com.dsinv.irefer2.ResourceOnlineListActivity" android:label="@string/app_name" android:screenOrientation="portrait"/>
+		<activity android:name="com.dsinv.irefer2.AboutPageActivity" android:label="@string/app_name" android:screenOrientation="portrait"></activity>
+		<activity android:name="com.dsinv.irefer2.DoctorDetailActivity" android:label="@string/app_name" android:screenOrientation="portrait"></activity>
 		<activity android:name="irefer.ResourceDetailActivity" android:label="@string/app_name" android:screenOrientation="portrait"></activity>
 
     </application>
