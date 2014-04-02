@@ -26,7 +26,7 @@ import com.dsinv.irefer2.model.Doctor;
 public class Utils {
 	
 	public static String pageId = "page_id";
-	public static String packageName = "com.dsinv.irefer";
+	public static String packageName = "com.dsinv.irefer2";
 	public static int HOME_PAGE   = 11;
 	public static int SETUP_PAGE  = 12;
 	public static int FILTER_PAGE = 13;

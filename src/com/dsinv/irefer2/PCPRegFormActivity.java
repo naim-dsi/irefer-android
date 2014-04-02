@@ -168,12 +168,12 @@ public class PCPRegFormActivity extends Activity {
 				
 				if(userType == 1) {
 					dba.delete(dba.PRACTICE, 0);
-					long userId = dba.insert(DbAdapter.USERS, new String[]{"0", lName, fName, uEmail, "", new Integer(selectedPracticeId).toString(), "0", "0" , "1", "1","0","0"});
+					long userId = dba.insert(DbAdapter.USERS, new String[]{"0", lName, fName, uEmail, "", new Integer(selectedPracticeId).toString(), "0", "0" , "1", "1","0","0",Integer.toString(docId)});
 					long pId = dba.insert(DbAdapter.PRACTICE, new String[]{new Integer(selectedPracticeId).toString(), selectedPracticeName , selectedPracticeAddress});
 				}
 				if(userType == 2) {
 					dba.delete(dba.HOSPITAL, 0);
-					long userId = dba.insert(DbAdapter.USERS, new String[]{"0", lName, fName, uEmail, "", "0", new Integer(selectedPracticeId).toString(), "0" , "1", "1","0","0"});
+					long userId = dba.insert(DbAdapter.USERS, new String[]{"0", lName, fName, uEmail, "", "0", new Integer(selectedPracticeId).toString(), "0" , "1", "1","0","0",Integer.toString(docId)});
 					long pId = dba.insert(DbAdapter.HOSPITAL, new String[]{new Integer(selectedPracticeId).toString(), selectedPracticeName , selectedPracticeAddress});
 				}
 				String res ="";
