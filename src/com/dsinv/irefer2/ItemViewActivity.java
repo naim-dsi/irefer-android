@@ -246,7 +246,10 @@ public class ItemViewActivity extends Activity {
 	    	loadData();
 	    	autoCompleteAdapter.clear();
 	    	for (int i=0; i < nameArr.length; i++) {
-                	autoCompleteAdapter.add((String) nameArr[i]);
+	    		if(!nameArr[i].equals("no match found")){
+	    			autoCompleteAdapter.add((String) nameArr[i]);
+	    		}
+                //autoCompleteAdapter.add((String) nameArr[i]);
             }
 	    } else if(item.getTitle()=="Request for Activation") {
 	    	try {
