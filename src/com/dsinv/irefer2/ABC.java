@@ -4,7 +4,8 @@ public class ABC {
 	//final static String HOST_URL = "http://203.202.248.108/dsi/admin/";
 	//final static String WEB_URL = HOST_URL+"index.php?r="; 
 	//final static String PIC_URL = HOST_URL+"pics/";
-	final static String WEB_URL = "http://103.4.147.139/irefer-dsi/index.php/services/";
+	final static String WEB_URL = "http://10.0.0.253/iresfer-dsi/index.php/services/";
+//	final static String WEB_URL = "http://103.4.147.139/irefer-dsi/index.php/services/";
 //	final static String WEB_URL = "http://www.mymedicalneighbors.com/index.php/services/"; 
 //	final static String WEB_URL = "http://103.4.147.139/irefer-dsi/index.php/services/"; 
 
