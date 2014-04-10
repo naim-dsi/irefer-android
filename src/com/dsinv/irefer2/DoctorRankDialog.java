@@ -119,7 +119,7 @@ public class DoctorRankDialog extends Dialog {
         			//rankTxt.setText(Math.round(ratingBar.getRating()));
         			//if(isOnlineSearch) {
             		if(true){//naim	
-        				String stringUrl = ABC.WEB_URL+"userDocRank/rank?user_id="+userId+"&doc_id="+doctorId+"&rank="+Math.round(ratingBar.getRating()) ;
+        				String stringUrl = ABC.WEB_URL+"userDocRank/rank?user_id="+Utils.userId+"&doc_id="+doctorId+"&rank="+Math.round(ratingBar.getRating()) ;
         				String res = Utils.getDataFromURL(stringUrl);
         				Log.d("NI::",stringUrl);
         				Toast.makeText(ctx, " "+res, Toast.LENGTH_SHORT).show();

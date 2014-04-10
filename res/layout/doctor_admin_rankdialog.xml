@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+ <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="2dip">  
+     
+     <TextView android:text="Full Name" android:id="@+id/rank_dialog_text1"
+     android:textSize="24dp" android:layout_marginTop="10dp"
+     android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center"/>
+     
+     <RatingBar 
+     	android:layout_marginTop="10dp" android:layout_marginBottom="10dp"
+   		android:layout_width="wrap_content"
+   		android:layout_height="wrap_content"
+		android:clickable="true"
+   		android:visibility="gone"	
+   		android:id="@+id/doc_dialog_ratingbar" android:layout_gravity="center"
+   		android:numStars="5"
+        android:stepSize="1.0"
+        android:rating="2"
+        android:isIndicator="false"
+   		/>
+<!--    		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" -->
+	<TextView android:text=" Admin Rank" android:id="@+id/rank_dialog_text4"
+     android:textSize="14dp" android:textColor="#97C9ED"
+     android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center"/>
+	
+	<LinearLayout 
+    	android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:orientation="horizontal" android:padding="5dp">
+    	
+   	 <Button android:id="@+id/doc_rank_dialog_btn_6" 
+		android:layout_height="48dp" android:layout_width="48dp" android:layout_margin="2dp"
+		android:text="1" android:textColor="#000000" android:textSize="20dip"
+		android:background="@drawable/gray_round_icon_48" />	
+	 <Button android:id="@+id/doc_rank_dialog_btn_7" 
+		android:layout_height="48dp" android:layout_width="48dp"  android:layout_margin="2dp"
+		android:text="2" android:textColor="#000000" android:textSize="20dip"
+		android:background="@drawable/gray_round_icon_48" />
+	 <Button android:id="@+id/doc_rank_dialog_btn_8" 
+		android:layout_height="48dp" android:layout_width="48dp"  android:layout_margin="2dp"
+		android:text="3" android:textColor="#000000" android:textSize="20dip"
+		android:background="@drawable/gray_round_icon_48" />
+	 <Button android:id="@+id/doc_rank_dialog_btn_9" 
+		android:layout_height="48dp" android:layout_width="48dp"  android:layout_margin="2dp"
+		android:text="4" android:textColor="#000000" android:textSize="20dip"
+		android:background="@drawable/gray_round_icon_48" />
+	 <Button android:id="@+id/doc_rank_dialog_btn_10" 
+		android:layout_height="48dp" android:layout_width="48dp"  android:layout_margin="2dp"
+		android:text="5" android:textColor="#000000" android:textSize="20dip"
+		android:background="@drawable/gray_round_icon_48" />
+	 
+	
+	 
+   	 </LinearLayout>
+   	 
+   	  <TextView android:text=" My Rank" android:id="@+id/rank_dialog_text4"
+     android:textSize="14dp" android:textColor="#97C9ED"
+     android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center"/>
+   		
+   	<LinearLayout 
+    	android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:orientation="horizontal" android:padding="5dp">
+    	
+   	 <Button android:id="@+id/doc_rank_dialog_btn_1" 
+		android:layout_height="48dp" android:layout_width="48dp" android:layout_margin="2dp"
+		android:text="1" android:textColor="#000000" android:textSize="20dip"
+		android:background="@drawable/gray_round_icon_48" />	
+	 <Button android:id="@+id/doc_rank_dialog_btn_2" 
+		android:layout_height="48dp" android:layout_width="48dp"  android:layout_margin="2dp"
+		android:text="2" android:textColor="#000000" android:textSize="20dip"
+		android:background="@drawable/gray_round_icon_48" />
+	 <Button android:id="@+id/doc_rank_dialog_btn_3" 
+		android:layout_height="48dp" android:layout_width="48dp"  android:layout_margin="2dp"
+		android:text="3" android:textColor="#000000" android:textSize="20dip"
+		android:background="@drawable/gray_round_icon_48" />
+	 <Button android:id="@+id/doc_rank_dialog_btn_4" 
+		android:layout_height="48dp" android:layout_width="48dp"  android:layout_margin="2dp"
+		android:text="4" android:textColor="#000000" android:textSize="20dip"
+		android:background="@drawable/gray_round_icon_48" />
+	 <Button android:id="@+id/doc_rank_dialog_btn_5" 
+		android:layout_height="48dp" android:layout_width="48dp"  android:layout_margin="2dp"
+		android:text="5" android:textColor="#000000" android:textSize="20dip"
+		android:background="@drawable/gray_round_icon_48" />
+   	 </LinearLayout>
+   	 
+     <Button android:id="@+id/doc_rank_dialog_button" 
+		android:layout_height="wrap_content" 
+		android:text="Update"  android:focusable="false"
+		android:layout_margin="5dip"
+		android:textColor="#FFF8C6"
+		android:textSize="20dip"
+		android:background="@drawable/small_button"
+		android:layout_width="fill_parent" />
+ </LinearLayout>

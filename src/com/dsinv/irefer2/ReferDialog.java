@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import com.dsinv.irefer2.R;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.database.Cursor;
@@ -49,36 +50,51 @@ public class ReferDialog extends Dialog {
 		Button reportSaveBtn = (Button) this.findViewById(R.id.doc_report_dialog_save);
 		Button closeButton = (Button) this.findViewById(R.id.doc_report_dialog_close);
 		Log.d("NR::", ""+doctorId);
+		Log.d("NR::userId::", ""+userId);
 		reportSaveBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				String patient_ini = ((EditText)findViewById(R.id.patient_ini)).getText().toString()+"\n";
-				String patient_email = ((EditText)findViewById(R.id.patient_email)).getText().toString()+"\n";
-				String insurance = "";
-				//String str2 = Utils.getCurrentTime();
-				CheckBox chkBox1 = (CheckBox)findViewById(R.id.doc_insurance);
-				
-				if(chkBox1.isChecked())
-				{
-					insurance = "1";
+				try{
+					String patient_ini = ((EditText)findViewById(R.id.patient_ini)).getText().toString()+"";
+					String patient_email = ((EditText)findViewById(R.id.patient_email)).getText().toString()+"";
+					if(patient_ini.equals("")){
+						Toast.makeText(ctx, "Please give patient initial", Toast.LENGTH_LONG).show();
+						return;
+					}
+					String insurance = "";
+					//String str2 = Utils.getCurrentTime();
+					CheckBox chkBox1 = (CheckBox)findViewById(R.id.doc_insurance);
+					
+					if(chkBox1.isChecked())
+					{
+						insurance = "1";
+					}
+					else
+					{
+						insurance = "0";
+					}
+					int currentDocId = dba.getDoctorIdbyUserId(dba.USERS,Utils.userId+"");
+					Log.d("NR::", "X = "+doctorId +", Y = "+currentDocId);
+					String jsonData = "";       
+			        try {
+			        	Log.d("NR::",ABC.WEB_URL+"doctor/referral2?doc_id=" + currentDocId+"&ref_doc_id="+doctorId+"&insurance="+insurance+"&email="+patient_email.trim()+"&initial="+patient_ini.trim());
+						jsonData = getDataFromURL(ABC.WEB_URL+"doctor/referral2?doc_id=" + currentDocId+"&ref_doc_id="+doctorId+"&insurance="+insurance+"&email="+patient_email.trim()+"&initial="+patient_ini.trim());
+						Log.d("NI::jsonData::",jsonData);
+			        } catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			        if(jsonData.equals("Not saved")){
+			        	Toast.makeText(ctx, "Error occured, please try again later.", Toast.LENGTH_LONG).show();
+			        	return;
+			        }
+					Toast.makeText(ctx, "Referral Successful", Toast.LENGTH_LONG).show();
+					
+					dismiss();
 				}
-				else
-				{
-					insurance = "0";
+				catch(Exception e){
+					Log.e("NI::",e.getMessage());
+					Toast.makeText(ctx, e.getMessage(), Toast.LENGTH_LONG).show();
 				}
-				int currentDocId = dba.getDoctorIdbyUserId(dba.USERS,userId);
-				Log.d("NR::", "X = "+doctorId +", Y = "+currentDocId);
-				String jsonData = "";       
-		        try {
-		        	Log.d("NR::",ABC.WEB_URL+"doctor/referral2?doc_id=" + currentDocId+"&ref_doc_id="+doctorId+"&insurance="+insurance+"&email="+patient_email.trim()+"&initial="+patient_ini.trim());
-					jsonData = getDataFromURL(ABC.WEB_URL+"doctor/referral2?doc_id=" + currentDocId+"&ref_doc_id="+doctorId+"&insurance="+insurance+"&email="+patient_email.trim()+"&initial="+patient_ini.trim());
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		        
-				Toast.makeText(ctx, "Referral Successful", Toast.LENGTH_LONG).show();
-				
-				dismiss();
 				//System.out.println("SMM::reportID="+reportId);
 			}
 		});

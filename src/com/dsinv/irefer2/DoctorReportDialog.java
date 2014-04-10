@@ -20,6 +20,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import com.dsinv.irefer2.R;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.database.Cursor;
@@ -106,7 +107,7 @@ public class DoctorReportDialog extends Dialog {
 				Log.d("NI","Report::"+str);
 				String strX=str;	
 				String strX2=str2;	
-				long reportId = dba.insert(DbAdapter.DOC_REPORT, new String[]{doctorId+"", userId, str, str2,""});
+				long reportId = dba.insert(DbAdapter.DOC_REPORT, new String[]{doctorId+"", Utils.userId+"", str, str2,""});
 				try {
 					str = URLEncoder.encode(str, "utf-8");
 				} catch (UnsupportedEncodingException e1) {
@@ -128,7 +129,7 @@ public class DoctorReportDialog extends Dialog {
 				//reportBtn.setVisibility(View.GONE);
 				String jsonData = "";       
 				try {
-						String urlStr = ABC.WEB_URL+"doctor/report?doc_id=" + userId+"&ref_doc_id="+doctorId+"&report="+str.trim()+"&time="+str2;
+						String urlStr = ABC.WEB_URL+"doctor/report?doc_id=" + Utils.userId+"&ref_doc_id="+doctorId+"&report="+str.trim()+"&time="+str2;
 						Log.d("NI","URL::"+urlStr);
 						jsonData = getDataFromURL(urlStr);
 						Log.d("NI","Response::"+jsonData);

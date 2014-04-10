@@ -32,7 +32,7 @@ public class Utils {
 	public static int FILTER_PAGE = 13;
 	public static int COUNTY_LIMIT = 4;
 	private static Random randomGenerator = new Random();
-    
+	public static int userId = 4;
 	public static int docSyncLimit = 15000;
 	public static int docSyncStep = 200;
 	public static Pattern EMAIL_ADDRESS_PATTERN = Pattern.compile(
