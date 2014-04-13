@@ -107,7 +107,7 @@ public class DoctorListActivity extends Activity {
     Object idArr[] = null;
     Object nameArr[] =  new Object[]{"no match found"};
     String userId = "0";
-    List docList = null;
+    List<HashMap<String, String>> docList = null;
     ListView itemListView;
     DoctorListAdapter adapter;
     int selectedItemIdx = 0;
@@ -281,6 +281,7 @@ public class DoctorListActivity extends Activity {
 	        			Intent intent = new Intent(DoctorListActivity.this, DoctorDetailActivity.class);
 	        			intent.putExtra("doctor_id", Integer.parseInt(docIdView.getText().toString()));
 	        			intent.putExtra("user_id", userId);
+	        			intent.putExtra("position", position+"");
 	        			intent.putExtra("is_online_search", isOnlineSearch);
 	        			startActivityForResult(intent, 1100);
 	        		}
@@ -367,6 +368,8 @@ public class DoctorListActivity extends Activity {
 	    
     }
 	private void addDoctorToList(JSONObject obj) throws Exception{
+		if(obj.getInt("id")==Utils.doctorId)
+			return;
 		if(!docIdSet.add(new Integer(obj.getInt("id"))))
     			return;
         HashMap<String,String> m = new HashMap<String,String>();
@@ -395,6 +398,7 @@ public class DoctorListActivity extends Activity {
     	m.put("userId", userId);
     	m.put("grade", ((Utils.isEmpty(obj.getString("c7"))||obj.getString("c7").equals("null")) ? "0" : obj.getString("c7")));
     	m.put("u_rank", Utils.isEmpty(obj.getString("u_rank")) ? "0" : obj.getString("u_rank"));
+    	m.put("up_rank", Utils.isEmpty(obj.getString("up_rank")) ? "0" : obj.getString("up_rank"));
         //temp.put("docTitile1", cr.getString(3)+" "+cr.getString(4)+" "+cr.getString(2)+", "+cr.getString(5));
         //temp.put("docTitile2", "Phone: "+cr.getString(6));
         //temp.put("docTitile3", pracName);
@@ -417,7 +421,7 @@ public class DoctorListActivity extends Activity {
 			Log.d("NR::", "AISE");
 	    	cr.moveToFirst();
 	    	for(int i=0; i<cr.getCount(); i++) {
-	    		Log.d("NR::", "AISE2");
+	    		//Log.d("NR::", "AISE2");
 	    		actualRowCount = actualRowCount +1;
 //	    		if(!docIdSet.add(new Integer(cr.getInt(1))))
 //	    		//if(idMap.get(cr.getInt(1)+"") != null)
@@ -443,6 +447,8 @@ public class DoctorListActivity extends Activity {
 	        	temp.put("userId", userId);
 	        	temp.put("grade", ""+cr.getInt(8));
 	        	temp.put("u_rank", Utils.isEmpty(""+cr.getInt(22)) ? "0" : ""+cr.getInt(22));
+	        	temp.put("up_rank", Utils.isEmpty(""+cr.getInt(23)) ? "0" : ""+cr.getInt(23));
+	        	temp.put("pa_rank", Utils.isEmpty(""+cr.getInt(23)) ? "0" : ""+cr.getInt(23));
 	        	docList.add(temp);
 	        	if((docList.size() % showMore) == 0)
 	        		break;
@@ -484,6 +490,7 @@ public class DoctorListActivity extends Activity {
 	    	Intent intent = new Intent(DoctorListActivity.this, DoctorDetailActivity.class);
         	intent.putExtra("doctor_id", docId);
         	intent.putExtra("user_id", userId);
+        	intent.putExtra("position", selectedItemIdx+"");
         	intent.putExtra("is_online_search", isOnlineSearch);
         	//intent.putExtra("report", 1);
             startActivityForResult(intent, 1100);
@@ -594,14 +601,25 @@ public class DoctorListActivity extends Activity {
 	
 	//faisal > starts
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if(data != null 
-			&& data.getBooleanExtra("close_me", false) 
-			&& requestCode == 1100 
-			&& resultCode == RESULT_OK) {
-			//Log.d("NR::",data.getStringExtra("name"));
-			Log.d("NR::","AAABBB");
-			
-			finish();	
+		if(data != null ){
+			if(data.getBooleanExtra("close_me", false) 	&& requestCode == 1100	&& resultCode == RESULT_OK) {
+				finish();	
+			}
+			String u_rank = data.getStringExtra("u_rank").toString();
+			String up_rank = data.getStringExtra("up_rank").toString();
+			String pa_rank = data.getStringExtra("pa_rank").toString();
+			String position = data.getStringExtra("position").toString();
+			Log.d("NI::",u_rank);
+			Log.d("NI::",up_rank);
+			Log.d("NI::",pa_rank);
+			Log.d("NI::",position);
+			HashMap<String, String> data2 = docList.get(Integer.parseInt(position));
+			data2.put("u_rank",String.valueOf(u_rank));
+			data2.put("up_rank",String.valueOf(up_rank));
+			data2.put("pa_rank",String.valueOf(pa_rank));
+			docList.remove(Integer.parseInt(position));
+			docList.set(Integer.parseInt(position),data2);
+			adapter.notifyDataSetChanged();
 		}	
 		else
 		{

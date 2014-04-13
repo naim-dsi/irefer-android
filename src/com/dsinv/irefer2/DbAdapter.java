@@ -1,9 +1,13 @@
 package com.dsinv.irefer2;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.Locale;
 import java.util.StringTokenizer;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.TimeZone;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -120,7 +124,8 @@ public class DbAdapter {
 					"spec_names", 
 					"insu_names",
 					"plan_names", 
-					"aco_names" },
+					"aco_names",
+					"rank_update"},
 			/* county */{ PK, "county_id", "name", "code", "state_id" },
 			/* doc fts */{ "doc_id", "text" },
 			/* doc report */{ PK, "doc_id", "user_id", "text", "report_time",
@@ -147,7 +152,7 @@ public class DbAdapter {
 			{ NO, NO, NO, NO },
 			{ NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO,
 					NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO,
-					NO, NO, NO, NO, NO, NO, NO, NO, NO },
+					NO, NO, NO, NO, NO, NO, NO, NO, NO, NO },
 			{ NO, NO, NO, NO, NO }, { NO, NO }, { NO, NO, NO, NO, NO, NO },
 			{ NO, NO, NO },
 			{ NO, NO, NO, NO },// NEW//
@@ -156,19 +161,19 @@ public class DbAdapter {
 
 	private static final String ttypes[] = { ".ittttiiiiiiii", ".itt", ".itt",
 			".itt", ".itti", ".itt",
-			".ittttttiitiiiitiiitttiiiiiftttttttttttt", ".itti", "tt",
+			".ittttttiitiiiitiiitttiiiiiftttttttttttti", ".itti", "tt",
 			"iiittt", "iii", ".itt",// NEW//
 			".ii", ".ii", ".ii", ".ii", ".ii", ".ii", ".iti", ".it" };
 
 	private static final String tuniques[] = { "..YYY.........", "....",
 			"....", "....", ".....", "....",
-			"..............................................", ".....", "..",
+			"...............................................", ".....", "..",
 			"......", "...", "....",// NEW//
 			"...", "...", "...", "...", "...", "...", "....", "..." };
 
 	private static final String tnulls[] = { "..............", ".YY.", ".YY.",
 			".YY.", ".YY..", ".YY.",
-			"..............................................", ".YY..", "..",
+			"...............................................", ".YY..", "..",
 			"......", "...", "....",// NEW//
 			"YYY", "YYY", "YYY", "YYY", "YYY", "YYY", "YY.Y", "YY." };
 	/*
@@ -1111,8 +1116,14 @@ public class DbAdapter {
 			Cursor cr = this.fetchReportByDocId(new Integer(data[0]));
 	        if(cr != null && cr.getCount() > 0) {
 	        	String reportId=cr.getString(0);
+	        	Log.d("NI::",cr.getString(3));
 	        	cr.close();
 	        	delete(tableId, new Integer(reportId));
+	        	cr = this.fetchReportByDocId(new Integer(data[0]));
+		        if(cr != null && cr.getCount() > 0) {
+		        	long id = insert(tableId, data);
+		        	return id;
+		        }
 	        }
 	        long id = db
 					.insert(tname[tableId], null, formatInstance(tableId, data));
@@ -1163,9 +1174,12 @@ public class DbAdapter {
 
 	public void rankDoctor(int docId, int rank) {
 		db.execSQL("UPDATE t_doctor SET u_rank = '" + rank
-				+ "' WHERE doc_id = '" + docId + "'");
+				+ "', rank_update=1 WHERE doc_id = '" + docId + "'");
 	}
-
+	public void rankAdminDoctor(int docId, int rank) {
+		db.execSQL("UPDATE t_doctor SET up_rank = '" + rank
+				+ "', rank_update=1 WHERE doc_id = '" + docId + "'");
+	}
 	public void synced() {
 		db.execSQL("UPDATE t_users SET need_to_sync = 0");
 	}
@@ -1225,6 +1239,66 @@ public class DbAdapter {
 	 ********/
 
 	// returns CURSOR or NULL
+	public Cursor getSyncronizableReports() throws RuntimeException {
+
+		String sql ="SELECT doc_id, text FROM t_doc_report WHERE submit_time = ''";
+		//Log.d("NI::",sql);
+		Cursor cur = dbr.rawQuery(sql, null);
+		
+		if (cur != null){
+			cur.moveToFirst();
+		}
+		else{
+			return null;
+		}
+		return cur;
+		
+	}
+	public void updateSyncronizableReports() throws RuntimeException {
+		String date = Utils.getCurrentTime();
+		long dtMili = System.currentTimeMillis();
+		String format = "yyyy-MM-dd HH:mm:ss";
+		SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.US);
+	    //System.out.format("%30s %s\n", format, sdf.format(new Date(0)));
+	    sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+	    date = sdf.format(new Date(dtMili));
+		String sql ="update t_doc_report set submit_time='"+date+"' where submit_time=''";
+		//Log.d("NI::",sql);
+		db.execSQL(sql);
+		
+	}
+	public Cursor getSyncronizableRanks() throws RuntimeException {
+		String sql ="SELECT doc_id, u_rank, up_rank FROM t_doctor WHERE rank_update=1";
+		//Log.d("NI::",sql);
+		Cursor cur = dbr.rawQuery(sql, null);
+		
+		if (cur != null){
+			cur.moveToFirst();
+		}
+		else{
+			return null;
+		}
+		return cur;
+		
+	}
+	public void updateSyncronizableRanks() throws RuntimeException {
+		String sql ="update t_doctor set rank_update=0 where rank_update=1";
+		db.execSQL(sql);
+		
+	}
+	public Cursor getSearchCount() throws RuntimeException {
+		String sql ="SELECT count from t_statistics where count_type=1";
+		Cursor cur = dbr.rawQuery(sql, null);
+		
+		if (cur != null){
+			cur.moveToFirst();
+		}
+		else{
+			return null;
+		}
+		return cur;
+		
+	}
 	public Cursor fetchAll(int tableId) throws RuntimeException {
 
 		if (tableId == 0) {
@@ -1420,7 +1494,7 @@ public class DbAdapter {
 		return cur;
 	}
 
-	private int showCount() {
+	public int showCount() {
 		Cursor cur = dbr.query(true, tname[STATISTICS], tcols[STATISTICS],
 				null, null, null, null, null, null);
 		if (cur != null && cur.getCount() > 0) {

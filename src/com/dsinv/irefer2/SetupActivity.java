@@ -940,7 +940,7 @@ public class SetupActivity extends Activity {
         	try {
         		Log.d("NI::", "downloading database");
         		publishProgress(2);
-        		String urlString = ABC.WEB_URL+"doctor/get_sync_data?prac_ids=1&cnty_ids="+cntyIds+"&user_id="+userId+"&slimit=1000&limit=150&dlimit=0,"+Utils.docSyncLimit+"&serverBDFileName="+serverBDFileName;
+        		String urlString = ABC.WEB_URL+"syncCTLAndroid/get_sync_data?prac_ids=1&cnty_ids="+cntyIds+"&user_id="+userId+"&slimit=1000&limit=150&dlimit=0,"+Utils.docSyncLimit+"&serverBDFileName="+serverBDFileName;
         		//String urlString = ABC.WEB_URL+"doctor/get_demo_db_m";
         		//String urlString = ABC.WEB_URL+"doctor/get_demo_db_j";
         		Log.d("NI","URL :: "+urlString); 

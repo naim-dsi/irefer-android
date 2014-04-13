@@ -58,7 +58,7 @@ public class DoctorDetailActivity extends Activity {
 	public Button reportBtn;
 	public Button reportDialogBtn;
 	TextView reportTxt;
-	
+	String position;
 	Context ctx;
 	ImageView docImage;
 	ProgressBar pBar;
@@ -68,6 +68,7 @@ public class DoctorDetailActivity extends Activity {
 	String docName = "";
 	int doctorId = -1;
 	int userRankValue = 0;
+	int adminRankValue = 0;
 	int userPaRankValue = 0;
 	int userGradeValue = 0;
 	int userQualityValue = 0;
@@ -98,7 +99,9 @@ public class DoctorDetailActivity extends Activity {
         //pracRank = (RatingBar)findViewById(R.id.detail_prac_rank);
         
         userId = getIntent().getStringExtra("user_id");
-    	
+        
+        position = getIntent().getStringExtra("position");
+        
         doctorId = intent.getIntExtra("doctor_id", 0);        
         reportFlag = intent.getIntExtra("report", 0);
         reportLayout = (LinearLayout)findViewById(R.id.doc_detail_report_change);
@@ -114,7 +117,7 @@ public class DoctorDetailActivity extends Activity {
         }
         reportBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				String str = reportTextEdit.getText().toString();
+				/*String str = reportTextEdit.getText().toString();
 				String str2 = Utils.getCurrentTime();
 				long reportId = dba.insert(DbAdapter.DOC_REPORT, new String[]{doctorId+"", userId, str, str2,""});
 				TextView reportTxt = (TextView) findViewById(R.id.doctor_detail_report_label);
@@ -124,6 +127,7 @@ public class DoctorDetailActivity extends Activity {
 				reportBtn.setVisibility(View.GONE);
 				Toast.makeText(ctx, "Saved", Toast.LENGTH_SHORT).show();
 				System.out.println("SMM::reportID="+reportId);
+				*/
 			}
         });
         
@@ -153,9 +157,14 @@ public class DoctorDetailActivity extends Activity {
         rankBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				//rankDialog = new Dialog(DoctorDetailActivity.this, R.style.FullHeightDialog);
-				rankDialog = new DoctorRankDialog(DoctorDetailActivity.this, R.style.FullHeightDialog,
+				if(Utils.allowPARank==0){
+					rankDialog = new DoctorRankDialog(DoctorDetailActivity.this, R.style.FullHeightDialog,
 						dba, doctorId, docName, userId, userRankValue, isOnlineSearch);
-				
+				}
+				else{
+					rankDialog = new DoctorAdminRankDialog(DoctorDetailActivity.this, R.style.FullHeightDialog,
+							dba, doctorId, docName, userId, userRankValue,adminRankValue, isOnlineSearch);
+				}
                 //now that the dialog is set up, it's time to show it    
                 rankDialog.show();
 			}
@@ -167,7 +176,7 @@ public class DoctorDetailActivity extends Activity {
 			public void onClick(View v) {
 				//reportDialog = new Dialog(DoctorDetailActivity.this, R.style.FullHeightDialog);
 				reportDialog = new DoctorReportDialog(DoctorDetailActivity.this, R.style.FullHeightDialog,
-						dba, doctorId, userId);
+						dba, doctorId, userId,isOnlineSearch);
 			    //now that the dialog is set up, it's time to show it    
                 reportDialog.show();				
 			}
@@ -410,20 +419,20 @@ public class DoctorDetailActivity extends Activity {
         }
         String prac_ids = docins;
         
-        String up_rank = "";
-        if(cr.getString(23).equals("")){
-        	up_rank = "";
-        }
-        else{
-        	up_rank = cr.getString(23);
-        }
-        Log.d("NR::", docins);
-        String[] arr = new String[10];
-        Arrays.fill(arr, "");
-        if (!Utils.isEmpty(up_rank)) {
-			arr = up_rank.split(",");
+        //String up_rank = "";
+        //if(cr.getString(23).equals("")){
+        	//up_rank = "";
+        //}
+        //else{
+        	//up_rank = cr.getString(23);
+        //}
+        //Log.d("NR::", docins);
+        //String[] arr = new String[10];
+       // Arrays.fill(arr, "");
+        //if (!Utils.isEmpty(up_rank)) {
+			//arr = up_rank.split(",");
 			//insuarr.length
-		}
+		//}
         
         Log.e("NI::","hello:"+prac_name);
         Log.e("NI::","hello:"+prac_ids);
@@ -431,7 +440,7 @@ public class DoctorDetailActivity extends Activity {
 	        String pNameArr[] = (prac_name).split(",");
 	        String pIdArr[] = (prac_ids).split(",");
 	        //String pName = "";
-	        for(int i=0; i<pNameArr.length && i<arr.length && i<pIdArr.length; i++) {
+	        for(int i=0; i<pNameArr.length && i<pIdArr.length; i++) {
 	        	//System.out.println("PRAC="+pNameArr[i]);
 	        	
 	        	String name = "";
@@ -455,24 +464,24 @@ public class DoctorDetailActivity extends Activity {
 	    			Log.e("NI::",ex.getMessage());
 	    			address = "";
 	    		}
-	    		rank = arr[i];
-	        	
+	    		//rank = arr[i];
+	    		rank = "";
 	        	if(i == 0)
 	        	{
 	        		practices = "- "+name+"\n"+address;
-	        		practices = practices +"\nPA Rank: "+rank;
+	        		//practices = practices +"\nPA Rank: "+rank;
 	        		
 	        	}
 	        	else if(pNameArr.length == i+1)
 	        	{
 	        		practices = practices + "\n\n- " +name+"\n"+address;	
-	        		practices = practices +"\nPA Rank: "+rank;
+	        		//practices = practices +"\nPA Rank: "+rank;
 		    		
 	        	}
 	        	else
 	        	{
 	        		practices = practices + "\n\n- " +name+"\n"+address;	
-	        		practices = practices +"\nPA Rank: "+rank;
+	        		//practices = practices +"\nPA Rank: "+rank;
 		    		
 	        	}
 	    	}
@@ -525,6 +534,7 @@ public class DoctorDetailActivity extends Activity {
         	data.put("gender", (Long.parseLong(cr.getString(9)) == 1 ? "Male" : "Female"));
         	data.put("see_patient", cr.getString(18));
         	data.put("u_rank", (Utils.isEmpty(cr.getString(22)) ? "0" : cr.getString(22)));
+        	data.put("up_rank", (Utils.isEmpty(cr.getString(23)) ? "0" : cr.getString(23)));
         	data.put("quality", (Utils.isEmpty(cr.getString(24)) ? "0" : cr.getString(24)));
         	data.put("cost", (Utils.isEmpty(cr.getString(25)) ? "0" : cr.getString(25)));
         	data.put("rank_user_number", (Utils.isEmpty(cr.getString(26)) ? "0" : cr.getString(26)));
@@ -547,6 +557,7 @@ public class DoctorDetailActivity extends Activity {
         }
         cr = dba.fetchReportByDocId(doctorId);
         if(cr != null && cr.getCount() > 0) {
+        	Log.d("NI:", cr.getString(3));
         	data.put("report", cr.getString(3));
         	data.put("report_time", cr.getString(4));
         	cr.close();
@@ -637,6 +648,22 @@ public class DoctorDetailActivity extends Activity {
 		*/
 		try {
 			userRankValue = Integer.parseInt(Utils.isEmpty(data.get("u_rank")) ? "0" : data.get("u_rank"));
+		} catch(Exception ex){
+			ex.printStackTrace();
+		}
+		try {
+			if(!Utils.isEmpty(data.get("pa_rank"))&&Integer.parseInt(data.get("pa_rank"))!=0){
+				adminRankValue = Integer.parseInt(data.get("pa_rank"));
+			}
+			else{
+				if(!Utils.isEmpty(data.get("up_rank"))){
+					adminRankValue = Integer.parseInt(data.get("up_rank"));
+				}
+				else{
+					adminRankValue = 0;
+				}
+			}
+			//adminRankValue = Integer.parseInt(Utils.isEmpty(data.get("pa_rank")) ? "0" : data.get("pa_rank"));
 		} catch(Exception ex){
 			ex.printStackTrace();
 		}
@@ -808,8 +835,10 @@ public class DoctorDetailActivity extends Activity {
 		back.setOnClickListener(new View.OnClickListener() {			
 			public void onClick(View v) {
 				intent.putExtra("close_me", true);
-				intent.putExtra("rank", rankTxt.getText().toString());
-				
+				intent.putExtra("u_rank", userRankValue);
+				intent.putExtra("up_rank", adminRankValue);
+				intent.putExtra("pa_rank", adminRankValue);
+				intent.putExtra("position", position);
 				setResult(RESULT_OK, intent);
 				finish();
 			}
@@ -880,7 +909,7 @@ public class DoctorDetailActivity extends Activity {
                 try {                   
                     Map<String, String> data = new HashMap<String, String>();
                     //System.out.println(jsonObject.toString());
-                    //System.out.println(jsonObject.getString("first_name") + "::::::");
+                    //System.out.println(jsonObject.getString("first_name") + "::::::");//pa_rank
                     data.put("first_name", jsonObject.getString("first_name"));
                     data.put("last_name", jsonObject.getString("last_name"));
                     data.put("mid_name", ((Utils.isEmpty(jsonObject.getString("mid_name"))||jsonObject.getString("mid_name").equals("null")) ? "" : jsonObject.getString("mid_name")));
@@ -910,7 +939,7 @@ public class DoctorDetailActivity extends Activity {
                     	System.out.println("PRAC="+pNameArr[i]);
                 		pName = Utils.isEmpty(pName) ? pNameArr[i] : pName+"\n\n"+pNameArr[i];
                 		pName = pName +"\n"+pAddArr[i];
-                		pName = pName +"\nPA Rank: 0";
+                		//pName = pName +"\nPA Rank: 0";
                 	}
                     
                     data.put("practice_name", pName);
@@ -936,11 +965,13 @@ public class DoctorDetailActivity extends Activity {
                     data.put("speciality", ((Utils.isEmpty(jsonObject.getString("spec_name"))||jsonObject.getString("spec_name").equals("null")) ? "" : jsonObject.getString("spec_name")));
                     data.put("insurance", ((Utils.isEmpty(jsonObject.getString("insu_name"))||jsonObject.getString("insu_name").equals("null")) ? "" : jsonObject.getString("insu_name")));
                     data.put("u_rank", ((Utils.isEmpty(jsonObject.getString("u_rank"))||jsonObject.getString("u_rank").equals("null")) ? "" : jsonObject.getString("u_rank")));
-                    data.put("up_rank", ((Utils.isEmpty(jsonObject.getString("up_rank"))||jsonObject.getString("up_rank").equals("null")) ? "" : jsonObject.getString("up_rank")));
+                    data.put("pa_rank", ((Utils.isEmpty(jsonObject.getString("pa_rank"))||jsonObject.getString("pa_rank").equals("null")) ? "" : jsonObject.getString("pa_rank")));
                     data.put("quality", ((Utils.isEmpty(jsonObject.getString("quality"))||jsonObject.getString("quality").equals("null")) ? "" : jsonObject.getString("quality")));
                     data.put("cost", ((Utils.isEmpty(jsonObject.getString("cost"))||jsonObject.getString("cost").equals("null")) ? "" : jsonObject.getString("cost")));
                     data.put("rank_user_number", ((Utils.isEmpty(jsonObject.getString("rank_user_number"))||jsonObject.getString("rank_user_number").equals("null")) ? "" : jsonObject.getString("rank_user_number")));                    
                     data.put("avg_rank", ((Utils.isEmpty(jsonObject.getString("avg_rank"))||jsonObject.getString("avg_rank").equals("null")) ? "" : jsonObject.getString("avg_rank")));
+                    data.put("report",  ((Utils.isEmpty(jsonObject.getString("report"))||jsonObject.getString("report").equals("null")) ? "" : jsonObject.getString("report")));
+                	data.put("report_time",  ((Utils.isEmpty(jsonObject.getString("report_time"))||jsonObject.getString("report_time").equals("null")) ? "" : jsonObject.getString("report_time")));
                     populateData(data);
                 }catch (Exception e) {
                     System.out.println(e);
@@ -992,5 +1023,16 @@ public class DoctorDetailActivity extends Activity {
             //showDialog("Downloaded " + result + " bytes");
         }
     }
-	
+    @Override
+    public void onBackPressed() {
+        //moveTaskToBack(true);
+    	Intent intent= new Intent();
+        intent.putExtra("close_me", false);
+		intent.putExtra("u_rank", userRankValue+"");
+		intent.putExtra("up_rank", adminRankValue+"");
+		intent.putExtra("pa_rank", adminRankValue+"");
+		intent.putExtra("position", position+"");
+		setResult(RESULT_OK, intent);
+		finish();
+    }
 }

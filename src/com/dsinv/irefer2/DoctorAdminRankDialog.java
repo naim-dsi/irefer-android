@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import com.dsinv.irefer2.R;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.database.Cursor;
@@ -68,7 +69,7 @@ public class DoctorAdminRankDialog extends Dialog {
         adminRatingBar = (RatingBar)findViewById(R.id.doc_admin_dialog_ratingbar);
         adminRatingBar.setRating(adminRankValue);
         
-        for(int i=0; i<5; i++) {
+        for(int i=0; i<10; i++) {
 			btnArr[i] = (Button)findViewById(rankIdArr[i]);
         }
         btnArr[0].setOnClickListener(new View.OnClickListener() {
@@ -158,7 +159,7 @@ public class DoctorAdminRankDialog extends Dialog {
 					btnArr[i].setBackgroundDrawable(ctx.getResources().getDrawable(R.drawable.yellow_round_icon_48));
 				adminRatingBar.setRating(5);
 		}});
-        for(int i=5; i<adminRankValue; i++) {
+        for(int i=5; i<adminRankValue+5; i++) {
 			Button btn = (Button)findViewById(rankIdArr[i]);
 			btn.setBackgroundDrawable(ctx.getResources().getDrawable(R.drawable.yellow_round_icon_48));
 			//btn.set
@@ -175,22 +176,41 @@ public class DoctorAdminRankDialog extends Dialog {
             public void onClick(View v) {
         		try {
         			dba.rankDoctor(doctorId, Math.round(ratingBar.getRating()));
+        			dba.rankAdminDoctor(doctorId, Math.round(adminRatingBar.getRating()));
         			Log.d("NR::", ""+doctorId+" "+Math.round(ratingBar.getRating()));
         			//rankTxt.setText(Math.round(ratingBar.getRating()));
-        			//if(isOnlineSearch) {
-            		if(true){//naim	
-        				String stringUrl = ABC.WEB_URL+"userDocRank/rank?user_id="+Utils.userId+"&doc_id="+doctorId+"&rank="+Math.round(ratingBar.getRating()) ;
+        			if(isOnlineSearch) {
+            			String stringUrl = ABC.WEB_URL+"userDocRank/rank?user_id="+Utils.userId+"&doc_id="+doctorId+"&rank="+Math.round(ratingBar.getRating()) ;
         				String res = Utils.getDataFromURL(stringUrl);
         				Log.d("NI::",stringUrl);
-        				Toast.makeText(ctx, " "+res, Toast.LENGTH_SHORT).show();
-        			} else
-        				Toast.makeText(ctx, "Rank is updated to "+Math.round(ratingBar.getRating()), Toast.LENGTH_SHORT).show();
-        				ctx.rankTxt.setText(""+Math.round(ratingBar.getRating()));
-        				ctx.userRankValue=Math.round(ratingBar.getRating());//naim
+        				if(res.equals("saved")){
+        					Toast.makeText(ctx, "Rank has been Updated", Toast.LENGTH_SHORT).show();
+        				}
+        				else{
+        					Toast.makeText(ctx, "Rank has not been updated to online storage.", Toast.LENGTH_SHORT).show();
+        				}
+        				
+        				stringUrl = ABC.WEB_URL+"userDocRank/paRank?user_id="+
+        						Utils.userId+"&doc_id="+doctorId+"&rank="+Math.round(adminRatingBar.getRating())  ;
+        				res = Utils.getDataFromURL(stringUrl);
+        				Log.d("NI::",stringUrl);
+        				if(res.equals("saved")){
+        					Toast.makeText(ctx, "Admin Rank has been Updated", Toast.LENGTH_SHORT).show();
+        				}
+        				else{
+        					Toast.makeText(ctx, "Admin Rank has not been updated to online storage.", Toast.LENGTH_SHORT).show();
+        				}
+        			} else{
+        				Toast.makeText(ctx, "Rank has been Updated", Toast.LENGTH_SHORT).show();
+        			}
+    				ctx.rankTxt.setText(""+Math.round(ratingBar.getRating()));
+    				ctx.userRankValue=Math.round(ratingBar.getRating());
+    				ctx.adminRankValue=Math.round(adminRatingBar.getRating());
 	        			
 				} catch(Exception ex) {
-					//Toast.makeText(ctx, "Failed to rank ", Toast.LENGTH_SHORT).show();
+					Toast.makeText(ctx, "Failed to update rank ", Toast.LENGTH_SHORT).show();
 					ex.printStackTrace();
+					return;
 				}
         		dismiss();
             }

@@ -297,6 +297,7 @@ public class DoctorOnlineListActivity extends Activity {
             	m.put("docId", obj.getString("id"));
             	m.put("userId", userId);
             	m.put("u_rank", Utils.isEmpty(obj.getString("u_rank")) ? "0" : obj.getString("u_rank"));
+            	m.put("up_rank", Utils.isEmpty(obj.getString("up_rank")) ? "0" : obj.getString("up_rank"));
 				docList.add(m);
 				//System.out.println("SMM::"+m.get("docTitile1")+"::RANK:"+m.get("u_rank"));
 			}

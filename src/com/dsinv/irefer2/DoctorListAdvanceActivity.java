@@ -16,7 +16,6 @@ import org.json.JSONTokener;
 import com.dsinv.irefer2.R;
 import com.dsinv.irefer2.DbAdapter;
 
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -51,11 +50,13 @@ public class DoctorListAdvanceActivity extends Activity {
 	private TextView textView; 
 	private TextView footerView;
 	private TextView filterView;
+	List<Map<String,String>> data;
 	private ArrayAdapter<String> autoCompleteAdapter;
     Object idArr[] = null;
+    DoctorListAdapter adapter;
     Object nameArr[] =  new Object[]{"no match found"};
     String userId = "0";
-    DoctorListAdapter adapter;
+    //DoctorListAdapter adapter;
     ListView itemListView;
     protected Handler systemtaskHandler = new Handler();
 	Runnable systemTaskRunner = new Runnable() {
@@ -70,7 +71,7 @@ public class DoctorListAdvanceActivity extends Activity {
                 Cursor cr = dba.fetchDoctorFTS(searchText);
                 
                 //faisal > added
-                List<Map<String,String>> data = new ArrayList<Map<String,String>>();
+                data = new ArrayList<Map<String,String>>();
                 if(cr != null && cr.getCount() > 0) {
                 	Map idMap = new HashMap();
                 	idArr  = new Object[cr.getCount()];
@@ -102,9 +103,11 @@ public class DoctorListAdvanceActivity extends Activity {
 	                	row.put("userId", userId);
 	                	row.put("grade", ""+cr.getInt(8));
 	                	row.put("u_rank", Utils.isEmpty(""+cr.getInt(22)) ? "0" : ""+cr.getInt(22));
+	                	row.put("up_rank", Utils.isEmpty(""+cr.getInt(23)) ? "0" : ""+cr.getInt(23));
+	                	row.put("pa_rank", Utils.isEmpty(""+cr.getInt(23)) ? "0" : ""+cr.getInt(23));
 	                	data.add(row);
 	                	
-	                	DoctorListAdapter adapter = new DoctorListAdapter(
+	                	adapter = new DoctorListAdapter(
 	                			DoctorListAdvanceActivity.this,
 	                    		dba,
 	                    		data,
@@ -115,7 +118,8 @@ public class DoctorListAdvanceActivity extends Activity {
 	                    		);
 	                	
 	                	itemListView.setAdapter(adapter);
-	        	    	
+	                	adapter.notifyDataSetChanged();
+	                	itemListView.requestLayout();
 	                	
 	                    
 	                }
@@ -204,7 +208,7 @@ public class DoctorListAdvanceActivity extends Activity {
     	//EditText.setAdapter(autoCompleteAdapter);
     	
     	//autoCompleteAdapter.add("Shamim");
-    	List docList = new ArrayList();
+    	data = new ArrayList();
     	
     	//faisal > modify (made the variable final to be used inside inner class)
     	itemListView = (ListView)findViewById(R.id.doctor_list_adv);
@@ -241,8 +245,9 @@ public class DoctorListAdvanceActivity extends Activity {
             	temp.put("userId", userId);
             	temp.put("grade", ""+cr.getInt(8));
             	temp.put("u_rank", Utils.isEmpty(""+cr.getInt(22)) ? "0" : ""+cr.getInt(22));
-            	
-        		docList.add(temp);
+            	temp.put("up_rank", Utils.isEmpty(""+cr.getInt(23)) ? "0" : ""+cr.getInt(23));
+            	temp.put("pa_rank", Utils.isEmpty(""+cr.getInt(23)) ? "0" : ""+cr.getInt(23));
+        		data.add(temp);
             		
         	}
         	cr.close();
@@ -251,7 +256,7 @@ public class DoctorListAdvanceActivity extends Activity {
     	adapter = new DoctorListAdapter(
         		this,
         		dba,
-        		docList,
+        		data,
         		R.layout.doctor_row,
         		new String[] {"docId", "docTitile1","docTitile2","docTitile3"},
         		new int[] {R.id.doc_row_doc_id, R.id.doc_title1, R.id.doc_title2, R.id.doc_title3},
@@ -268,6 +273,7 @@ public class DoctorListAdvanceActivity extends Activity {
     			TextView docIdView = (TextView)v.findViewById(R.id.doc_row_doc_id);
     			Intent intent = new Intent(DoctorListAdvanceActivity.this, DoctorDetailActivity.class);
             	//intent.putExtra("doctor_id", (Integer)idArr[position]);
+    			intent.putExtra("position", position+"");
             	intent.putExtra("doctor_id", Integer.parseInt(docIdView.getText().toString()));
 	            startActivityForResult(intent, 1100);	
             	/*
@@ -323,13 +329,31 @@ public class DoctorListAdvanceActivity extends Activity {
     }
 	
 	//faisal > starts
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if(data != null 
-			&& data.getBooleanExtra("close_me", false) 
-			&& requestCode == 1100 
-			&& resultCode == RESULT_OK) {
-			finish();	
-		}		
+	protected void onActivityResult(int requestCode, int resultCode, Intent datax) {
+		if(datax != null ){
+			if(datax.getBooleanExtra("close_me", false) 	&& requestCode == 1100	&& resultCode == RESULT_OK) {
+				finish();	
+			}
+			String u_rank = datax.getStringExtra("u_rank").toString();
+			String up_rank = datax.getStringExtra("up_rank").toString();
+			String pa_rank = datax.getStringExtra("pa_rank").toString();
+			String position = datax.getStringExtra("position").toString();
+			Log.d("NI::",u_rank);
+			Log.d("NI::",up_rank);
+			Log.d("NI::",pa_rank);
+			Log.d("NI::",position);
+			Map<String, String> data2 = data.get(Integer.parseInt(position));
+			data2.put("u_rank",String.valueOf(u_rank));
+			data2.put("up_rank",String.valueOf(up_rank));
+			data2.put("pa_rank",String.valueOf(pa_rank));
+			data.remove(Integer.parseInt(position));
+			data.set(Integer.parseInt(position),data2);
+			adapter.notifyDataSetChanged();
+		}	
+		else
+		{
+			Log.d("NR::","AAA");
+		}	
 	}
 		//faisal > ends
 		

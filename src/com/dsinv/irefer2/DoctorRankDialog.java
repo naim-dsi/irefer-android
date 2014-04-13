@@ -117,19 +117,25 @@ public class DoctorRankDialog extends Dialog {
         			dba.rankDoctor(doctorId, Math.round(ratingBar.getRating()));
         			Log.d("NR::", ""+doctorId+" "+Math.round(ratingBar.getRating()));
         			//rankTxt.setText(Math.round(ratingBar.getRating()));
-        			//if(isOnlineSearch) {
-            		if(true){//naim	
-        				String stringUrl = ABC.WEB_URL+"userDocRank/rank?user_id="+Utils.userId+"&doc_id="+doctorId+"&rank="+Math.round(ratingBar.getRating()) ;
+        			if(isOnlineSearch) {
+            			String stringUrl = ABC.WEB_URL+"userDocRank/rank?user_id="+Utils.userId+"&doc_id="+doctorId+"&rank="+Math.round(ratingBar.getRating()) ;
         				String res = Utils.getDataFromURL(stringUrl);
         				Log.d("NI::",stringUrl);
-        				Toast.makeText(ctx, " "+res, Toast.LENGTH_SHORT).show();
+        				if(res.equals("saved")){
+        					Toast.makeText(ctx, "Rank has been updated", Toast.LENGTH_SHORT).show();
+        				}
+        				else{
+        					Toast.makeText(ctx, "Rank has not been updated to online storage.", Toast.LENGTH_SHORT).show();
+        				}
         			} else
-        				Toast.makeText(ctx, "Rank is updated to "+Math.round(ratingBar.getRating()), Toast.LENGTH_SHORT).show();
-        				ctx.rankTxt.setText(""+Math.round(ratingBar.getRating()));
-        				ctx.userRankValue=Math.round(ratingBar.getRating());//naim
+        			{
+        				Toast.makeText(ctx, "Rank has been updated.", Toast.LENGTH_SHORT).show();
+        			}
+        			ctx.rankTxt.setText(""+Math.round(ratingBar.getRating()));
+        			ctx.userRankValue=Math.round(ratingBar.getRating());//naim
 	        			
 				} catch(Exception ex) {
-					//Toast.makeText(ctx, "Failed to rank ", Toast.LENGTH_SHORT).show();
+					Toast.makeText(ctx, "Failed to update rank ", Toast.LENGTH_SHORT).show();
 					ex.printStackTrace();
 				}
         		dismiss();

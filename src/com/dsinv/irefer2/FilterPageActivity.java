@@ -1,5 +1,6 @@
 package com.dsinv.irefer2;
 
+import java.net.URLEncoder;
 import java.util.Arrays;
 
 import com.dsinv.irefer2.R;
@@ -11,6 +12,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
@@ -102,14 +104,14 @@ public class FilterPageActivity extends Activity {
 	private String languageId = "";
 	private String officeHourName = "";
 	private String officeHourId = "";
-
+	private int doctorId = 0;
 	private int myPracId = 0;
 	private int myHospId = 0;
 	private int myCntyId = 0;
 	private int myStatId = 0;
 	private int userId = 0;
 	private int fromPageId = 0;
-
+	private int allowPARank = 0;
 	private int onlineFlag = 0;
 	private int resourceFlag = 0;
 
@@ -135,16 +137,22 @@ public class FilterPageActivity extends Activity {
 		String userName = "";
 		String pracName = "";
 		Cursor cr0 = dba.fetchAll(dba.USERS);
+		new SyncOfflineData().execute(new String[]{""});
+		
 		if (cr0 != null && cr0.getCount() > 0) {
 			cr0.moveToFirst();
 			userId = cr0.getInt(1);
 			myPracId = cr0.getInt(6);
 			myHospId = cr0.getInt(7);
 			myCntyId = cr0.getInt(8);
+			doctorId = cr0.getInt(13);
+			allowPARank = cr0.getInt(12);
 			userName = cr0.getString(2) + " " + cr0.getString(3);
 			cr0.close();
 		}
 		Utils.userId = userId;
+		Utils.doctorId = doctorId;
+		Utils.allowPARank = allowPARank;
 		if (myPracId > 0)
 			setContentView(R.layout.filter_page);
 		else
@@ -609,7 +617,7 @@ public class FilterPageActivity extends Activity {
 		loadACO();
 		loadOfficeHour();
 	}
-
+	
 	@Override
 	public void onStart() {
 		super.onStart();
@@ -1240,5 +1248,111 @@ public class FilterPageActivity extends Activity {
 		}
 
 		return builder;
+	}
+	private class SyncOfflineData extends AsyncTask<String, Void, String> {
+		
+		@Override
+		protected void onPreExecute() {
+			
+		}
+		
+		@Override
+		protected String doInBackground(String... limits) {
+			try{
+				Cursor cr = dba.getSyncronizableReports();
+				String content = "";
+				String stringUrl = "";
+				if(cr != null) {
+					cr.moveToFirst();
+					for(int i=0; i<cr.getCount(); i++) {
+						if(content.equals("")){
+							content = content+cr.getString(0)+","+cr.getString(1);
+						}else{
+							content = content+"|"+cr.getString(0)+","+cr.getString(1);
+						}
+						cr.moveToNext();
+					}
+					cr.close();
+				}
+				if(!content.equals("")){
+					content = URLEncoder.encode(content, "utf-8");
+					stringUrl = ABC.WEB_URL+"doctorComment/comment2?user_id="+Utils.userId+"&var="+content ;
+					Log.d("NI::",stringUrl);
+					try {
+						String res = Utils.getDataFromURL(stringUrl);
+						Log.d("NI::",res);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				dba.updateSyncronizableReports();
+				
+				content = "";
+				stringUrl = "";
+				cr = dba.getSyncronizableRanks();
+				if(cr != null) {
+					cr.moveToFirst();
+					for(int i=0; i<cr.getCount(); i++) {
+						if(content.equals("")){
+							content = content+cr.getString(0)+","+cr.getString(1)+","+cr.getString(2);
+						}else{
+							content = content+"|"+cr.getString(0)+","+cr.getString(1)+","+cr.getString(2);
+						}
+						cr.moveToNext();
+					}
+					cr.close();
+				}
+				if(!content.equals("")){
+					content = URLEncoder.encode(content, "utf-8");
+					stringUrl = ABC.WEB_URL+"userDocRank/bulkRank?user_id="+Utils.userId+"&val="+content ;
+					Log.d("NI::",stringUrl);
+					try {
+						String res = Utils.getDataFromURL(stringUrl);
+						Log.d("NI::",res);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				dba.updateSyncronizableRanks();
+				
+				content = "";
+				stringUrl = "";
+				if (dba.showCount() > -1) {
+					content = dba.showCount()+"";
+				} else {
+					cr = null;
+					dba.deleteAll(dba.STATISTICS);
+					dba.insert(dba.STATISTICS, new String[] { "1", "1" });
+				}
+				
+				
+				
+				if(!content.equals("")){
+					content = URLEncoder.encode(content, "utf-8");
+					stringUrl = ABC.WEB_URL+"searchStatistics/setCount?user_id="+Utils.userId+"&count="+content ;
+					Log.d("NI::",stringUrl);
+					try {
+						String res = Utils.getDataFromURL(stringUrl);
+						Log.d("NI::",res);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				
+			}
+			catch(Exception ex){
+				ex.printStackTrace();
+			}
+			return "";
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			
+			
+		}
 	}
 }

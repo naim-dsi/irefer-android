@@ -217,6 +217,7 @@ android:layout_height="fill_parent">
 		    android:layout_width="wrap_content"/>
 
 		<TextView  android:id="@+id/doctor_avg_rank"
+		    android:visibility="gone"
 		    android:layout_height="wrap_content" 
 		    android:text="Avg Rank: 0 based on 0 PCP votes"
 		    android:layout_marginLeft="10dip"
