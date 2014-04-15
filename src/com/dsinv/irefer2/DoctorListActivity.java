@@ -604,6 +604,7 @@ public class DoctorListActivity extends Activity {
 		if(data != null ){
 			if(data.getBooleanExtra("close_me", false) 	&& requestCode == 1100	&& resultCode == RESULT_OK) {
 				finish();	
+				return;
 			}
 			String u_rank = data.getStringExtra("u_rank").toString();
 			String up_rank = data.getStringExtra("up_rank").toString();
@@ -624,6 +625,9 @@ public class DoctorListActivity extends Activity {
 		else
 		{
 			Log.d("NR::","AAA");
+			finish();	
+			return;
+			
 		}
 		
 	}

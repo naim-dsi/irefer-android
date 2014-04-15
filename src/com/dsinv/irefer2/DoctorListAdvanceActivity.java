@@ -333,6 +333,7 @@ public class DoctorListAdvanceActivity extends Activity {
 		if(datax != null ){
 			if(datax.getBooleanExtra("close_me", false) 	&& requestCode == 1100	&& resultCode == RESULT_OK) {
 				finish();	
+				return;
 			}
 			String u_rank = datax.getStringExtra("u_rank").toString();
 			String up_rank = datax.getStringExtra("up_rank").toString();
@@ -353,6 +354,9 @@ public class DoctorListAdvanceActivity extends Activity {
 		else
 		{
 			Log.d("NR::","AAA");
+			finish();	
+			return;
+			
 		}	
 	}
 		//faisal > ends

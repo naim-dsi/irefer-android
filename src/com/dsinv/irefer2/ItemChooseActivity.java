@@ -110,7 +110,7 @@ public class ItemChooseActivity extends Activity {
         	setTitle("Choose your Name");
         	newBtn.setVisibility(View.VISIBLE);
         	keyView.setHint("Enter your last name");
-        	newBtn.setText("Click, if you don�t find your name");
+        	newBtn.setText("Click, if you do not find your name");
         }
         
         //dba = new DbAdapter(this);

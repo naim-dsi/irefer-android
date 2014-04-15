@@ -976,37 +976,54 @@ public class SetupActivity extends Activity {
                  Log.d("NR::", "Download Completed 2");
                  Log.d("NI::", "UNZIP Start");
                  publishProgress(4);
-                 String zipFile = "/data/data/"+Utils.packageName+"/files/irefer_db.zip"; 
-                 String unzipLocation = "/data/data/"+Utils.packageName+"/files/"; 
-                  
-                 Decompress d = new Decompress(zipFile, unzipLocation); 
-                 d.unzip(); 
+                 File file = new File("/data/data/"+Utils.packageName+"/files/irefer_db.zip");
+                 if(file.exists())
+				 { 
+                	 String zipFile = "/data/data/"+Utils.packageName+"/files/irefer_db.zip"; 
+                     String unzipLocation = "/data/data/"+Utils.packageName+"/files/"; 
+                      
+                     Decompress d = new Decompress(zipFile, unzipLocation); 
+                     d.unzip(); 
+                     Log.d("NI::", "UNZIP Finished");
+                    copyServerDatabase();
+                 	publishProgress(5);
+                 	Log.d("NR::", "YAY!! SYNC COMPLETED...");
+                 	dba.open();
+                 	String stringUrl = ABC.WEB_URL+"doctor/deletedbfiles?serverBDFileName="+serverBDFileName;
+         			try {
+         				String res = getDataFromURL(stringUrl);
+         			} catch (Exception e) {
+         				// TODO Auto-generated catch block
+         				e.printStackTrace();
+         			}
+         			Log.d("NI::",stringUrl);
+                 	
+                    return 0L;
+				 }
+                 else{
+                	 publishProgress(6);
+//                	 Toast.makeText(SetupActivity.this, "Downloading database failed. ", Toast.LENGTH_SHORT).show();
+                	 Log.e("NI::", "Download Database Error ");
+	                 return 0L;
+                 }
                  
-                 Log.d("NI::", "UNZIP Finished");
 	         } catch (IOException e) {
+	        	 publishProgress(6);
+//	        	 Toast.makeText(SetupActivity.this, "Downloading database failed. ", Toast.LENGTH_SHORT).show();
 	                 Log.e("NR::", "downloadDatabase Error: " , e);
 	                 return 0L;
 	         }  catch (NullPointerException e) {
+	        	 publishProgress(6);
+//	        	 Toast.makeText(SetupActivity.this, "Downloading database failed. ", Toast.LENGTH_SHORT).show();
 	                 Log.e("NR::", "downloadDatabase Error: " , e);
 	                 return 0L;
 	         } catch (Exception e){
+	        	 publishProgress(6);
+//	        	 Toast.makeText(SetupActivity.this, "Downloading database failed. ", Toast.LENGTH_SHORT).show();
 	                 Log.e("NR::", "downloadDatabase Error: " , e);
 	                 return 0L;
 	         }
-        	copyServerDatabase();
-        	publishProgress(5);
-        	Log.d("NR::", "YAY!! SYNC COMPLETED...");
-        	dba.open();
-        	String stringUrl = ABC.WEB_URL+"doctor/deletedbfiles?serverBDFileName="+serverBDFileName;
-			try {
-				String res = getDataFromURL(stringUrl);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			Log.d("NI::",stringUrl);
         	
-           return 0L;
         }
         public String getDataFromURL(String urlStr) throws Exception {
         	System.out.println(urlStr);
@@ -1033,6 +1050,13 @@ public class SetupActivity extends Activity {
                 try {
                 	Log.d("NR::", "Copy starting to /data/data/"+Utils.packageName+"/databases/");
                       // Log.d(TAG, "Copying DB from server version into app");
+                	 	File fileNew = new File("/data/data/"+Utils.packageName+"/files/irefer_db");
+                        if(!fileNew.exists())
+						{ 
+                        	publishProgress(6);
+                        	Log.d("NI::","DB file is corrapted");
+                        	return;
+						}
                         is = SetupActivity.this.openFileInput("irefer_db");
                         os = new FileOutputStream("/data/data/"+Utils.packageName+"/databases/irefer_db"); // XXX change this
 
@@ -1253,7 +1277,10 @@ public class SetupActivity extends Activity {
         		dialog.setMessage("Unzipping database...");
         	else if(progress[0] == 5)
         		dialog.setMessage("Reloading database...");
-        	else if(progress[0] > 0)
+        	else if(progress[0] == 6){
+        		Toast.makeText(SetupActivity.this, "Downloading database failed. ", Toast.LENGTH_SHORT).show();
+        		dialog.setMessage("Reloading database...");
+        	}else if(progress[0] > 0)
         		dialog.setMessage("Indexing data...("+progress[0]+"/"+docReceived+")");
             //setProgressPercent(progress[0]);
         }
