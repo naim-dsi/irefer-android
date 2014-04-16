@@ -618,7 +618,7 @@ public class DoctorListActivity extends Activity {
 			data2.put("u_rank",String.valueOf(u_rank));
 			data2.put("up_rank",String.valueOf(up_rank));
 			data2.put("pa_rank",String.valueOf(pa_rank));
-			docList.remove(Integer.parseInt(position));
+			//docListafInteger.parseInt(position));
 			docList.set(Integer.parseInt(position),data2);
 			adapter.notifyDataSetChanged();
 		}	

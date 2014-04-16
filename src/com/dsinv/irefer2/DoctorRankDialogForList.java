@@ -134,9 +134,10 @@ public class DoctorRankDialogForList extends Dialog {
         				Toast.makeText(ctx, "Rank has been updated.", Toast.LENGTH_SHORT).show();
         			}
         			data.put("u_rank",String.valueOf(Math.round(ratingBar.getRating())));
-        			ctx.docList.remove(position);
+        			//ctx.docList.remove(position);
         			ctx.docList.set(position,data);
         			ctx.adapter.notifyDataSetChanged();
+        			//ctx.adapter.notifyDataSetChanged();
 	        			
 				} catch(Exception ex) {
 					Toast.makeText(ctx, "Failed to update rank ", Toast.LENGTH_SHORT).show();

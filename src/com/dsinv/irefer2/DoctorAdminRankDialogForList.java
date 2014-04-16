@@ -204,7 +204,7 @@ public class DoctorAdminRankDialogForList extends Dialog {
         			}
         			data.put("u_rank",String.valueOf(Math.round(ratingBar.getRating())));
         			data.put("up_rank",String.valueOf(Math.round(adminRatingBar.getRating())));
-        			ctx.docList.remove(position);
+        			//ctx.docList.remove(position);
         			ctx.docList.set(position,data);
         			ctx.adapter.notifyDataSetChanged();
 	        			

@@ -347,7 +347,7 @@ public class DoctorListAdvanceActivity extends Activity {
 			data2.put("u_rank",String.valueOf(u_rank));
 			data2.put("up_rank",String.valueOf(up_rank));
 			data2.put("pa_rank",String.valueOf(pa_rank));
-			data.remove(Integer.parseInt(position));
+			//data.remove(Integer.parseInt(position));
 			data.set(Integer.parseInt(position),data2);
 			adapter.notifyDataSetChanged();
 		}	
