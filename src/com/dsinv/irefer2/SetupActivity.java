@@ -11,6 +11,7 @@ import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.nio.channels.Selector;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,6 +26,8 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import com.dsinv.irefer2.R;
+
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -35,6 +38,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -199,7 +204,10 @@ public class SetupActivity extends Activity {
         }
         headline1.setText(userName);
 		headline2.setText(userAddress);
+		if(isNetworkAvailable()){
+			new SyncOfflineData().execute(new String[]{""});
 		
+		}
         /*
         Button regBtn = (Button) findViewById(R.id.sync_button1);
         regBtn.setOnClickListener(new View.OnClickListener() {
@@ -260,26 +268,32 @@ public class SetupActivity extends Activity {
     		        public void onClick(DialogInterface dialogI, int which) {
     		            switch (which){
     		            case DialogInterface.BUTTON_POSITIVE:
-    		            	dialog = ProgressDialog.show(SetupActivity.this, "", 
-    		                        "Starting sync.", true);
-    						dialog.setTitle("Syncing, this may take few minutes");
-    						dialog.show();
-    		            	try {
-    		            		//dba.deleteAll(DbAdapter.DOCTOR);
-    		            		//dba.deleteAll(DbAdapter.DOC_FTS);
-    		            		//dba.deleteAll(DbAdapter.INSURANCE);
-    		            		//dba.deleteAll(DbAdapter.SPECIALTY);
-    		            		//dba.deleteAllSettingPractice();
-    		            		//dba.deleteAllSettingHospital();
-					
-    		            		new SyncDoctorTask().execute();
-    		            	} catch(Exception ex){
-    		            		ex.printStackTrace();
-    		            		dialog.dismiss();
+    		            	if(isNetworkAvailable()){
+	    		            	dialog = ProgressDialog.show(SetupActivity.this, "", 
+	    		                        "Starting sync.", true);
+	    						dialog.setTitle("Syncing, this may take few minutes");
+	    						dialog.show();
+	    		            	try {
+	    		            		//dba.deleteAll(DbAdapter.DOCTOR);
+	    		            		//dba.deleteAll(DbAdapter.DOC_FTS);
+	    		            		//dba.deleteAll(DbAdapter.INSURANCE);
+	    		            		//dba.deleteAll(DbAdapter.SPECIALTY);
+	    		            		//dba.deleteAllSettingPractice();
+	    		            		//dba.deleteAllSettingHospital();
+						
+	    		            		new SyncDoctorTask().execute();
+	    		            	} catch(Exception ex){
+	    		            		ex.printStackTrace();
+	    		            		dialog.dismiss();
+	    		            	}
+	    		            }
+    		            	else{
+    		            		Toast.makeText(SetupActivity.this, "Failed to connect server, Please check your internet connection ", Toast.LENGTH_SHORT).show();
     		            	}
     		            case DialogInterface.BUTTON_NEGATIVE:
     		                //No button clicked
     		                break;
+    		            
     		            }
     		        }
 				};
@@ -513,7 +527,12 @@ public class SetupActivity extends Activity {
 		});
         
     }
-    
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager 
+              = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
     @Override
     public void onBackPressed () {
         super.onBackPressed ();
@@ -1306,5 +1325,110 @@ public class SetupActivity extends Activity {
    			
         }
     }
-    
+    private class SyncOfflineData extends AsyncTask<String, Void, String> {
+		
+		@Override
+		protected void onPreExecute() {
+			
+		}
+		
+		@Override
+		protected String doInBackground(String... limits) {
+			try{
+				Cursor cr = dba.getSyncronizableReports();
+				String content = "";
+				String stringUrl = "";
+				if(cr != null) {
+					cr.moveToFirst();
+					for(int i=0; i<cr.getCount(); i++) {
+						if(content.equals("")){
+							content = content+cr.getString(0)+","+cr.getString(1);
+						}else{
+							content = content+"|"+cr.getString(0)+","+cr.getString(1);
+						}
+						cr.moveToNext();
+					}
+					cr.close();
+				}
+				if(!content.equals("")){
+					content = URLEncoder.encode(content, "utf-8");
+					stringUrl = ABC.WEB_URL+"doctorComment/comment2?user_id="+Utils.userId+"&var="+content ;
+					Log.d("NI::",stringUrl);
+					try {
+						String res = Utils.getDataFromURL(stringUrl);
+						Log.d("NI::",res);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				dba.updateSyncronizableReports();
+				
+				content = "";
+				stringUrl = "";
+				cr = dba.getSyncronizableRanks();
+				if(cr != null) {
+					cr.moveToFirst();
+					for(int i=0; i<cr.getCount(); i++) {
+						if(content.equals("")){
+							content = content+cr.getString(0)+","+cr.getString(1)+","+cr.getString(2);
+						}else{
+							content = content+"|"+cr.getString(0)+","+cr.getString(1)+","+cr.getString(2);
+						}
+						cr.moveToNext();
+					}
+					cr.close();
+				}
+				if(!content.equals("")){
+					content = URLEncoder.encode(content, "utf-8");
+					stringUrl = ABC.WEB_URL+"userDocRank/bulkRank?user_id="+Utils.userId+"&val="+content ;
+					Log.d("NI::",stringUrl);
+					try {
+						String res = Utils.getDataFromURL(stringUrl);
+						Log.d("NI::",res);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				dba.updateSyncronizableRanks();
+				
+				content = "";
+				stringUrl = "";
+				if (dba.showCount() > -1) {
+					content = dba.showCount()+"";
+				} else {
+					cr = null;
+					dba.deleteAll(dba.STATISTICS);
+					dba.insert(dba.STATISTICS, new String[] { "1", "1" });
+				}
+				
+				
+				
+				if(!content.equals("")){
+					content = URLEncoder.encode(content, "utf-8");
+					stringUrl = ABC.WEB_URL+"searchStatistics/setCount?user_id="+Utils.userId+"&count="+content ;
+					Log.d("NI::",stringUrl);
+					try {
+						String res = Utils.getDataFromURL(stringUrl);
+						Log.d("NI::",res);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				
+			}
+			catch(Exception ex){
+				ex.printStackTrace();
+			}
+			return "";
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			
+			
+		}
+	}
 }

@@ -7,11 +7,14 @@ import com.dsinv.irefer2.R;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -137,7 +140,9 @@ public class FilterPageActivity extends Activity {
 		String userName = "";
 		String pracName = "";
 		Cursor cr0 = dba.fetchAll(dba.USERS);
-		new SyncOfflineData().execute(new String[]{""});
+		if(isNetworkAvailable()){
+			new SyncOfflineData().execute(new String[]{""});
+		}
 		
 		if (cr0 != null && cr0.getCount() > 0) {
 			cr0.moveToFirst();
@@ -273,13 +278,18 @@ public class FilterPageActivity extends Activity {
 
 		onlineBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				onlineFlag = 1;
-				offlineBtn
-						.setBackgroundResource(R.drawable.segment_button_left);
-				onlineBtn
-						.setBackgroundResource(R.drawable.segment_button_right_on);
-				offlineBtn.setTextColor(Color.rgb(128, 128, 128));
-				onlineBtn.setTextColor(Color.rgb(255, 255, 255));
+				if(isNetworkAvailable()){
+					onlineFlag = 1;
+					offlineBtn
+							.setBackgroundResource(R.drawable.segment_button_left);
+					onlineBtn
+							.setBackgroundResource(R.drawable.segment_button_right_on);
+					offlineBtn.setTextColor(Color.rgb(128, 128, 128));
+					onlineBtn.setTextColor(Color.rgb(255, 255, 255));
+				}
+				else{
+					Toast.makeText(FilterPageActivity.this, "Failed to connect server, Please check your internet connection ", Toast.LENGTH_SHORT).show();
+				}
 			}
 		});
 
@@ -617,7 +627,12 @@ public class FilterPageActivity extends Activity {
 		loadACO();
 		loadOfficeHour();
 	}
-	
+	private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager 
+              = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }  
 	@Override
 	public void onStart() {
 		super.onStart();

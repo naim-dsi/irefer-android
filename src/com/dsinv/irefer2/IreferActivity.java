@@ -15,10 +15,13 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -120,33 +123,48 @@ public class IreferActivity extends Activity {
         regBtn = (Button) findViewById(R.id.home_button1);
         regBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				Intent intent = new Intent(IreferActivity.this, ItemChooseActivity.class);
-				intent.putExtra("opr", DbAdapter.DOCTOR);
-            	intent.putExtra("user_type", 1);
-	            startActivityForResult(intent, 1002);				
+				if(isNetworkAvailable()){
+					Intent intent = new Intent(IreferActivity.this, ItemChooseActivity.class);
+					intent.putExtra("opr", DbAdapter.DOCTOR);
+	            	intent.putExtra("user_type", 1);
+		            startActivityForResult(intent, 1002);	
+				}
+				else{
+					Toast.makeText(IreferActivity.this, "Failed to connect server, Please check your internet connection ", Toast.LENGTH_SHORT).show();
+				}
 			}
 		});
         
         regBtn2 = (Button) findViewById(R.id.button2);
         regBtn2.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				Intent intent = new Intent(IreferActivity.this, ItemChooseActivity.class);
-				intent.putExtra("opr", DbAdapter.DOCTOR);
-				intent.putExtra("user_type", 2);
-				//intent.putExtra("opr", DbAdapter.HOSPITAL);
-	            startActivityForResult(intent, 1003);
-				//Intent intent = new Intent(IreferActivity.this, RegFormActivity.class);
-            	//intent.putExtra("operation", 1);
-	            //startActivityForResult(intent, 1100);				
+				if(isNetworkAvailable()){
+					Intent intent = new Intent(IreferActivity.this, ItemChooseActivity.class);
+					intent.putExtra("opr", DbAdapter.DOCTOR);
+					intent.putExtra("user_type", 2);
+					//intent.putExtra("opr", DbAdapter.HOSPITAL);
+		            startActivityForResult(intent, 1003);
+					//Intent intent = new Intent(IreferActivity.this, RegFormActivity.class);
+	            	//intent.putExtra("operation", 1);
+		            //startActivityForResult(intent, 1100);		
+				}
+				else{
+					Toast.makeText(IreferActivity.this, "Failed to connect server, Please check your internet connection ", Toast.LENGTH_SHORT).show();
+				}
 			}
 		});
         
         regBtn3 = (Button) findViewById(R.id.button3);
         regBtn3.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				Intent intent = new Intent(IreferActivity.this, ActivationFormActivity.class);
-            	//intent.putExtra("operation", 1);
-	            startActivityForResult(intent, ACTIVATION_PAGE);				
+				if(isNetworkAvailable()){
+					Intent intent = new Intent(IreferActivity.this, ActivationFormActivity.class);
+	            	//intent.putExtra("operation", 1);
+		            startActivityForResult(intent, ACTIVATION_PAGE);	
+				}
+				else{
+					Toast.makeText(IreferActivity.this, "Failed to connect server, Please check your internet connection ", Toast.LENGTH_SHORT).show();
+				}
 			}
 		});
         
@@ -228,7 +246,12 @@ public class IreferActivity extends Activity {
 			}
 		});
     }
-      
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager 
+              = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }  
     @Override
     public void onStart() {   
          super.onStart();   

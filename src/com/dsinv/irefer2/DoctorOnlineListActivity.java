@@ -164,7 +164,9 @@ public class DoctorOnlineListActivity extends Activity {
 	        }
 	    };
 	    textView.addTextChangedListener(textChecker);
-	    
+	    searchText = "";
+    	systemtaskHandler.removeCallbacks( systemTaskRunner );
+        systemtaskHandler.postDelayed( systemTaskRunner, 1500 );
 //	    Button orderBtn = (Button) findViewById(R.id.order_flip);
 //        orderBtn.setOnClickListener(new View.OnClickListener() {
 //			public void onClick(View v) {

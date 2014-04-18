@@ -234,6 +234,10 @@ public class ItemChooseActivity extends Activity {
 				*/
 			}
 		});
+	    
+	    searchText = "";
+    	systemtaskHandler.removeCallbacks( systemTaskRunner );
+        systemtaskHandler.postDelayed( systemTaskRunner, 1500 );
     }
 	
 	@Override
@@ -277,9 +281,9 @@ public class ItemChooseActivity extends Activity {
 	         		urlString = ABC.WEB_URL+"hospital/json?code="+s;
 	         	if(opr == DbAdapter.SPECIALTY){
 	         		if(userType == 1)
-	         			urlString = ABC.WEB_URL+"speciality/json?type=2&code="+s;
+	         			urlString = ABC.WEB_URL+"speciality/json?code="+s;
 	         		if(userType == 2)
-	         			urlString = ABC.WEB_URL+"speciality/json?type=1&code="+s;
+	         			urlString = ABC.WEB_URL+"speciality/json?code="+s;
 	         	}
 	         	if(opr == DbAdapter.DOCTOR) {
 	         		if(userType == 1)
