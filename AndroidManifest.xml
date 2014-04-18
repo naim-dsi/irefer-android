@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="com.dsinv.irefer2" android:versionName="2.2" android:versionCode="3">
+      package="com.dsinv.irefer2" android:versionName="2.3" android:versionCode="5">
     <uses-sdk android:minSdkVersion="7" />
 
 	<uses-permission android:name="android.permission.INTERNET" />

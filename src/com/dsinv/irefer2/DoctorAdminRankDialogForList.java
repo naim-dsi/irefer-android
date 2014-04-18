@@ -174,6 +174,9 @@ public class DoctorAdminRankDialogForList extends Dialog {
         @Override
             public void onClick(View v) {
         		try {
+        			if(Math.round(ratingBar.getRating())==0){
+        				ratingBar.setRating(Math.round(adminRatingBar.getRating()));
+        			}
         			dba.rankDoctor(doctorId, Math.round(ratingBar.getRating()));
         			dba.rankAdminDoctor(doctorId, Math.round(adminRatingBar.getRating()));
         			Log.d("NR::", ""+doctorId+" "+Math.round(ratingBar.getRating()));
